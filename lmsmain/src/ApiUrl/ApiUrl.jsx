@@ -3,7 +3,9 @@
 // export const api = "http://192.168.29.171:5050";
 
 //my office
-export const api = "http://192.168.1.10:5050";
+// export const api = "http://192.168.1.10:5050";
+//Arbaz
+export const api = "https://192.168.0.240:5050";
 //Rishu
 // export const api = "http://192.168.1.15:5050";
 
