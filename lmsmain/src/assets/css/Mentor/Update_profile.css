@@ -1,0 +1,83 @@
+.main-form-profile{
+    width: 70%;
+    margin: 40px auto;
+    /* border: 1px solid #0c5273; */
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.error{
+    color: red;
+}
+
+/* YourComponent.css */
+.camera-icon-label {
+    cursor: pointer;
+    position: absolute;
+    top: 270px;
+    right: 75%;
+}
+
+.camera-icon {
+    font-size: 18px;
+    color: #000; /* Adjust the color as needed */
+}
+
+/* Update_profile.css */
+
+.form-control-custom {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* input[type='text'],input[type='date'],input[type='email'],input[type='number'] ,input[type='file'] {
+    width: 400px;
+    border-radius: 10px;
+} */
+
+.file-certificate{
+    border: 0px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.form-label {
+    margin-bottom: 5px;
+}
+
+.form-control-custom {
+    /* width: 100%;  */
+    width: 400px !important;
+    border-radius: 10px;
+}
+
+
+
+/* Apply temporary borders for debugging */
+.tab-panel {
+    /* border: 1px solid red; Temporary border for TabPanel */
+    width: 75vw;
+    height: 75vh;
+}
+
+.form-group {
+    /* border: 1px solid blue; Temporary border for form groups */
+    margin-bottom: 15px;
+    width: 70%;
+    margin-right: 0px;
+}
+
+.form-control-custom {
+    /* border: 1px solid green; Temporary border for form controls */
+    width: 100%;
+}
+
+.form-control-custom::placeholder {
+    color: #aaa; /* Optional: Different color for placeholder text */
+}
+
+

@@ -1,0 +1,101 @@
+.gauge-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 230px; /* Adjust as needed */
+    margin: auto;
+  }
+  
+  .gauge {
+    /* transform: rotate(-90deg); */
+    transform: rotate(0deg);
+  }
+  
+  .gauge-percentage {
+    position: relative;
+    /* top: 4%; */
+    transform: translateY(-50%);
+    font-size: 1.5em;
+    color: #000;
+    font-weight: bold;
+  }
+
+
+ /* For screens smaller than 700px */
+@media screen and (max-width: 700px) {
+  .cards, .outer {
+      flex-wrap: wrap !important;
+      width: 100% !important;
+  }
+
+
+  .outer-meeting{
+    flex-wrap: wrap !important;
+    width: 100% !important;
+    height: 100vh !important;
+  }
+
+  .sub-card {
+      width: 100% !important;
+  }
+
+  .sub-card p {
+      font-size: 20px !important; /* Adjust the text size */
+      position: relative !important; /* Remove the absolute positioning on smaller screens */
+      text-align: center !important; /* Center the text */
+      margin: 10px 0; /* Add some margin */
+      top: 40px !important;
+  }
+
+  .sub-card span {
+      font-size: 16px; /* Adjust span text size for better readability */
+      text-align: center;
+  }
+
+  /* Adjust buttons inside lesson-card for mobile screens */
+  .lesson-card button {
+      font-size: 14px;
+      padding: 6px 12px;
+  }
+
+  .lesson-card h3 {
+      font-size: 14px; /* Adjust heading size */
+  }
+
+  .lesson-card p {
+      font-size: 12px; /* Adjust paragraph size */
+  }
+
+  /* Ensure that images scale down properly */
+  img {
+      width: 100%;
+      height: auto;
+  }
+}
+
+
+
+.semi-circle {
+  position: absolute;
+  top: 80%;
+  right: -60px;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle at top right, rgba(255, 0, 0, 0.4), rgba(0, 0, 0, 0));
+  border-radius: 50%;
+  transform: translateY(-50%);
+  opacity: 0.9;
+}
+ 
+.semi-circle1 {
+  position: absolute;
+  top: 40%;
+  right: -80px;
+  width: 125px;
+  height: 110px;
+  background: radial-gradient(circle at top right, rgba(255, 0, 255, 0.4), rgba(0, 0, 0, 0));
+  border-radius: 50%;
+  transform: translateY(-50%);
+  opacity: 0.9;
+}

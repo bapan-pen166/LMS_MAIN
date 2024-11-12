@@ -1,0 +1,26 @@
+.reminder, td{
+    text-align: left !important;
+    padding-left: 10px !important;
+}
+
+.max-height-300{
+    height: 350px !important;
+    overflow-y: hidden;
+    overflow-x: scroll;
+}
+
+.max-height-300-withoutscroll {
+    max-height: 350px !important;
+    overflow: hidden; /* Hide overflow beyond max-height */
+}
+
+.scroll-x {
+    overflow-x: auto; /* Enable horizontal scrolling */
+    
+}
+
+@media screen and (max-width:780px) {
+    .scroll{
+        overflow: scroll;
+    }
+}

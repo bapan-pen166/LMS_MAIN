@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='custom.css')}}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting ID - {{room_id}}</title>
+    <script type="text/javascript">
+        var myRoomID = "{{room_id}}";
+        var myName = "{{display_name}}";
+        var audioMuted = "{{mute_audio}}" == "1";
+        var videoMuted = "{{mute_video}}" == "1";
+    </script>
+</head>
+
+<body>
+    Meeting ID - {{room_id}}
+    <div id="video_grid" class="video-grid"></div>
+    <video id="local_vid" autoplay muted></video>
+
+    <div id="meet_controls">
+        <button id="bttn_mute">
+            <span id="mute_icon"></span>
+            <br>MUTE</button>
+        <button id="bttn_vid_mute">
+            <span id="vid_mute_icon"></span>
+            <br>CAMERA</button>
+        <button id="call_end">
+            <span style="background: red" id="call_end_icon">end_call</span>
+            <br>END</button>
+    </div>
+
+    <script src="{{url_for('static', filename='video-manager.js')}}"></script>
+    <script src="{{url_for('static', filename='chatroom_ui.js')}}"></script>
+    <script src="{{url_for('static', filename='chatroom_networking.js')}}"></script>
+</body>
+
+</html>

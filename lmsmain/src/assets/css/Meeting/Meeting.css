@@ -1,0 +1,57 @@
+
+  .MuiInputBase-root{
+    height: 40px !important;
+    overflow: hidden !important;
+    background-color: white !important;
+  }
+
+
+  /* meeting date picker */
+  /* .react-datepicker__time-container { 
+    width: 350px;
+  
+    & .react-datepicker__time .react-datepicker__time-box {
+       width: 350px;
+    }
+  
+    li.react-datepicker__time-list-item.react-datepicker__time-list-item--selected { 
+        margin-left: 20px;
+        margin-right: 20px;
+  
+        &::after {
+           content: '\2713';
+           padding-left: 5px;
+        }
+     }
+  } */
+
+  .react-datepicker-ignore-onclickoutside, .react-datepicker__input-container input{
+    width: 224px !important;
+    height: 35px !important;
+    padding-left: 15px !important;
+  }
+
+  .main-meeting{
+    position:relative;
+    left:-8px
+  }
+
+  .for-description{
+
+    width: 554px
+  }
+
+  @media screen and (max-width:780px) {
+    .main-meeting{
+      position:relative;
+      left:0px;
+      opacity:.9;
+    }
+    .for-description{
+      width: 100% !important;
+    }
+    .small{
+      margin-left: 10px;
+      margin-top: -40px;
+    }
+  }

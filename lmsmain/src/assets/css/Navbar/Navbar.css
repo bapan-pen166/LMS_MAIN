@@ -1,0 +1,321 @@
+.full-page{
+    margin:0;
+    padding:0;
+    min-height: 100vh;
+    /* height: auto; */
+}
+ /* Adjust sidebar width and background */
+ .sidebar {
+    /* width: 30%;
+    background-color: #333;
+    color: #fff;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0; */
+    min-height: 100vh;
+    /* background: linear-gradient(45deg, transparent, white,white),url('../../img/Navbar_img/background.jpg'); */
+    /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+    border: 2px solid rgb(94, 25, 25);
+    border: 0px;
+    border-radius: 1%;
+    padding-left: 0;
+    padding-right: 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    /* margin: 2px; */
+    /* margin-bottom: 10px; */
+    
+  }
+
+
+
+  /* sidebar menu */
+  .sidebar .nav-link{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 6px;
+  }
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.sidebar ul li {
+    padding: 0px 0;
+
+}
+.sidebar ul li a ,.sidebar ul li span ,.sidebar ul li span ul li a {
+    color: #3a3939;
+    text-decoration: none;
+    display: block;
+    padding: 12px;
+    width: 80%;
+}
+/* .sidebar ul li ul {
+    display: none;
+    background-color: #c9c1c1;
+}
+.sidebar ul li:hover ul {
+    display: block;
+    
+
+} */
+
+
+  /* Adjust navbar width and position */
+  .navbar {
+    height: 58px;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-right: 0;
+    z-index: 5;
+    position: fixed;
+    top: 0;
+    background: white;
+    width: 83.4%;
+    
+  }
+
+  /* this class is for when there will not be hamburger menu */
+  .navbar-for-full-screen{
+    height: 58px;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-right: 0;
+    z-index: 5;
+    position: fixed;
+    top: 0;
+    background: white;
+    width: 100%;
+    
+  }
+
+  /* for smaller screen we need to have a 100% width nav bar */
+  @media screen and (max-width:780px) {
+    .navbar{
+        width: 100%;
+    }
+    .nav-left{
+
+      padding-left: 10px;
+    }
+  }
+
+
+
+  .content, .container-fluid  {
+   padding: 0px;
+   /* left:-8px; */
+   /* display: inline-block;   */
+  }
+  .nav-logo{
+    padding-top: 2px;
+    height: 50px;
+    width: 150px;
+  }
+  /* .bar_icon {
+    background-color: transparent !important;
+  } */
+  .fa {
+    background-color: transparent !important;
+    background: transparent !important;
+  }
+
+
+
+  .content-body{
+    background-color: rgba(78, 64, 39, 0.096);
+    min-height: 100vh;
+    /* float: right; */
+    flex-grow: 1;
+    /* overflow-y: scroll; */
+    margin-top: 58px !important;
+    /* margin-bottom:50px !important ; */
+    padding-bottom: 30px !important;
+  }
+  .headLineBox{
+    padding-left: 1% !important;
+    padding-top: 0.5% !important;
+    min-height: 35px !important;
+    /* padding-bottom: 0.5% !important; */
+
+    /* padding-left: 2% !important; */
+    /* background: linear-gradient(45deg,rgb(253, 193, 80),transparent,transparent); */
+    background-color:  #416b95;
+    color: #fff;
+  }
+  .content-box{
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 5px;
+    border: solid 0px black;
+    border-radius: 1%;
+    /* border: 2px solid black; */
+    /* background-color: beige; */
+    background-color: #f5f2ef;
+    padding: 0;
+    font-family: 'aptos';
+  }
+  .box-heading{
+    color: rgb(74, 128, 90);
+    padding-top: 5px;
+  }
+  .table, td{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-top: 0.2rem !important;
+    padding-bottom: 0.2rem !important;
+  }
+  .table{
+    padding: 5px;
+  }
+  thead{
+    /* background-color: rgb(67, 94, 75); */
+    background-color: rgb(85, 120, 145);
+    color:white
+  }
+  .list-style, .nav-link{
+    color: black !important;
+  }
+
+
+  .list-style, .nav-link:hover {
+    background-color: #416b95;
+    color: #fff !important;
+    border-radius: 3%;
+    transition: background-color .10s ease; /* Adjust duration and timing function as needed */
+}
+
+  .active{
+    color:white !important;
+    background-color:  #416b95;
+    border-radius: 3%;
+    font-size: larger;
+    /* padding: 8px; */
+  }
+
+  /* .sidebar-item {
+    position: relative;
+}
+
+#sidebar:not(.expand) .sidebar-item .sidebar-dropdown {
+    position: absolute;
+    top: 0;
+    left: 70px;
+    background-color: #0e2238;
+    padding: 0;
+    min-width: 15rem;
+    display: none;
+}
+
+#sidebar:not(.expand) .sidebar-item:hover .has-dropdown+.sidebar-dropdown {
+    display: block;
+    max-height: 15em;
+    width: 100%;
+    opacity: 1;
+} */
+
+  /* login button */
+  /* .dropdown-menu{
+    position:absolute
+  }
+  .dropdown-menu.show{
+    display: block;
+  }
+  .dropdown-menu-end[data-bs-popper]{
+    right:0;
+    left:auto
+  }
+  .dropdown-menu[data-bs-popper]{
+    top: 100%;
+    margin-top: var(--bs-dropdown-spacer);
+  }
+  .dropdown-menu-end{
+    --bs-position:end;
+  } */
+
+
+  /* Navbar.css */
+
+/* .navbar {
+  background-color: #333;
+  padding: 10px;
+} */
+
+.nav-menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.nav-item {
+  margin-right: 10px;
+}
+
+.nav-item a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.dropdown-toggle {
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  display: block;
+  position: absolute;
+  background-color: #f0f0f0;
+  padding: 10px;
+  list-style-type: none;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  color: #555;
+  /* text-align: center; */
+}
+
+.dropdown-menu li {
+  margin-bottom: 5px;
+}
+
+.dropdown-menu a {
+  color: #2e2d2d;
+  text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+  text-decoration: underline;
+  
+}
+.dropleft .dropdown-menu{
+  top: 41px !important;
+  right: 0% !important;
+}
+
+
+.main-nav{
+  display: flex;
+  justify-content: space-between;
+  /* align-items:center; */
+  padding: 0 20px;
+}
+
+.nav-wel-back{
+  font-weight: bold;
+  font-size: 20px;    
+}
+
+@media only screen and (max-width: 770px) {
+  .nav-wel-back{
+    font-weight: bold;
+    font-size: 12px;    
+  }
+
+  .main-nav{
+    padding-left: 5px;
+  }
+}

@@ -1,0 +1,67 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>WebRTC Video Call</title>
+</head>
+<body>
+<h1>WebRTC Video Call</h1>
+<button id="createButton">Create Meeting</button>
+<input type="text" id="meetingIdInput" placeholder="Meeting ID">
+<button id="joinButton">Join Meeting</button>
+<video id="localVideo" autoplay playsinline></video>
+<video id="remoteVideo" autoplay playsinline></video>
+<script>
+       const createButton = document.getElementById('createButton');
+       const joinButton = document.getElementById('joinButton');
+       const meetingIdInput = document.getElementById('meetingIdInput');
+       const localVideo = document.getElementById('localVideo');
+       const remoteVideo = document.getElementById('remoteVideo');
+       const endButton = document.getElementById('endButton');
+       let pc = null;
+       let meetingId = null;
+       async function createMeeting() {
+           const response = await fetch('/create', { method: 'POST' });
+           const data = await response.json();
+           meetingId = data.meeting_id;
+           alert(`Meeting created. Meeting ID: ${meetingId}`);
+       }
+       async function joinMeeting() {
+           meetingIdInput.value =meetingId;
+           pc = new RTCPeerConnection();
+           pc.onicecandidate = ({ candidate }) => {
+               if (candidate) {
+                   sendSignal({ candidate });
+               }
+           };
+           pc.ontrack = (event) => {
+               remoteVideo.srcObject = event.streams[0];
+           };
+           const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+           stream.getTracks().forEach(track => pc.addTrack(track, stream));
+           localVideo.srcObject = stream;
+           const offer = await pc.createOffer();
+           await pc.setLocalDescription(offer);
+           sendSignal({
+               type: pc.localDescription.type,
+               sdp: pc.localDescription.sdp,
+               meeting_id: meetingId
+           });
+       }
+       async function sendSignal(data) {
+           const response = await fetch('/join', {
+               method: 'POST',
+               body: JSON.stringify(data),
+               headers: {
+                   'Content-Type': 'application/json'
+               }
+           });
+           const answer = await response.json();
+           await pc.setRemoteDescription(new RTCSessionDescription(answer));
+       }
+       createButton.onclick = createMeeting;
+       joinButton.onclick = joinMeeting;
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+.mentor-overview-main {
+    margin-top: 60px;
+    background-color: rgba(78, 64, 39, 0.096);
+}
+
+.table-container {
+    margin-top: 20px;
+    height: 245px; /* Set the desired height */
+    overflow-y: auto;
+}
+
+.table-container .table thead th {
+    position: sticky;
+    top: 0;
+    background-color: rgba(78, 64, 39, 0.096) !important;
+    z-index: 9;
+    
+}
+
+/* For Meeting table */
+
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-table th, .custom-table td {
+    border: none;
+    padding: 8px;
+    text-align: left;
+}
+
+.custom-table th {
+    background-color: rgba(78, 64, 39, 0.096);
+}
+
+.custom-table tbody tr {
+    background-color: white;
+}
+

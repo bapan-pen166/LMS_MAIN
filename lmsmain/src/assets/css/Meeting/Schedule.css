@@ -1,0 +1,129 @@
+.rbc-header{
+    color: white;
+    font-size: 14px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 23px !important;
+    background:#17405d ;
+}
+.rbc-allday-cell{
+    display:none;
+}
+.rbc-time-header-cell .rbc-today{
+    background-color: #04aa6d !important;
+}
+.rbc-time-slot{
+    color: #74a4c3;
+    z-index: 1;
+}
+.rbc-time-slot:not(.rbc-today .rbc-time-slot){
+    background-color: #eff4f7;
+}
+
+/* .rbc-event, .rbc-day-slot .rbc-background-event{
+    background: rgb(125, 11, 148) !important;
+} */
+.rbc-event-overlap {
+    /* Add custom styles for overlapping events */
+    /* For example, you can change the background color */
+    background-color: rgba(204, 145, 243, 0.521) !important; /* Semi-transparent red */
+  }
+
+/* Event Style  */
+.rbc-event,
+.rbc-background-event {
+    z-index: 2;
+    padding: 0px !important;
+    border:none !important;
+}
+
+.rbc-event-label{
+    display:none !important;
+}
+.rbc-events-container{
+    width: 100% !important;
+}
+
+
+/* Timeslot style  */
+
+.rbc-day-slot .rbc-time-slot:after{
+    content:"";
+    width: 100%;
+    /* border-top: 1px solid #fbb3ec; */
+    border-top:1px solid #f8edf6 ;
+    display: block;
+}
+
+.day-page {
+    padding: 20px;
+  }
+  
+  /* Custom styling for overlapping events */
+  .rbc-event {
+    border-radius: 5px;
+    padding: 5px;
+    border: 2px solid white !important;
+  }
+  
+  .rbc-event-content {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .rbc-toolbar-label{
+    font-weight: bold;
+  }
+
+/* agenda style  */
+
+.event-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .event-container strong {
+    margin-right: 10px;
+    width: 200px;
+  }
+  
+  .event-container a {
+    color: blue;
+    /* text-decoration: none; */
+    margin-left: 10px;
+    align-items: center;
+  }
+
+  .rbc-agenda-view table.rbc-agenda-table tbody > tr > td{
+    border: 1px solid #ddd;;
+  }
+
+  .past-meeting {
+    color: #999; /* Gray out the text */
+    pointer-events: none;
+    /* Add any additional styles to visually distinguish past meetings */
+  }
+  .past-meeting a{
+    color: #999;
+  }
+  .ongoing-meeting {
+    color: green; /* Green text for ongoing meetings */
+  }
+  
+  .late-meeting {
+    color: red; /* Red text for meetings running late */
+  }
+
+
+  .holiday-cell {
+    font-weight: bold;
+    color: white;
+    background-color: gray;
+  }
+  .custom-cell {
+    background-color: lightblue; /* Example background color */
+    color: black; /* Example text color */
+    
+  }

@@ -1,0 +1,14 @@
+@media screen and (max-width:780px) {
+    .full-sidebar{
+       margin-top: 50px;
+       font-size: large;
+       width: 60%;
+       opacity: 2;
+    }
+}
+
+.full-sidebar{
+    /* text-align: left; */
+    /* padding-left: 20px; */
+    
+}

@@ -1,0 +1,39 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+#local_vid {
+  height: 240px;
+  width: 150px;
+  object-fit: cover;
+  z-index: 100;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+
+.video_grid {
+  z-index: 1;
+  position: relative;
+}
+
+#meet_controls {  /* Replace with the actual ID of your div */
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%); /* Center horizontally */
+  display: flex; /* Make the div a flex container */
+  justify-content: center; /* Center buttons horizontally */
+  align-items: center; /* Center buttons vertically */
+  /* Optional styling */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  padding: 10px;
+  border-radius: 5px;
+}
+
+#meet_controls button { /* Style the buttons within the div */
+  margin: 5px; /* Add some margin between buttons */
+}

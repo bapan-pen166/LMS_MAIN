@@ -1,0 +1,17 @@
+.custom-button {
+    background: transparent;
+    border: none;
+  }
+  /* .custom-icon {
+    color: rgb(212, 139, 2);
+    font-size: 14pt;
+    padding: 2px;
+  } */
+  .custom-button:hover .custom-icon {
+    color: rgb(6, 15, 99) !important;
+    font-size: 24pt;
+    /* background-color: rgb(163, 159, 159); */
+  }
+  .custom-button:hover {
+    background-color: rgb(204, 200, 200) !important;
+  }

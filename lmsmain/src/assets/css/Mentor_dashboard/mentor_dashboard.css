@@ -1,0 +1,22 @@
+.gauge-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 200px; /* Adjust as needed */
+    margin: auto;
+  }
+  
+  .gauge {
+    /* transform: rotate(-90deg); */
+    transform: rotate(0deg);
+  }
+  
+  .gauge-percentage {
+    position: relative;
+    /* top: 4%; */
+    transform: translateY(-50%);
+    font-size: 1.5em;
+    color: #000;
+    font-weight: bold;
+  }

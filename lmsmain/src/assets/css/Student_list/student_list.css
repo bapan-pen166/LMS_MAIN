@@ -1,0 +1,60 @@
+select {
+    padding: 6px !important;
+}
+
+.fa-star {
+    font-size: 10px !important;
+    color: red;
+}
+
+.scroll {
+    overflow: scroll;
+}
+
+.search-box .form-control {
+    flex-grow: 1;
+}
+
+.search-box .ml-2 {
+    margin-left: 0.5rem;
+}
+
+.search-btn{
+    width: 35px;
+    height: 30px;
+    cursor: pointer;
+    padding-left: 5px;
+    padding-right: 5px;
+    position: relative;
+    right: 40px;
+    bottom: 10px;
+}
+
+.for-the-icon{
+
+}
+
+
+.outer-searchicon{
+    /* border: 1px solid gainsboro; */
+    height: 38px;
+    border-radius: 5px;
+    /* border-left: 0px solid black; */
+        
+}
+
+
+
+
+@media screen and (max-width:780px) {
+
+    .small-screen {
+        font-size: small;
+    }
+
+    .small-fit {
+        /* max-width: 160px;
+        overflow: hidden; */
+    }
+
+}
