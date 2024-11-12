@@ -4,7 +4,7 @@
 
 //my office
 // export const api = "http://192.168.1.10:5050";
-//Arbaz
+//Arbaz url
 export const api = "https://192.168.0.240:5050";
 //Rishu
 // export const api = "http://192.168.1.15:5050";
