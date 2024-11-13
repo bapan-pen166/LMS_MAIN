@@ -85,7 +85,7 @@ function Master_Layout() {
                             <div class="card header-bg h-130px rounded-0" style={{ backgroundImage: `url(${headerbg})`, backgroundSize: 'cover' }}>
                             </div>
                         </div>
-                        <div class="container mt-n4">
+                        <div class="container-fluid mt-n4">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="bg-transparent card-body p-0 mt-2 mt-sm-0">
@@ -155,12 +155,12 @@ function Master_Layout() {
                                 </div>
                             </div>
                         } */}
-                        <div className="container mt-4">
+                        <div className="container-fluid mt-4">
                             <div className="row">
-                                <div className="col-md-3">
+                                <div className="col-md-2">
                                     {!isErrorPage && <Sidebar_new className={`sidebar ${isSidebarVisible ? 'show' : ''}`}/>}
                                 </div>
-                                <div className="col-md-9">
+                                <div className="col-md-10">
                                     <Body />
                                     <Footer />
                                 </div>

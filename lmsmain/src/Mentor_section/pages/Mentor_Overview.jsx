@@ -14,6 +14,8 @@ import Batch_Assign_Track from '../components/mentor_dashboard/Batch_Assign_Trac
 import Assignment_tracker from '../components/mentor_dashboard/Assignment_tracker';
 import { IoCalendarNumberOutline } from "react-icons/io5";
 import { Pagination } from '@mui/material';
+import { faIdBadge, faClipboardCheck, faBookOpen, faPlay, faClock, faMedal } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 
@@ -139,32 +141,46 @@ const Mentor_Overview = () => {
 
 
 
-
-
     return (
-        <div className='row  mentor-overview-main' style={{ backgroundColor: "#f2edf3", fontFamily: "Roboto, sans-serif" }} >
-                    <div className="m-2" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(600px, 1fr))", gap: "10px", width: "100%", height: "310px" }}>
+        <div className='row  mentor-overview-main' style={{ backgroundColor: "white", fontFamily: "Roboto, sans-serif" }} >
+            <div className="" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(600px, 1fr))", gap: "10px", width: "100%", height: "310px" }}>
                 {/* Today's Classes */}
                 <div style={{ boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)", borderRadius: "10px", backgroundColor: "white" }}>
                     <p className="text-center p-2" style={{ fontSize: "20px" }}>Today's Classes</p>
-                    <div style={{ backgroundColor: "white" }}>
+                    <div style={{ backgroundColor: "white" }} >
                         {paginatedTodaysMeetings?.length > 0 ? (
                             paginatedTodaysMeetings.map((meeting, index) => (
-                                <div key={index} className="lesson-card" style={{
+                                <div key={index} className="list-group-item mb-10 card text-gray" style={{
                                     display: 'flex',
                                     justifyContent: 'space-between',
-                                    alignItems: 'center',
+                                    // alignItems: 'center',
                                     padding: '10px',
                                     marginBottom: '10px',
                                     borderRadius: '8px',
                                     boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
                                 }}>
-                                    <div className="lesson-details" style={{ flex: 1 }}>
-                                        <h3 style={{ margin: '0', fontSize: '16px' }}>{meeting?.topic}</h3>
-                                        <p style={{ margin: '0', color: '#666' }}>Time: {meeting?.startTime} - {meeting?.endTime}</p>
+                                    <div className="box-body">
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <div className="d-flex align-items-center">
+                                                <div className="mr-15 w-45 h-40 line-height-3 color-fff bg-theme rounded text-center">
+                                                    <span><FontAwesomeIcon icon={faBookOpen} /></span>
+                                                </div>
+                                                <div className="d-flex flex-column fw-500">
+                                                    <p className="text-theme hover-primary mb-1 fs-16">{meeting?.topic}</p>
+                                                    <p className="mb-0 font-12">
+                                                        <span className="text-fade mr-1"><FontAwesomeIcon icon={faClock} /></span>
+                                                        <span>{meeting?.startTime} - {meeting?.endTime}</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <a href="#" onClick={() => handleMeeting(meeting?.meetingLink)}>
+                                                <span><FontAwesomeIcon icon={faPlay} /></span>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <Button onClick={() => handleMeeting(meeting?.meetingLink)} variant="contained">Join class</Button>
                                 </div>
+
                             ))
                         ) : (
                             <div style={{ padding: '10px', color: '#666' }}>No meetings available for today</div>
@@ -185,20 +201,34 @@ const Mentor_Overview = () => {
                     <div style={{ backgroundColor: "white" }}>
                         {paginatedUpcomingMeetings?.length > 0 ? (
                             paginatedUpcomingMeetings.map((meeting, index) => (
-                                <div key={index} className="lesson-card" style={{
+                                <div key={index} className="list-group-item mb-10 card text-gray" style={{
                                     display: 'flex',
                                     justifyContent: 'space-between',
-                                    alignItems: 'center',
                                     padding: '10px',
                                     marginBottom: '10px',
                                     borderRadius: '8px',
                                     boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
                                 }}>
-                                    <div className="lesson-details" style={{ flex: 1 }}>
-                                        <h3 style={{ margin: '0', fontSize: '16px' }}>{meeting?.topic}</h3>
-                                        <p style={{ margin: '0', color: '#666' }}>Time: {meeting?.startTime} - {meeting?.endTime}</p>
+                                    <div className="box-body">
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <div className="d-flex align-items-center">
+                                                <div className="mr-15 w-45 h-40 line-height-3 color-fff bg-theme rounded text-center">
+                                                    <span><FontAwesomeIcon icon={faBookOpen} /></span>
+                                                </div>
+                                                <div className="d-flex flex-column fw-500">
+                                                    <p className="text-theme hover-primary mb-1 fs-16">{meeting?.topic}</p>
+                                                    <p className="mb-0 font-12">
+                                                        <span className="text-fade mr-1"><FontAwesomeIcon icon={faClock} /></span>
+                                                        <span>{meeting?.startTime} - {meeting?.endTime}</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <a href="#" onClick={() => handleMeeting(meeting?.meetingLink)}>
+                                                <span><FontAwesomeIcon icon={faPlay} /></span>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <Button onClick={() => handleMeeting(meeting?.meetingLink)} variant="contained">Join class</Button>
                                 </div>
                             ))
                         ) : (
@@ -212,23 +242,24 @@ const Mentor_Overview = () => {
                             style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}
                         />
                     </div>
+
                 </div>
             </div>
 
 
             <div className='mt-4 px-2' style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(400px, 1fr))", gap: "10px", width: "100%" }}>
                 <div style={{ boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)", borderRadius: "10px", backgroundColor: "white" }}>
-                    <p className='text-center p-2' style={{fontSize:"20px"}}>Batch-wise Number of Students</p>
+                    <p className='text-center p-2' style={{ fontSize: "20px" }}>Batch-wise Number of Students</p>
                     <hr />
                     <Batch_wise_no_of_classes />
                 </div>
                 <div style={{ boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)", borderRadius: "10px", backgroundColor: "white" }}>
-                    <p className='text-center p-2' style={{fontSize:"20px"}}>Batch-wise Attendance %</p>
+                    <p className='text-center p-2' style={{ fontSize: "20px" }}>Batch-wise Attendance %</p>
                     <hr />
                     <Batch_wise_attendance_percentage />
                 </div>
                 <div style={{ boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)", borderRadius: "10px", backgroundColor: "white" }}>
-                    <p className='text-center p-2' style={{fontSize:"20px"}}>Batch-wise Course Completed</p>
+                    <p className='text-center p-2' style={{ fontSize: "20px" }}>Batch-wise Course Completed</p>
                     <hr />
                     <Batch_Wise_Course_Percent />
                 </div>
@@ -237,30 +268,30 @@ const Mentor_Overview = () => {
 
 
             <div className='row mt-4 ml-2 mr-2 mb-4' style={{
-            display: "grid",
-            gridTemplateColumns: `repeat(auto-fill, minmax(${windowWidth < 768 ? '400px' : '600px'}, 1fr))`,
-            gap: "10px",
-            width: "100%",
-        }}>
-            <div style={{
-                boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)",
-                borderRadius: "10px",
-                backgroundColor: "white"
+                display: "grid",
+                gridTemplateColumns: `repeat(auto-fill, minmax(${windowWidth < 768 ? '400px' : '600px'}, 1fr))`,
+                gap: "10px",
+                width: "100%",
             }}>
-                <p className='text-center p-2' style={{ fontSize: "20px" }}>Assignment Tracker</p>
-                <hr />
-                <Assignment_tracker />
+                <div style={{
+                    boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)",
+                    borderRadius: "10px",
+                    backgroundColor: "white"
+                }}>
+                    <p className='text-center p-2' style={{ fontSize: "20px" }}>Assignment Tracker</p>
+                    <hr />
+                    <Assignment_tracker />
+                </div>
+                <div style={{
+                    boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)",
+                    borderRadius: "10px",
+                    backgroundColor: "white"
+                }}>
+                    <p className='text-center p-2' style={{ fontSize: "20px" }}>Batch Assignment Status Tracker</p>
+                    <hr />
+                    <Batch_Assign_Track />
+                </div>
             </div>
-            <div style={{
-                boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)",
-                borderRadius: "10px",
-                backgroundColor: "white"
-            }}>
-                <p className='text-center p-2' style={{ fontSize: "20px" }}>Batch Assignment Status Tracker</p>
-                <hr />
-                <Batch_Assign_Track />
-            </div>
-        </div>
 
 
             {/* </div> */}
