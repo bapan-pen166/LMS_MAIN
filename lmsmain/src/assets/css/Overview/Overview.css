@@ -1,3 +1,4 @@
+
 .reminder, td{
     text-align: left !important;
     padding-left: 10px !important;
@@ -23,4 +24,128 @@
     .scroll{
         overflow: scroll;
     }
+    .display-6{
+        font-size: 4rem;
+    }
+}
+.line-height-1
+{
+    line-height: 1;
+}
+.badge-primary{
+    background-color: #0052cc;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+.avatar{
+    /* top: -15px; */
+    position: absolute;
+}
+.h-100px{
+    height: 100px;
+}
+.h-130px{
+    height: 130px;
+}
+.h-190px{
+    height: 190px;
+}
+.bg-blue-light{
+ background-color: #90caf9a6;   
+}
+.text-blue{
+    color: #0052cc;
+}
+.custom-card-header{
+    align-items: center;
+    line-height: 2;
+}
+.line-height-2{
+    line-height: 2;
+}
+.text-gray{
+    color: #6c757d;
+}
+.list-group-item.card:hover{
+    transition: all .25s ease;
+    -webkit-transform: translateY(-4px) scale(1.02);
+    -moz-transform: translateY(-4px) scale(1.02);
+    -ms-transform: translateY(-4px) scale(1.02);
+    -o-transform: translateY(-4px) scale(1.02);
+    transform: translateY(-4px) scale(1.02);
+    -webkit-box-shadow: 0 14px 24px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 14px 24px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+}
+.list-group-item.card{
+    background-color: #ffffff;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 0 30px 0 rgba(82, 63, 105, 0.15);
+}
+.box{
+    background-color: #ffffff;
+    border: 1px solid #dde0e3;
+}
+.bg-green-100{
+    background-color: rgba(40, 199, 111, 0.08);
+}
+.mb-10{
+    margin-bottom: 10px;
+}
+.d-flex{
+    display: flex;
+}
+.box-body{
+    padding: 0.5rem;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    border-radius: 10px;
+}
+.mr-15{
+    margin-right: 15px;
+}
+.w-45{
+    width: 45px;
+}
+.h-35{
+    height: 35px;
+}
+.line-height-3{
+    line-height: 3;
+}
+.line-height-5{
+    line-height: 2.5;
+}
+.color-fff{
+    color: #fff;
+}
+.card-header{
+    color: #185055;
+}
+.bg-theme{
+    background-color: #185055;
+}
+.text-theme{
+    color: #185055;
+}
+.font-12{
+    font-size: 12px;
+}
+.width-100-85{
+    width: calc(100% - 85px);
+}
+.shadow-box{
+    background-color: #ffffff;
+    box-shadow: 0 0 30px 0 rgba(82, 63, 105, 0.05);
+}
+.shadow-box-header{
+    color: #172b4c;
+    display: block;
+    padding: 0.5rem;
+    position: relative;
+    border-bottom: 1px solid rgba(72, 94, 144, 0.16);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }

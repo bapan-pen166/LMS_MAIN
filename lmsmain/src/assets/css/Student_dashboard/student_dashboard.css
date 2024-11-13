@@ -73,29 +73,13 @@
       height: auto;
   }
 }
-
-
-
-.semi-circle {
-  position: absolute;
-  top: 80%;
-  right: -60px;
-  width: 120px;
-  height: 120px;
-  background: radial-gradient(circle at top right, rgba(255, 0, 0, 0.4), rgba(0, 0, 0, 0));
-  border-radius: 50%;
-  transform: translateY(-50%);
-  opacity: 0.9;
+.avatar-xxl {
+  height: 5.125rem;
+  width: 5.125rem;
 }
- 
-.semi-circle1 {
-  position: absolute;
-  top: 40%;
-  right: -80px;
-  width: 125px;
-  height: 110px;
-  background: radial-gradient(circle at top right, rgba(255, 0, 255, 0.4), rgba(0, 0, 0, 0));
-  border-radius: 50%;
-  transform: translateY(-50%);
-  opacity: 0.9;
+@media (min-width: 768px) {
+  .avatar-xxl {
+      width: 8rem;
+      height: 8rem;
+  }
 }

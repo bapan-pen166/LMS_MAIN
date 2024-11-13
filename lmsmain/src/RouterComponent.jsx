@@ -7,7 +7,7 @@ import Student_List from './pages/Student_List';
 import Meeting from './pages/Meeting';
 import Mentor_Overview from './Mentor_section/Mentor_Overview';
 import App from './App';
-
+import Login_new from './pages/Login_new.jsx';
 const RouterComponent = () => {
   const [defaultRoute, setDefaultRoute] = useState(null);
   
@@ -21,7 +21,7 @@ const RouterComponent = () => {
     } else if (userType === "Mentor") {
       setDefaultRoute(<Route index element={<Mentor_Overview />} />);
     } else {
-      setDefaultRoute(<Route index element={<Login />} />);
+      setDefaultRoute(<Route index element={<Login_new />} />);
     }
   }, []);
 
@@ -31,7 +31,7 @@ const RouterComponent = () => {
     createRoutesFromElements(
       <Route path='/' element={<App />}>
         {defaultRoute}
-        <Route path='login' element={<Login />} />
+        <Route path='Login_new' element={<Login_new />} />
         <Route path='test' element={<Test />} />
         <Route path='Student-List' element={<Student_List />} />
         <Route path='meeting' element={<Meeting />} />

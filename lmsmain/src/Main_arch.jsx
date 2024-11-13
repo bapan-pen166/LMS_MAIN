@@ -6,6 +6,7 @@ import { Datacontext } from './Context';
 import { useContext,useState } from 'react';
 import { redirect } from 'react-router-dom';
 import Login from './pages/Login';
+import Login_new from './pages/Login_new.jsx';
 import Register from './pages/Register';
 // import Master_Layout_Mentor from './Mentor_section/Layout/Master_Layout_Mentor';
 
@@ -70,7 +71,9 @@ function Main_arch() {
           {/* {<Navigate to='/login'/>} */}
         {/* <Context> */}
           {/* <Login_Layout/> */}
-          <Login/>
+          {/* <Login/> */}
+          <Login_new/>
+          
           {/* <ForgetPassword/> */}
           {/* <Register/> */}
 

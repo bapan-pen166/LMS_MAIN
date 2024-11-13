@@ -233,3 +233,30 @@ span{
    
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 } */
+.bg-theme-green{
+  background-color: #185055;
+}
+.list-group-item{
+  background-color: transparent;
+  border: none;
+  color: #fff;
+}
+.list-group-item.active{
+  color: #000!important;
+  background-color: #fff;
+  padding: 5px;
+}
+.bg-orange{
+  background-color: #fd7e1436;
+}
+
+.text-orange {
+  opacity: 1;
+  color: #FD7E14!important;
+}
+
+@media screen and (min-width : 780px) {
+    .display-6 {
+      font-size: 3.5rem;
+  }
+}

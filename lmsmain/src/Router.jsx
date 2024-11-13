@@ -6,6 +6,7 @@ import App from './App';
 // Admin pages 
 import Overview from './pages/Overview';
 import Login from './pages/Login';
+import Login_new from './pages/Login_new.jsx';
 import Test from './pages/Test';
 import Student_List from './pages/Student_List';
 import Meeting from './pages/Meeting';
@@ -38,6 +39,7 @@ import Mentor_Change_Password from './Mentor_section/pages/Mentor_Change_Passwor
 import Exam_Evaluation from './Mentor_section/pages/Exam_Evaluation.jsx'
 // Student Pages 
 import Student_Overview from './Student_section/Pages/Student_Overview.jsx';
+import Student_Overview_new from './Student_section/Pages/Student_Overview_new.jsx';
 import Student_courses from './Student_section/Pages/Student_courses.jsx';
 import Student_test from './Student_section/Pages/Student_test.jsx';
 import Student_Update_Profile from './Student_section/Pages/Student_Update_Profile.jsx';
@@ -52,7 +54,6 @@ import Placement_Drives from './Placement_section/Pages/Placement_Droves.jsx';
 import Placement_Selected from './Placement_section/Pages/Placement_Selected.jsx';
 // Other 
 import PageNotFound from './ErrorPage/PageNotFound';
-import VideoShowPage from './Student_section/Components/ForTheCoursePart/VideoShowPage.jsx';
 
 
 
@@ -80,16 +81,16 @@ const Router = () => {
       <Route index element={<Mentor_Overview />} />
     )
     : usertype === 'Student' ? (
-      <Route index element={<Student_Overview />} />
+      <Route index element={<Student_Overview_new />} />
     )
     : usertype === 'Placement' ? (
       <Route index element={<Placement_Drives/>} />
     )
     : (
-      <Route index element={<Login />} />
+      <Route index element={<Login_new />} />
     );
 
-    // const basename = '/lms'
+    const basename = '/'
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path='/' element={<App />}>
@@ -143,10 +144,6 @@ const Router = () => {
         <Route path='student-test-details/:id' element={<Student_test_details/>}/>
 
 
-        {/* for the student video show page */}
-        <Route path='VideoShowPAge' element={<VideoShowPage/>}/>
-
-
         
         {/*  route for error page */}
         <Route path='*' element={<PageNotFound/>}/>
@@ -158,7 +155,7 @@ const Router = () => {
         <Route path='Placement_Selected' element={<Placement_Selected/>}/>
       </Route>
     ),
-    // {basename}
+//    {basename}
   );
 
   return <RouterProvider router={router} />;
