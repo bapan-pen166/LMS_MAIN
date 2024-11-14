@@ -16,6 +16,8 @@ import { useEffect, useState } from 'react';
 import motivation_logo from "../../assets/img/student overview/student_overview.png"
 import StudentAssignmentReportChart from '../Components/student_overview/StudentAssignmentReportChart';
 import StudentOverallPerformanceChart from '../Components/student_overview/StudentOverallPerformanceChart';
+import StudentTestScore from '../Components/student_overview/StudentTestScore';
+import StudentClassOverview from '../Components/student_overview/StudentClassOverview';
 import StudentAttendanceReport from '../Components/student_overview/StudentAttendanceReport';
 import Student_Course_Completion from '../Components/student_overview/Student_Course_Completion';
 import { api } from '../../ApiUrl/ApiUrl';
@@ -25,6 +27,9 @@ import TopBar from '../../layout/TopBar';
 import SideBar from '../../layout/Sidebar_new';
 import { faIdBadge, faClipboardCheck, faBookOpen, faPlay, faClock, faMedal } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Pagination } from '@mui/material';
+
+
 const Student_Overview_new = () => {
     const [userType, setUserType] = useState('');
 
@@ -35,6 +40,13 @@ const Student_Overview_new = () => {
         const type = localStorage.getItem('userType');
         setUserType(type);
     }, []);
+
+
+    // for the pagination
+    const [currentPageToday, setCurrentPageToday] = useState(1);
+    const [currentPageUpcoming, setCurrentPageUpcoming] = useState(1);
+    const itemsPerPage = 3;
+
 
 
 
@@ -317,78 +329,119 @@ const Student_Overview_new = () => {
     const currentDay = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(new Date());
 
 
+    //   :::::::::::::::::::::::::::: FOR THE PAGINATION  ::::::::::::::::::::::::::::::::::::::
+    const paginatedTodaysMeetings = todaysMeetings?.slice((currentPageToday - 1) * itemsPerPage, currentPageToday * itemsPerPage);
+    const paginatedUpcomingMeetings = upcomingMeetings?.slice((currentPageUpcoming - 1) * itemsPerPage, currentPageUpcoming * itemsPerPage);
+
+    const handlePageChangeToday = (_, value) => {
+        setCurrentPageToday(value);
+    };
+
+    const handlePageChangeUpcoming = (_, value) => {
+        setCurrentPageUpcoming(value);
+    };
+
+
     return (
         <>
             {/* <SideBar /> */}
 
             <div className="row">
-                <div className="col-lg-6 box bg-green-100 rounded d-flex">
-                    <div className="col-lg-6">
-                        <div className="mb-3">
-                            <div className="d-flex justify-content-center align-items-center  rounded">
-                                <span className="display-6 lh-1 text-orange mb-0"><i className="fa fa-television"></i></span>
-                                <div className="ml-3">
-                                    <div className="d-flex">
-                                        <h5 className="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="9" data-purecounter-delay="200" data-purecounter-duration="0">9</h5>
-                                    </div>
-                                    <p className="mb-0 h6 fw-light text-dark">Total Courses</p>
-                                </div>
+
+                        <div className="col-lg-4 col-md-6 col-sm-6 ">
+                            <div className="card h-100">
+                                <StudentTestScore />
                             </div>
                         </div>
-                        <div className="mb-lg-0">
-                            <div className="d-flex align-items-center  rounded">
-                                <span className="display-6 lh-1 text-success mb-0">
-                                    <FontAwesomeIcon icon={faMedal} />
-                                </span>
-                                <div className="ml-3">
-                                    <div className="d-flex">
-                                        <h5 className="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="9" data-purecounter-delay="200" data-purecounter-duration="0">9</h5>
-                                    </div>
-                                    <p className="mb-0 h6 fw-light text-dark">Grade</p>
-                                </div>
+
+                        <div className="col-lg-4 col-md-6 col-sm-6 ">
+                            <div className="card h-100 mb-2">
+                                <StudentOverallPerformanceChart />
                             </div>
                         </div>
-                    </div>
-                    <div className="col-lg-6 d-flex justify-content-center align-items-center">
-                        <StudentOverallPerformanceChart />
-                    </div>
-                </div>
-                <div className="col-lg-6">
-                    <div className="mb-5">
-                        <div className="bg-blue-light rounded py-2">
-                                    <div className=" ">
-                                        <div className="px-2 line-height-2 py-0 d-flex justify-content-between align-items-center">
-                                            <h6 className=" mb-0 custom-card-header text-dark">Attendance</h6>
-                                            <a href="#" className="btn btn-link p-0 mb-0">View all</a>
+
+                        <div className="col-lg-4 col-md-6 col-sm-6 ">
+                            <div className="card h-100">
+                                <StudentClassOverview />
+                            </div>
+                        </div>
+
+                <div className="col-lg-12 d-none">
+                    <div className="mb-3 box rounded">
+                        <div className="bg-blue-light rounded py-2 d-none">
+                            <div className=" ">
+                                <div className="px-2 line-height-2 py-0 d-flex justify-content-between align-items-center">
+                                    <h6 className=" mb-0 custom-card-header text-dark">Attendance</h6>
+                                    <a href="#" className="btn btn-link p-0 mb-0">View all</a>
+                                </div>
+                                <div className="card-body pr-0">
+                                    <div className="row">
+                                        <div className="col-lg-8 p-0">
+                                            <div className="progress">
+                                                {/* <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${studentAttendance}%` }}></div> */}
+                                                <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `50%` }}></div>
+                                            </div>
                                         </div>
-                                        <div className="card-body pr-0">
-                                            <div className="row">
-                                                <div className="col-lg-8 p-0">
-                                                    <div className="progress">
-                                                        {/* <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${studentAttendance}%` }}></div> */}
-                                                        <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `50%` }}></div>
-                                                    </div>
+                                        <div className="col-lg-4 px-0 text-right line-height-1 ">
+                                            <span className='badge-primary'>50%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    {/* Counter item*/}
+                    
+                </div>
+                
+            </div>
+            <div className="row">
+                <div className="col-lg-6 mt-4">
+                    <div className="">
+                        <div className="bg-success rounded py-2">
+                                <div className=" ">
+                                    <div className="px-2 line-height-2 py-0 d-flex justify-content-between align-items-center">
+                                        <h6 className=" mb-0 custom-card-header text-dark">Course Progress</h6>
+                                    </div>
+                                    <div className="card-body pr-0">
+                                        <div className="row">
+                                            <div className="col-lg-8 p-0">
+                                                <div className="progress">
+
+                                                    <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `50%` }}></div>
                                                 </div>
-                                                <div className="col-lg-4 px-0 text-right line-height-1 ">
-                                                    <span className='badge-primary'>50%</span>
-                                                </div>
+                                            </div>
+                                            <div className="col-lg-4 px-0 text-right line-height-1 ">
+                                                <span className='badge-success px-2 rounded py-1'>37%</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                        </div>
                     </div>
-                    {/* Counter item*/}
+                </div>
+                <div className="col-lg-6 mt-4">
                     <div className="">
-                        <div className="d-flex justify-content-center align-items-center  bg-success bg-opacity-10 rounded">
-                            <span className="display-6 lh-1 text-success mb-0">
-                                <FontAwesomeIcon icon={faIdBadge} />
-                            </span>
-                            <div className="ml-3">
-                                <div className="d-flex">
-                                    <h5 className="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="8" data-purecounter-delay="300" data-purecounter-duration="0">8</h5>
+                        <div className="bg-success rounded py-2">
+                                <div className=" ">
+                                    <div className="px-2 line-height-2 py-0 d-flex justify-content-between align-items-center">
+                                        <h6 className=" mb-0 custom-card-header text-dark">Attendance Progress</h6>
+                                    </div>
+                                    <div className="card-body pr-0">
+                                        <div className="row">
+                                            <div className="col-lg-8 p-0">
+                                                <div className="progress">
+
+                                                    <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `50%` }}></div>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-4 px-0 text-right line-height-1 ">
+                                                <span className='badge-success px-2 rounded py-1'>50%</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <p className="mb-0 h6 fw-light text-dark">Achieved Certificates</p>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -415,262 +468,118 @@ const Student_Overview_new = () => {
                         </div>
                     </div>
                 </div>
-                {/* <div className="col-lg-6">
-                        <div className="card">
-                            <div className="card-body">
-                                <div className="row">
-                                    <div className="col-lg-4"></div>
-                                    <div className="col-lg-8">
-                                        <StudentOverallPerformanceChart />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
+
             </div>
 
-            <div className="row mt-5">
-                <div className="col-lg-6">
-                    <div>
-                        <div class="shadow-box-header">
-                            <h5 class="shadow-box-title">Today's Classes</h5>
-                        </div>
-                        <div className="shadow-box-body">
-                            <ul className="list-group">
-                                <li className="list-group-item mb-10 card text-gray">
-                                    <div className="box-body">
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <div className="d-flex align-items-center">
-                                                <div className="mr-15 w-45 h-40 line-height-3 color-fff bg-theme rounded text-center">
-                                                    <span><FontAwesomeIcon icon={faBookOpen} /></span>
-                                                </div>
-                                                <div className="d-flex flex-column fw-500">
-                                                    <a href="#" className="text-theme hover-primary mb-1 fs-16 ">Introduction to BIM</a>
-                                                    <p className='mb-0 font-12'>
-                                                        <span className="text-fade mr-1"><FontAwesomeIcon icon={faClock} /></span>
-                                                        <span>02:45 PM - 3:15 PM</span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <button className="btn btn-link p-3">
-                                                <span class="badge bg-success bg-opacity-15 text-success">Live</span>
-                                            </button>
-                                            <a href="#">
-                                                <span><FontAwesomeIcon icon={faPlay} /></span>
-                                            </a>
-                                        </div>
-                                    </div>
+            <div className='mt-4 px-2' style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(600px, 1fr))", gap: "10px", height: "310px", marginBottom: "20px",}}>
+                {/* Today's Classes */}
+                <div className="row">
+                    <div className="col-lg-6">
+                        <div className='box rounded p-3' style={{ borderRadius: "10px", backgroundColor: "white" }}>
+                            <p className="text-center p-2" style={{ fontSize: "20px" }}>Today's Classes</p>
+                            <div style={{ backgroundColor: "white" }} >
+                                {paginatedTodaysMeetings?.length > 0 ? (
+                                    paginatedTodaysMeetings.map((meeting, index) => (
+                                        <div key={index} className="list-group-item mb-10 card text-gray" style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            // alignItems: 'center',
+                                            padding: '10px',
+                                            marginBottom: '10px',
+                                            borderRadius: '8px',
+                                            boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+                                        }}>
+                                            <div className="box-body">
+                                                <div className="d-flex align-items-center justify-content-between">
+                                                    <div className="d-flex align-items-center">
+                                                        <div className="mr-15 w-45 h-40 line-height-3 color-fff bg-theme rounded text-center">
+                                                            <span><FontAwesomeIcon icon={faBookOpen} /></span>
+                                                        </div>
+                                                        <div className="d-flex flex-column fw-500">
+                                                            <p className="text-theme hover-primary mb-1 fs-16">{meeting?.topic}</p>
+                                                            <p className="mb-0 font-12">
+                                                                <span className="text-fade mr-1"><FontAwesomeIcon icon={faClock} /></span>
+                                                                <span>{meeting?.startTime} - {meeting?.endTime}</span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
 
-                                </li>
-                                <li className="list-group-item mb-10 card text-gray">
-                                    <div className="box-body">
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <div className="d-flex align-items-center">
-                                                <div className="mr-15 w-45 h-40 line-height-3 color-fff bg-theme rounded text-center">
-                                                    <span><FontAwesomeIcon icon={faBookOpen} /></span>
-                                                </div>
-                                                <div className="d-flex flex-column fw-500">
-                                                    <a href="#" className="text-theme hover-primary mb-1 fs-16 ">BIM Model Authoring using Revit</a>
-                                                    <p className='mb-0 font-12'>
-                                                        <span className="text-fade mr-1"><FontAwesomeIcon icon={faClock} /></span>
-                                                        <span>02:45 PM - 3:15 PM</span>
-                                                    </p>
+                                                    <a href="#" onClick={() => handleMeeting(meeting?.meetingLink)}>
+                                                        <span><FontAwesomeIcon icon={faPlay} /></span>
+                                                    </a>
                                                 </div>
                                             </div>
-                                            <a href="#">
-                                                <span><FontAwesomeIcon icon={faPlay} /></span>
-                                            </a>
                                         </div>
-                                    </div>
-                                </li>
-                                <li className="list-group-item mb-10 card text-gray">
-                                    <div className="box-body">
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <div className="d-flex align-items-center">
-                                                <div className="mr-15 w-45 h-40 line-height-3 color-fff bg-theme rounded text-center">
-                                                    <span><FontAwesomeIcon icon={faBookOpen} /></span>
-                                                </div>
-                                                <div className="d-flex flex-column fw-500">
-                                                    <a href="#" className="text-theme hover-primary mb-1 fs-16 ">Steel Structure drawings using Advance Steel</a>
-                                                    <p className='mb-0 font-12'>
-                                                        <span className="text-fade mr-1"><FontAwesomeIcon icon={faClock} /></span>
-                                                        <span>02:45 PM - 3:15 PM</span>
-                                                    </p>
+
+                                    ))
+                                ) : (
+                                    <div style={{ padding: '10px', color: '#666' }}>No meetings available for today</div>
+                                )}
+                                <Pagination
+                                    count={Math.ceil(todaysMeetings?.length / itemsPerPage)}
+                                    page={currentPageToday}
+                                    onChange={handlePageChangeToday}
+                                    color="primary"
+                                    style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Upcoming Classes */}
+                    <div className="col-lg-6">
+                        <div className='box rounded p-3' style={{ borderRadius: "10px", backgroundColor: "white" }}>
+                            <p className="text-center p-2" style={{ fontSize: "20px" }}>Upcoming Classes</p>
+                            <div style={{ backgroundColor: "white" }}>
+                                {paginatedUpcomingMeetings?.length > 0 ? (
+                                    paginatedUpcomingMeetings.map((meeting, index) => (
+                                        <div key={index} className="list-group-item mb-10 card text-gray" style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            padding: '10px',
+                                            marginBottom: '10px',
+                                            borderRadius: '8px',
+                                            boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+                                        }}>
+                                            <div className="box-body">
+                                                <div className="d-flex align-items-center justify-content-between">
+                                                    <div className="d-flex align-items-center">
+                                                        <div className="mr-15 w-45 h-40 line-height-3 color-fff bg-theme rounded text-center">
+                                                            <span><FontAwesomeIcon icon={faBookOpen} /></span>
+                                                        </div>
+                                                        <div className="d-flex flex-column fw-500">
+                                                            <p className="text-theme hover-primary mb-1 fs-16">{meeting?.topic}</p>
+                                                            <p className="mb-0 font-12">
+                                                                <span className="text-fade mr-1"><FontAwesomeIcon icon={faClock} /></span>
+                                                                <span>{meeting?.startTime} - {meeting?.endTime}</span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <a href="#" onClick={() => handleMeeting(meeting?.meetingLink)}>
+                                                        <span><FontAwesomeIcon icon={faPlay} /></span>
+                                                    </a>
                                                 </div>
                                             </div>
-                                            <a href="#">
-                                                <span><FontAwesomeIcon icon={faPlay} /></span>
-                                            </a>
                                         </div>
-                                    </div>
-                                </li>
-                                <li className="list-group-item mb-10 card text-gray">
-                                    <div className="box-body">
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <div className="d-flex align-items-center">
-                                                <div className="mr-15 w-45 h-40 line-height-3 color-fff bg-theme rounded text-center">
-                                                    <span><FontAwesomeIcon icon={faBookOpen} /></span>
-                                                </div>
-                                                <div className="d-flex flex-column fw-500">
-                                                    <a href="#" className="text-theme hover-primary mb-1 fs-16 ">Informatic Course</a>
-                                                    <p className='mb-0 font-12'>
-                                                        <span className="text-fade mr-1"><FontAwesomeIcon icon={faClock} /></span>
-                                                        <span>02:45 PM - 3:15 PM</span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <a href="#">
-                                                <span><FontAwesomeIcon icon={faPlay} /></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li className="list-group-item card mb-10 text-gray">
-                                    <div className="box-body">
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <div className="d-flex align-items-center">
-                                                <div className="mr-15 w-45 h-40 line-height-3 color-fff bg-theme rounded text-center">
-                                                    <span><FontAwesomeIcon icon={faBookOpen} /></span>
-                                                </div>
-                                                <div className="d-flex flex-column fw-500">
-                                                    <a href="#" className="text-theme hover-primary mb-1 fs-16 ">BIM in Civil and Infrastructure</a>
-                                                    <p className='mb-0 font-12'>
-                                                        <span className="text-fade mr-1"><FontAwesomeIcon icon={faClock} /></span>
-                                                        <span>02:45 PM - 3:15 PM</span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <a href="#">
-                                                <span><FontAwesomeIcon icon={faPlay} /></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
+                                    ))
+                                ) : (
+                                    <div style={{ padding: '10px', color: '#666' }}>No upcoming meetings available</div>
+                                )}
+                                <Pagination
+                                    count={Math.ceil(upcomingMeetings?.length / itemsPerPage)}
+                                    page={currentPageUpcoming}
+                                    onChange={handlePageChangeUpcoming}
+                                    color="primary"
+                                    style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}
+                                />
+                            </div>
+
                         </div>
                     </div>
                 </div>
-                <div className="col-lg-6">
-                    <div>
-                        <div class="shadow-box-header">
-                            <h5 class="shadow-box-title">Upcoming Classes</h5>
-                        </div>
-                        <div className="shadow-box-body">
-                            <ul className="list-group">
-                                <li className="list-group-item mb-10 card text-gray">
-                                    <div className="box-body">
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <div className="d-flex align-items-center">
-                                                <div className="mr-15 w-45 h-40 line-height-3 color-fff bg-theme rounded text-center">
-                                                    <span><FontAwesomeIcon icon={faBookOpen} /></span>
-                                                </div>
-                                                <div className="d-flex flex-column fw-500">
-                                                    <a href="#" className="text-theme hover-primary mb-1 fs-16 ">BIM Studio</a>
-                                                    <p className='mb-0 font-12'>
-                                                        <span className="text-fade mr-1"><FontAwesomeIcon icon={faClock} /></span>
-                                                        <span>02:45 PM - 3:15 PM</span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            
-                                            <a href="#">
-                                                <span><FontAwesomeIcon icon={faPlay} /></span>
-                                            </a>
-                                        </div>
-                                    </div>
 
-                                </li>
-                                <li className="list-group-item mb-10 card text-gray">
-                                    <div className="box-body">
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <div className="d-flex align-items-center">
-                                                <div className="mr-15 w-45 h-40 line-height-3 color-fff bg-theme rounded text-center">
-                                                    <span><FontAwesomeIcon icon={faBookOpen} /></span>
-                                                </div>
-                                                <div className="d-flex flex-column fw-500">
-                                                    <a href="#" className="text-theme hover-primary mb-1 fs-16 ">Parametric
-                                                        Modeling Studio</a>
-                                                    <p className='mb-0 font-12'>
-                                                        <span className="text-fade mr-1"><FontAwesomeIcon icon={faClock} /></span>
-                                                        <span>02:45 PM - 3:15 PM</span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <a href="#">
-                                                <span><FontAwesomeIcon icon={faPlay} /></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li className="list-group-item mb-10 card text-gray">
-                                    <div className="box-body">
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <div className="d-flex align-items-center">
-                                                <div className="mr-15 w-45 h-40 line-height-3 color-fff bg-theme rounded text-center">
-                                                    <span><FontAwesomeIcon icon={faBookOpen} /></span>
-                                                </div>
-                                                <div className="d-flex flex-column fw-500">
-                                                    <a href="#" className="text-theme hover-primary mb-1 fs-16 ">Sustainabily and
-                                                        Rendering Studio</a>
-                                                    <p className='mb-0 font-12'>
-                                                        <span className="text-fade mr-1"><FontAwesomeIcon icon={faClock} /></span>
-                                                        <span>02:45 PM - 3:15 PM</span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <a href="#">
-                                                <span><FontAwesomeIcon icon={faPlay} /></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li className="list-group-item mb-10 card text-gray">
-                                    <div className="box-body">
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <div className="d-flex align-items-center">
-                                                <div className="mr-15 w-45 h-40 line-height-3 color-fff bg-theme rounded text-center">
-                                                    <span><FontAwesomeIcon icon={faBookOpen} /></span>
-                                                </div>
-                                                <div className="d-flex flex-column fw-500">
-                                                    <a href="#" className="text-theme hover-primary mb-1 fs-16 ">4D & 5D BIM Studio</a>
-                                                    <p className='mb-0 font-12'>
-                                                        <span className="text-fade mr-1"><FontAwesomeIcon icon={faClock} /></span>
-                                                        <span>02:45 PM - 3:15 PM</span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <a href="#">
-                                                <span><FontAwesomeIcon icon={faPlay} /></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li className="list-group-item card mb-10 text-gray">
-                                    <div className="box-body">
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <div className="d-flex align-items-center">
-                                                <div className="mr-15 w-45 h-40 line-height-3 color-fff bg-theme rounded text-center">
-                                                    <span><FontAwesomeIcon icon={faBookOpen} /></span>
-                                                </div>
-                                                <div className="d-flex flex-column fw-500">
-                                                    <a href="#" className="text-theme hover-primary mb-1 fs-16 ">Computational Design
-                                                        and Automation Studio</a>
-                                                    <p className='mb-0 font-12'>
-                                                        <span className="text-fade mr-1"><FontAwesomeIcon icon={faClock} /></span>
-                                                        <span>02:45 PM - 3:15 PM</span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <a href="#">
-                                                <span><FontAwesomeIcon icon={faPlay} /></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+
             </div>
 
         </>

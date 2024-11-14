@@ -1,183 +1,107 @@
 import React, { useEffect, useState } from 'react';
-import Highcharts from 'highcharts';
+import Highcharts, { color } from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import HighchartsMore from 'highcharts/highcharts-more';
 import SolidGauge from 'highcharts/modules/solid-gauge';
-import {faUserGraduate } from '@fortawesome/free-solid-svg-icons';
+import { faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 
 HighchartsMore(Highcharts);
-SolidGauge(Highcharts);
 
 const StudentOverallPerformanceChart = () => {
-    const renderIcons = function () {
-        this.series.forEach(series => {
-            if (!series.icon) {
-                series.icon = this.renderer
-                    .text(
-                        `<i class="fa fa-${series.options.custom.icon}"></i>`,
-                        0,
-                        0,
-                        true
-                    )
-                    .attr({
-                        zIndex: 10
-                    })
-                    .css({
-                        color: series.options.custom.iconColor,
-                        fontSize: '1.5em'
-                    })
-                    .add(this.series[2].group);
-            }
-            series.icon.attr({
-                x: this.chartWidth / 2 - 15,
-                y:
-                    this.plotHeight / 2 -
-                    series.points[0].shapeArgs.innerR -
-                    (series.points[0].shapeArgs.r - series.points[0].shapeArgs.innerR) /
-                    2 +
-                    8
-            });
-        });
-    };
-
-    const trackColors = Highcharts.getOptions().colors.map(color =>
-        new Highcharts.Color(color).setOpacity(0.3).get()
-    );
+    const value = 21.21; // Score
 
     const options = {
         chart: {
-            type: 'solidgauge',
-            height: '180px',
+            type: 'pie',
+            height: '90%',
+            marginTop: 0,
+            marginBottom: 0,
+            marginTop: 50, // Adjust margin top to create space above the chart
+            marginBottom: 0,
+            backgroundColor: "transparent",
+            
             // events: {
-            //     render: renderIcons
-            // },
-            backgroundColor: "transparent"
+            //     render: function () {
+            //         const chart = this;
+            //         const series = chart.series[0]; // Access the first series (the doughnut chart)
+
+            //         // Create a custom label for the center of the doughnut chart
+            //         const customLabel = chart.renderer.label(
+            //             'Score<br/><strong>' + value + '</strong>'
+            //         )
+            //             .css({
+            //                 color: '#FF6384', // Red color for the score label
+            //                 textAlign: 'center',
+            //                 fontSize: `${series.center[2] / 5}px`, // Dynamically set font size based on chart size
+            //                 fontWeight: 'bold',
+            //             })
+            //             .add();
+
+            //         // Calculate the x and y position based on the center of the pie chart
+            //         const x = series.center[0] + chart.plotLeft;
+            //         const y = series.center[1] + chart.plotTop - (customLabel.attr('height') / 2);
+
+            //         // Set the label position
+            //         customLabel.attr({
+            //             x: x,
+            //             y: y
+            //         });
+            //     }
+            // }
         },
         credits: {
             enabled: false
         },
-    
         title: {
-            text: '',
+            text: 'Overall Performance',
+            margin: 20, // Add gap between title and chart (20px or adjust as needed)
             style: {
-                fontSize: '24px'
+                fontSize: '16px',
+                fontWeight: 'bold',
+                color: '#333333', // Title text color
             }
         },
         tooltip: {
-            borderWidth: 0,
-            backgroundColor: 'none',
-            shadow: false,
-            style: {
-                fontSize: '10px'
-            },
-            valueSuffix: '%',
-            pointFormat:
-                '{series.name}<br>' +
-                '<span style="font-size: 2em; color: {point.color}; ' +
-                'font-weight: bold">{point.y}</span>',
-            positioner: function (labelWidth) {
-                return {
-                    x: (this.chart.chartWidth - labelWidth) / 2,
-                    y: (this.chart.plotHeight / 2) + 15
-                };
-            }
-        },
-        pane: {
-            startAngle: 0,
-            endAngle: 360,
-            background: [
-                { // Track for Conversion
-                    outerRadius: '112%',
-                    innerRadius: '88%',
-                    backgroundColor: trackColors[0],
-                    borderWidth: 0
-                },
-                { // Track for Engagement
-                    outerRadius: '87%',
-                    innerRadius: '63%',
-                    backgroundColor: trackColors[1],
-                    borderWidth: 0
-                },
-                { // Track for Feedback
-                    outerRadius: '62%',
-                    innerRadius: '38%',
-                    backgroundColor: trackColors[2],
-                    borderWidth: 0
-                }
-            ]
-        },
-        yAxis: {
-            min: 0,
-            max: 100,
-            lineWidth: 0,
-            tickPositions: []
+            enabled: true // Disable the tooltip
         },
         plotOptions: {
-            solidgauge: {
+            pie: {
+                size: '80%',
+                innerSize: '70%',
                 dataLabels: {
-                    enabled: false
+                    enabled: true, // Enable data labels for pie slices
+                    formatter: function () {
+                        // Only show data label for the active (filled) slice
+                        if (this.percentage) {
+                            return `${this.percentage.toFixed(1)}%`;
+                        }
+                    },
+                    style: {
+                        fontSize: '14px',
+                        fontWeight: 'bold',
+                        color: '#000000' // Color of the data labels (black)
+                    },
+                    distance: 10, // Distance of labels from the center of the pie
                 },
-                linecap: 'round',
-                stickyTracking: false,
-                rounded: true
+                showInLegend: false, // Hide the legend
+                colors: ['#185055', '#28a7453d'], // Pie slice colors
             }
         },
-        series: [
-            {
-                name: 'Cumulative assignment Score',
-                data: [
-                    {
-                        color: Highcharts.getOptions().colors[0],
-                        radius: '112%',
-                        innerRadius: '88%',
-                        y: 80
-                    }
-                ],
-                // custom: {
-                //     icon: 'filter',
-                //     iconColor: '#303030'
-                // }
-            },
-            {
-                name: 'Cumulative Test Score',
-                data: [
-                    {
-                        color: Highcharts.getOptions().colors[1],
-                        radius: '87%',
-                        innerRadius: '63%',
-                        y: 65
-                    }
-                ],
-                // custom: {
-                //     icon: 'comments-o',
-                //     iconColor: '#ffffff'
-                // }
-            },
-            {
-                name: 'Attendance',
-                data: [
-                    {
-                        color: Highcharts.getOptions().colors[2],
-                        radius: '62%',
-                        innerRadius: '38%',
-                        y: 50
-                    }
-                ],
-                // custom: {
-                //     icon: 'commenting-o',
-                //     iconColor: '#303030'
-                // }
-            }
-        ]
+        series: [{
+            data: [
+                { y: value, name: 'My val' }, // Active slice (75)
+                { y: 100 - value, name: '' } // Inactive slice (25)
+            ]
+        }],
+        
     };
 
     return (
         <div>
-            <figure className="highcharts-figure">
-                <HighchartsReact highcharts={Highcharts} options={options} />
-            </figure>
+            <HighchartsReact highcharts={Highcharts} options={options} />
         </div>
     );
-}
+};
+
 
 export default StudentOverallPerformanceChart

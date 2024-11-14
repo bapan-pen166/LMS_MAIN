@@ -104,7 +104,9 @@ const Batch_Wise_Course_Percent = () => {
            text:null
         },
         min: 0,
-        gridLineWidth: 0
+        gridLineWidth: 1, 
+        gridLineColor: '#e0e0e0',
+        gridLineDashStyle: 'Solid', 
      },
      legend: {
         enabled: false

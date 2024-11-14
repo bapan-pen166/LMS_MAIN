@@ -3,7 +3,7 @@
 // export const api = "http://192.168.29.171:5050";
 
 //my office
-export const api = "http://192.168.1.10:5050";
+// export const api = "http://192.168.1.10:5050";
 //Arbaz url
 // export const api = "https://192.168.0.240:5050";
 //Rishu
@@ -11,7 +11,7 @@ export const api = "http://192.168.1.10:5050";
 
 // deployed aws
 
-// export const api = "https://lms.technostructacademy.com/api"
+export const api = "https://lms.technostructacademy.com/api"
 
 // deployed data center
 // export const api = "pentationanalytics.com/api";

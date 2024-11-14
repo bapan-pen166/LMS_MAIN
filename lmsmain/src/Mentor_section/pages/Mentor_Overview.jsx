@@ -142,10 +142,10 @@ const Mentor_Overview = () => {
 
 
     return (
-        <div className='row  mentor-overview-main' style={{ backgroundColor: "white", fontFamily: "Roboto, sans-serif" }} >
-            <div className="" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(600px, 1fr))", gap: "10px", width: "100%", height: "310px" }}>
+        <div className='row  mentor-overview-main' style={{ backgroundColor: "white", fontFamily: "Roboto, sans-serif", marginTop:"-20px" }} >
+            <div className='mt-4 px-2' style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(500px, 1fr))", gap: "10px", width: "100%", height: "310px" }}>
                 {/* Today's Classes */}
-                <div style={{ boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)", borderRadius: "10px", backgroundColor: "white" }}>
+                <div style={{  borderRadius: "10px", backgroundColor: "white" }}>
                     <p className="text-center p-2" style={{ fontSize: "20px" }}>Today's Classes</p>
                     <div style={{ backgroundColor: "white" }} >
                         {paginatedTodaysMeetings?.length > 0 ? (
@@ -157,7 +157,7 @@ const Mentor_Overview = () => {
                                     padding: '10px',
                                     marginBottom: '10px',
                                     borderRadius: '8px',
-                                    boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
+                                    boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
                                 }}>
                                     <div className="box-body">
                                         <div className="d-flex align-items-center justify-content-between">
@@ -196,7 +196,7 @@ const Mentor_Overview = () => {
                 </div>
 
                 {/* Upcoming Classes */}
-                <div style={{ boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)", borderRadius: "10px", backgroundColor: "white" }}>
+                <div style={{  borderRadius: "10px", backgroundColor: "white" }}>
                     <p className="text-center p-2" style={{ fontSize: "20px" }}>Upcoming Classes</p>
                     <div style={{ backgroundColor: "white" }}>
                         {paginatedUpcomingMeetings?.length > 0 ? (
@@ -207,7 +207,7 @@ const Mentor_Overview = () => {
                                     padding: '10px',
                                     marginBottom: '10px',
                                     borderRadius: '8px',
-                                    boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
+                                    boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
                                 }}>
                                     <div className="box-body">
                                         <div className="d-flex align-items-center justify-content-between">
@@ -247,7 +247,7 @@ const Mentor_Overview = () => {
             </div>
 
 
-            <div className='mt-4 px-2' style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(400px, 1fr))", gap: "10px", width: "100%" }}>
+            <div className='mt-4 px-2' style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(370px, 1fr))", gap: "10px", width: "100%" }}>
                 <div style={{ boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)", borderRadius: "10px", backgroundColor: "white" }}>
                     <p className='text-center p-2' style={{ fontSize: "20px" }}>Batch-wise Number of Students</p>
                     <hr />
@@ -259,7 +259,7 @@ const Mentor_Overview = () => {
                     <Batch_wise_attendance_percentage />
                 </div>
                 <div style={{ boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)", borderRadius: "10px", backgroundColor: "white" }}>
-                    <p className='text-center p-2' style={{ fontSize: "20px" }}>Batch-wise Course Completed</p>
+                    <p className='text-center p-2' style={{ fontSize: "20px" }}>Batch-wise Course Completed %</p>
                     <hr />
                     <Batch_Wise_Course_Percent />
                 </div>
@@ -269,7 +269,7 @@ const Mentor_Overview = () => {
 
             <div className='row mt-4 ml-2 mr-2 mb-4' style={{
                 display: "grid",
-                gridTemplateColumns: `repeat(auto-fill, minmax(${windowWidth < 768 ? '400px' : '600px'}, 1fr))`,
+                gridTemplateColumns: `repeat(auto-fill, minmax(${windowWidth < 768 ? '400px' : '490px'}, 1fr))`,
                 gap: "10px",
                 width: "100%",
             }}>

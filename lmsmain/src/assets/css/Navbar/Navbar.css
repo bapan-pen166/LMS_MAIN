@@ -185,13 +185,13 @@
     /* font-size: larger; */
    
   }
-  .active{
+  /* .active{
     color:white !important;
     background-color:  #0c5273;
     border-radius: 3%;
     font-size: larger;
-    /* padding: 8px; */
-  }
+    padding: 8px;
+  } */
 
   /* .sidebar-item {
     position: relative;

@@ -268,7 +268,9 @@ const Assignment_tracker = () => {
              text:null
           },
           min: 0,
-          gridLineWidth: 0
+          gridLineWidth: 1, 
+          gridLineColor: '#e0e0e0',
+          gridLineDashStyle: 'Solid', 
        },
        legend: {
           enabled: false
@@ -347,15 +349,7 @@ const Assignment_tracker = () => {
                                                 )
                                             })
                                         }
-                                        {/* <tr>
-                                            <td>1</td>
-                                            <td>Chitradip Dey</td>
-                                            <td>Assignment 1</td>
-                                            <td>5/9/2024</td>
-                                             <td>6/9/2024</td>
-                                            <td>100</td>
-                                            <td>80</td>
-                                        </tr> */}
+                                     
                                     </tbody>
                                 </table>
                                 </div>

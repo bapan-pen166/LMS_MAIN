@@ -504,16 +504,11 @@
 .offcanvas.show {
     right: 0;
 }
-.list-group-item{
-    padding: 10px !important;
-    font-size: 16px;
-}
+
 .list-group-item.active{
     border-radius: 5px;
 }
-.list-group-item{
-    color: #fff;
-}
+
 .mr-10{
     margin-right: 10px;
 }
@@ -522,4 +517,17 @@
 }
 .list-group-item-action:focus, .list-group-item-action:hover{
     color: #282c33 !important;
+}
+.list-group a{
+  padding: 10px !important;
+  font-size: 16px;
+  color: #fff !important;
+}
+.list-group a.active{
+  color: #24292d;
+  background-color: #fff;
+  border-radius: 0.25rem;
+}
+.list-group a.active svg{
+  color: rgb(212, 139, 2);
 }

@@ -42,9 +42,11 @@ const Batch_wise_attendance_percentage = () => {
             title: {
                 text: ''
             },
-            min: 0, // Set minimum value to 0
-            max: 100, // Set maximum value to 100
-            gridLineWidth: 0
+            min: 0,
+            max: 100, 
+            gridLineWidth: 1, 
+            gridLineColor: '#e0e0e0',
+            gridLineDashStyle: 'Solid', 
         },
         legend: {
             enabled: false,

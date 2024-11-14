@@ -117,8 +117,8 @@ function Master_Layout() {
                                                     </ul>
                                                 </div>
                                                 {/* Button */}
-                                                <div class="mt-2 mt-sm-0">
-                                                    <a href="student-course-list.html" class="btn btn-outline-primary mb-0">Join live classes</a>
+                                                <div class="mt-2 mt-sm-0 d-none">
+                                                    <a href="student-course-list.html" class="btn btn-outline-primary mb-0">Join live class</a>
                                                 </div>
                                             </div>
                                         </div>
