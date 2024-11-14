@@ -68,17 +68,18 @@ const StudentOverallPerformanceChart = () => {
             backgroundColor: 'none',
             shadow: false,
             style: {
-                fontSize: '10px'
+                fontSize: '12px'
             },
             valueSuffix: '%',
             pointFormat:
                 '{series.name}<br>' +
-                '<span style="font-size: 2em; color: {point.color}; ' +
+                // '<span style="font-size: 2em; color: {point.color}; ' +
+                '<span style="font-size: 3em; color: #000; ' +
                 'font-weight: bold">{point.y}</span>',
             positioner: function (labelWidth) {
                 return {
                     x: (this.chart.chartWidth - labelWidth) / 2,
-                    y: (this.chart.plotHeight / 2) + 15
+                    y: (this.chart.plotHeight / 3) + 1
                 };
             }
         },

@@ -23,7 +23,7 @@ import cert_lock from "../../assets/img/student overview/lock_certificate.jpg"
 import "../../assets/css/Student_dashboard/student_dashboard.css";
 import TopBar from '../../layout/TopBar';
 import SideBar from '../../layout/Sidebar_new';
-import { faIdBadge, faClipboardCheck, faBookOpen, faPlay, faClock, faMedal } from '@fortawesome/free-solid-svg-icons';
+import { faIdBadge, faClipboardCheck, faBookOpen, faPlay, faClock, faMedal, faEye, faFilePen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const Student_Overview_new = () => {
     const [userType, setUserType] = useState('');
@@ -322,16 +322,16 @@ const Student_Overview_new = () => {
             {/* <SideBar /> */}
 
             <div className="row">
-                <div className="col-lg-6 box bg-green-100 rounded d-flex">
+                <div className="col-lg-6 box bg-green-100 rounded d-none">
                     <div className="col-lg-6">
                         <div className="mb-3">
                             <div className="d-flex justify-content-center align-items-center  rounded">
                                 <span className="display-6 lh-1 text-orange mb-0"><i className="fa fa-television"></i></span>
                                 <div className="ml-3">
                                     <div className="d-flex">
-                                        <h5 className="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="9" data-purecounter-delay="200" data-purecounter-duration="0">9</h5>
+                                        <h5 className="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="9" data-purecounter-delay="200" data-purecounter-duration="0">21.21%</h5>
                                     </div>
-                                    <p className="mb-0 h6 fw-light text-dark">Total Courses</p>
+                                    <p className="mb-0 h6 fw-light text-dark">Overall Performance</p>
                                 </div>
                             </div>
                         </div>
@@ -340,7 +340,7 @@ const Student_Overview_new = () => {
                                 <span className="display-6 lh-1 text-success mb-0">
                                     <FontAwesomeIcon icon={faMedal} />
                                 </span>
-                                <div className="ml-3">
+                                <div className="ml-4">
                                     <div className="d-flex">
                                         <h5 className="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="9" data-purecounter-delay="200" data-purecounter-duration="0">9</h5>
                                     </div>
@@ -349,28 +349,96 @@ const Student_Overview_new = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="col-lg-6 d-flex justify-content-center align-items-center">
+                    <div className="col-lg-6 justify-content-center align-items-center d-none">
                         <StudentOverallPerformanceChart />
                     </div>
                 </div>
                 <div className="col-lg-6">
-                    <div className="mb-5">
+                    <div className="">
+                        <div className="pb-2 border-bottom d-flex justify-content-between align-items-center">
+                            <h5 className="card-header-title">Performance overview</h5>
+                        </div>
+                        <div className="card-body pr-0 box-shadow mt-2">
+                            <div class="pr-5">
+                                <div class="d-flex align-items-center mb-30 gap-items-3 justify-content-between">
+                                    <div class="d-flex align-items-center fw-500">
+                                        <div class="me-15 w-50 d-table">
+                                            <FontAwesomeIcon icon={faFilePen} class="avatar avatar-lg rounded-10" alt="" />
+                                        </div>
+                                        <div>
+                                            <a href="#" class="text-dark hover-primary mb-2 d-block fs-16">Overall Performance</a>
+                                            <div class="w-200">
+                                                <div class="progress progress-sm mb-0">
+                                                    <div class="progress-bar progress-bar-primary progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `70%` }}>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <h5 class="fw-600 mb-0 badge badge-pill badge-primary mt-4">75%</h5>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center mb-30 justify-content-between">
+                                            <div class="d-flex align-items-center fw-500">
+                                                <div class="me-15 w-50 d-table">
+                                                    <img src="	https://eduadmin-template.multipurposethemes.com/bs5/images/avatar/avatar-2.png" class="avatar avatar-lg rounded-10" alt="" />
+                                                </div>
+                                                <div>
+                                                    <a href="#" class="text-dark hover-primary mb-2 d-block fs-16">Cumulative Assignment Score </a>
+                                                    <div class="w-200">
+                                                        <div class="progress progress-sm mb-0">
+                                                            <div class="progress-bar progress-bar-primary progress-bar-warning progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `75%` }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-end">
+                                                <h5 class="fw-600 mb-0 badge badge-pill badge-warning mt-4">75%</h5>
+                                            </div>
+                                </div>
+                                <div class="d-flex align-items-center mb-30 justify-content-between">
+                                            <div class="d-flex align-items-center fw-500">
+                                                <div class="me-15 w-50 d-table">
+                                                    <img src="	https://eduadmin-template.multipurposethemes.com/bs5/images/avatar/avatar-2.png" class="avatar avatar-lg rounded-10" alt="" />
+                                                </div>
+                                                <div>
+                                                    <a href="#" class="text-dark hover-primary mb-2 d-block fs-16">Cumulative Test Score</a>
+                                                    <div class="w-200">
+                                                        <div class="progress progress-sm mb-0">
+                                                            <div class="progress-bar progress-bar-success progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `75%` }}>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-end">
+                                                <h5 class="fw-600 mb-0 badge badge-pill badge-succes mt-4">75%</h5>
+                                            </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-lg-4">
+                    <div className="mb-4">
                         <div className="bg-blue-light rounded py-2">
                                     <div className=" ">
-                                        <div className="px-2 line-height-2 py-0 d-flex justify-content-between align-items-center">
+                                        <div className="px-2 py-0 d-flex justify-content-between align-items-center border-bottom">
                                             <h6 className=" mb-0 custom-card-header text-dark">Attendance</h6>
-                                            <a href="#" className="btn btn-link p-0 mb-0">View all</a>
+                                            <a href="#" className="btn btn-link p-0 mb-0"><FontAwesomeIcon icon={faEye} /></a>
                                         </div>
                                         <div className="card-body pr-0">
                                             <div className="row">
                                                 <div className="col-lg-8 p-0">
-                                                    <div className="progress">
+                                                    <div className="progress mt-1">
                                                         {/* <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${studentAttendance}%` }}></div> */}
                                                         <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `50%` }}></div>
                                                     </div>
                                                 </div>
-                                                <div className="col-lg-4 px-0 text-right line-height-1 ">
-                                                    <span className='badge-primary'>50%</span>
+                                                <div className="col-lg-3 px-0 text-right line-height-1 ">
+                                                    <span className='badge badge-pill badge-primary'>50%</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -379,11 +447,11 @@ const Student_Overview_new = () => {
                     </div>
                     {/* Counter item*/}
                     <div className="">
-                        <div className="d-flex justify-content-center align-items-center  bg-success bg-opacity-10 rounded">
+                        <div className="d-flex justify-content-center align-items-center  bg-success bg-opacity-10 rounded py-2">
                             <span className="display-6 lh-1 text-success mb-0">
                                 <FontAwesomeIcon icon={faIdBadge} />
                             </span>
-                            <div className="ml-3">
+                            <div className="ml-2">
                                 <div className="d-flex">
                                     <h5 className="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="8" data-purecounter-delay="300" data-purecounter-duration="0">8</h5>
                                 </div>

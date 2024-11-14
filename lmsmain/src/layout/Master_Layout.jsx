@@ -13,6 +13,7 @@ import { useLocation, matchPath } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSliders, faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { api } from '../ApiUrl/ApiUrl';
+import StundentCourseProgressChart from '../Student_section/Components/student_overview/StundentCourseProgress';
 import axios from 'axios';
 function Master_Layout() {
     const { hamburger } = useContext(Datacontext);
@@ -85,10 +86,10 @@ function Master_Layout() {
                             <div class="card header-bg h-130px rounded-0" style={{ backgroundImage: `url(${headerbg})`, backgroundSize: 'cover' }}>
                             </div>
                         </div>
-                        <div class="container-fluid mt-n4">
+                        <div class="container-fluid mt-n4 px-5">
                             <div class="row">
                                 <div class="col-12">
-                                    <div class="bg-transparent card-body p-0 mt-2 mt-sm-0">
+                                    <div class="bg-transparent card-body p-0 mt-2 mt-sm-0 d-flex">
                                         <div class="row d-sm-flex justify-sm-content-between mt-2 mt-md-0">
                                             {/* Avatar */}
                                             <div class="col-md-2">
@@ -98,10 +99,10 @@ function Master_Layout() {
                                                 </div>
                                             </div>
                                             {/* Profile info */}
-                                            <div class="col px-0 d-sm-flex justify-content-between align-items-center">
-                                                <div className='mt-4'>
-                                                    <h1 class="mb-0 fs-4">Bapan Ghosh</h1>
-                                                    <ul class="list-inline mb-0">
+                                            <div class="col-lg-7 mt-2 ml-3 px-0 d-sm-flex justify-content-between align-items-center">
+                                                <div className='mt-n3'>
+                                                    <h1 class="mb-2 mt-n4 fs-4">Bapan Ghosh</h1>
+                                                    <ul class="list-inline mb-0 mt-2">
                                                         <li class="list-inline-item me-3 mb-1 mb-sm-0">
                                                             <span class=" fw-light mr-1">Batch Name</span>
                                                             <span class="text-body h6 font-weight-bold mr-1">{getBatchName}</span>
@@ -117,16 +118,18 @@ function Master_Layout() {
                                                     </ul>
                                                 </div>
                                                 {/* Button */}
-                                                <div class="mt-2 mt-sm-0">
-                                                    <a href="student-course-list.html" class="btn btn-outline-primary mb-0">Join live classes</a>
-                                                </div>
                                             </div>
+                                            
                                         </div>
+                                        <div class="col-lg-2">
+                                                {/* <a href="student-course-list.html" class="btn btn-outline-primary mb-0">Join live classes</a> */}
+                                                <StundentCourseProgressChart />
+                                            </div>
                                     </div>
 
                                     {/* Advanced filter responsive toggler START */}
                                     {/* Divider */}
-                                    <span class="d-xl-none" /><hr />
+                                    <span class="d-xl-none" />
                                     <div class="col-12 col-xl-3 d-flex justify-content-between align-items-center">
                                         <a class="h6 mb-0 fw-bold d-xl-none" href="#">Menu</a>
                                         <button class="btn btn-primary d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
@@ -155,7 +158,7 @@ function Master_Layout() {
                                 </div>
                             </div>
                         } */}
-                        <div className="container-fluid mt-4">
+                        <div className="container-fluid mt-4 px-5">
                             <div className="row">
                                 <div className="col-md-2">
                                     {!isErrorPage && <Sidebar_new className={`sidebar ${isSidebarVisible ? 'show' : ''}`}/>}
