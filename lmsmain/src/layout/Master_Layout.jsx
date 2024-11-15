@@ -51,6 +51,7 @@ function Master_Layout() {
     const [lastName, setLastName] = useState();
     const [userId, setUserId] = useState()
     const [studentMail, setStudentMail] = useState();
+    const [userType,setUserType] = useState();
     const toggleSidebar = () => {
         setSidebarVisible(!isSidebarVisible);
     };
@@ -60,7 +61,12 @@ function Master_Layout() {
         if (studentMail) {
             getBatchNM()
         }
-    }, [studentMail])
+    }, [studentMail]);
+
+    useEffect(()=>{
+        setUserType(localStorage.getItem('userType'))
+     },[]);
+     
     useEffect(() => {
         setStudentMail(localStorage.getItem('studentEmail'))
         setLastName(localStorage.getItem('lastName'))
@@ -103,18 +109,25 @@ function Master_Layout() {
                                                 <div className='mt-n3'>
                                                     <h1 class="mb-2 mt-n4 fs-4">Bapan Ghosh</h1>
                                                     <ul class="list-inline mb-0 mt-2">
-                                                        <li class="list-inline-item me-3 mb-1 mb-sm-0">
-                                                            <span class=" fw-light mr-1">Batch Name</span>
-                                                            <span class="text-body h6 font-weight-bold mr-1">{getBatchName}</span>
-                                                        </li>
-                                                        <li class="list-inline-item me-3 mb-1 mb-sm-0">
-                                                            <span class="fw-light mr-1">Course Name</span>
-                                                            <span class="text-body font-weight-bold h6 mr-1">BIM - Ready+</span>
-                                                        </li>
-                                                        <li class="list-inline-item me-3 mb-1 mb-sm-0">
-                                                            <span class="fw-light mr-1">Student ID</span>
-                                                            <span class="text-body font-weight-bold h6 mr-1">52</span>
-                                                        </li>
+                                                    {userType == 'Student' ?
+                                                            <>
+                                                                <li class="list-inline-item me-3 mb-1 mb-sm-0">
+                                                                        <span class=" fw-light mr-1">Batch Name</span>
+                                                                        <span class="text-body h6 font-weight-bold mr-1">{getBatchName}</span>
+                                                                
+                                                                </li>
+                                                                <li class="list-inline-item me-3 mb-1 mb-sm-0">
+                                                                    <span class="fw-light mr-1">Course Name</span>
+                                                                    <span class="text-body font-weight-bold h6 mr-1">BIM - Ready+</span>
+                                                                </li>
+                                                                <li class="list-inline-item me-3 mb-1 mb-sm-0">
+                                                                    <span class="fw-light mr-1">Student ID</span>
+                                                                    <span class="text-body font-weight-bold h6 mr-1">{userId}</span>
+                                                                </li> 
+                                                            </> 
+                                                            : <></>
+                                                            
+                                                            }
                                                     </ul>
                                                 </div>
                                                 {/* Button */}
@@ -123,8 +136,10 @@ function Master_Layout() {
                                         </div>
                                         <div class="col-lg-2">
                                                 {/* <a href="student-course-list.html" class="btn btn-outline-primary mb-0">Join live classes</a> */}
-                                                <StundentCourseProgressChart />
-                                            </div>
+                                                { userType == 'Student' ?
+                                                    <StundentCourseProgressChart /> : <></>
+                                                }
+                                        </div>
                                     </div>
 
                                     {/* Advanced filter responsive toggler START */}

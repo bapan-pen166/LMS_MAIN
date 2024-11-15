@@ -88,7 +88,7 @@ function Navber() {
           </button>}
           {/* <Link to={"/"}><img style={{ width: "50px", height: "35px" }} src={company_logo} alt="company_logo" /></Link> */}
         </div>
-        {userType === "Admin" ? (
+        {/* {userType === "Admin" ? (
           <div className='nav-wel-back'>Welcome Back , {fisrtName} {lastName}</div>
         ) : userType === "Mentor" ? (
           <div className='nav-wel-back'>Welcome Back , {fisrtName} {lastName} !</div>
@@ -97,7 +97,7 @@ function Navber() {
         ) : userType === "Placement" ? (
           <div className='nav-wel-back'>Welcome Back , {fisrtName} {lastName} !</div>
         ) :
-         null}
+         null} */}
         <div style={{ display: 'flex', alignItems: 'center', padding: '0' }}>
           <Button
             id="basic-button"

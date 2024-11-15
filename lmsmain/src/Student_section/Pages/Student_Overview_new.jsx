@@ -14,17 +14,23 @@ import Stack from '@mui/material/Stack';
 import { useEffect, useState } from 'react';
 // import Button from '@mui/material/Button';
 import motivation_logo from "../../assets/img/student overview/student_overview.png"
+import assignment_icon from "../../assets/img/student_overview/assignment.png"
+import performance_icon from "../../assets/img/student_overview/performance.png"
+import test_icon from "../../assets/img/student_overview/test.png"
 import StudentAssignmentReportChart from '../Components/student_overview/StudentAssignmentReportChart';
 import StudentOverallPerformanceChart from '../Components/student_overview/StudentOverallPerformanceChart';
 import StudentAttendanceReport from '../Components/student_overview/StudentAttendanceReport';
+import StudentClassOverview from '../Components/student_overview/StudentClassOverview';
+import StudentAttendanceOverviewColumnChart from '../Components/student_overview/StudentAttendanceOverviewColumnChart';
 import Student_Course_Completion from '../Components/student_overview/Student_Course_Completion';
 import { api } from '../../ApiUrl/ApiUrl';
 import cert_lock from "../../assets/img/student overview/lock_certificate.jpg"
 import "../../assets/css/Student_dashboard/student_dashboard.css";
 import TopBar from '../../layout/TopBar';
 import SideBar from '../../layout/Sidebar_new';
-import { faIdBadge, faClipboardCheck, faBookOpen, faPlay, faClock, faMedal, faEye, faFilePen } from '@fortawesome/free-solid-svg-icons';
+import { faIdBadge, faCheck, faBookOpen, faPlay, faClock, faMedal, faEye, faRankingStar, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Pagination } from '@mui/material';
 const Student_Overview_new = () => {
     const [userType, setUserType] = useState('');
 
@@ -67,6 +73,9 @@ const Student_Overview_new = () => {
     const [minClassToAttendToReachFifty, setMinClassToAttendToReachFifty] = useState()
     const [remainingClassesStudent, setRemainingClassesStudent] = useState();
     const [qualifiedForPlacement, setQualifiedForPlacement] = useState();
+    const [currentPageToday, setCurrentPageToday] = useState(1);
+    const [currentPageUpcoming, setCurrentPageUpcoming] = useState(1);
+    const itemsPerPage = 3;
 
     useEffect(() => {
         setStudentMail(localStorage.getItem('studentEmail'))
@@ -317,6 +326,20 @@ const Student_Overview_new = () => {
     const currentDay = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(new Date());
 
 
+    //   :::::::::::::::::::::::::::: FOR THE PAGINATION  ::::::::::::::::::::::::::::::::::::::
+    const paginatedTodaysMeetings = todaysMeetings?.slice((currentPageToday - 1) * itemsPerPage, currentPageToday * itemsPerPage);
+    const paginatedUpcomingMeetings = upcomingMeetings?.slice((currentPageUpcoming - 1) * itemsPerPage, currentPageUpcoming * itemsPerPage);
+    // for the pagination
+
+
+    const handlePageChangeToday = (_, value) => {
+        setCurrentPageToday(value);
+    };
+
+    const handlePageChangeUpcoming = (_, value) => {
+        setCurrentPageUpcoming(value);
+    };
+
     return (
         <>
             {/* <SideBar /> */}
@@ -353,17 +376,62 @@ const Student_Overview_new = () => {
                         <StudentOverallPerformanceChart />
                     </div>
                 </div>
-                <div className="col-lg-6">
+                <div className="col-lg-8">
                     <div className="">
                         <div className="pb-2 border-bottom d-flex justify-content-between align-items-center">
                             <h5 className="card-header-title">Performance overview</h5>
                         </div>
-                        <div className="card-body pr-0 box-shadow mt-2">
-                            <div class="pr-5">
+                        <div className="row card-body pr-0 pt-4 box-shadow mt-2 d-flex">
+                            <div className="col-lg-6">
+                                <div className="mt-1">
+                                    <div className="card-body box-shadow rounded py-2">
+                                        <div className=" ">
+                                            <div className="px-2 py-0 d-flex justify-content-between align-items-center border-bottom">
+                                                <p className=" mb-0 custom-card-header text-dark font-weight-bold">Qualified for Placement</p>
+                                            </div>
+                                            <div className="card-body pr-0">
+                                                <div className="row">
+                                                    <div className="col-lg-7 p-0 font-30">
+                                                        <FontAwesomeIcon icon={faTimesCircle} />
+                                                    </div>
+                                                    <div className="col-lg-3 px-0 text-right line-height-1 font-25">
+                                                        <span className='badge badge-pill badge-danger bg-danger'>No</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-lg-6">
+                                <div className="mt-1">
+                                    <div className="card-body box-shadow rounded py-2">
+                                        <div className=" ">
+                                            <div className="px-2 py-0 d-flex justify-content-between align-items-center border-bottom">
+                                                <h6 className=" mb-0 custom-card-header text-dark">Grade</h6>
+                                            </div>
+                                            <div className="card-body pr-0">
+                                                <div className="row">
+                                                    <div className="col-lg-7 p-0 font-30">
+                                                        <FontAwesomeIcon icon={faRankingStar} />
+                                                    </div>
+                                                    <div className="col-lg-3 px-0 text-right line-height-1 font-25">
+                                                        <span className='badge badge-pill badge-danger bg-danger'>E</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="card-body pr-0 pt-4 box-shadow mt-2">
+
+                            <div class="pr-3">
                                 <div class="d-flex align-items-center mb-30 gap-items-3 justify-content-between">
                                     <div class="d-flex align-items-center fw-500">
                                         <div class="me-15 w-50 d-table">
-                                            <FontAwesomeIcon icon={faFilePen} class="avatar avatar-lg rounded-10" alt="" />
+                                            <img src={performance_icon} class="avatar avatar-lg rounded-10" alt="" />
                                         </div>
                                         <div>
                                             <a href="#" class="text-dark hover-primary mb-2 d-block fs-16">Overall Performance</a>
@@ -380,73 +448,73 @@ const Student_Overview_new = () => {
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-center mb-30 justify-content-between">
-                                            <div class="d-flex align-items-center fw-500">
-                                                <div class="me-15 w-50 d-table">
-                                                    <img src="	https://eduadmin-template.multipurposethemes.com/bs5/images/avatar/avatar-2.png" class="avatar avatar-lg rounded-10" alt="" />
-                                                </div>
-                                                <div>
-                                                    <a href="#" class="text-dark hover-primary mb-2 d-block fs-16">Cumulative Assignment Score </a>
-                                                    <div class="w-200">
-                                                        <div class="progress progress-sm mb-0">
-                                                            <div class="progress-bar progress-bar-primary progress-bar-warning progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `75%` }}>
-                                                            </div>
-                                                        </div>
+                                    <div class="d-flex align-items-center fw-500">
+                                        <div class="me-15 w-50 d-table">
+                                            <img src={assignment_icon} class="avatar avatar-lg rounded-10" alt="" />
+                                        </div>
+                                        <div>
+                                            <a href="#" class="text-dark hover-primary mb-2 d-block fs-16">Cumulative Assignment Score </a>
+                                            <div class="w-200">
+                                                <div class="progress progress-sm mb-0">
+                                                    <div class="progress-bar progress-bar-primary progress-bar-warning progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `75%` }}>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="text-end">
-                                                <h5 class="fw-600 mb-0 badge badge-pill badge-warning mt-4">75%</h5>
-                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <h5 class="fw-600 mb-0 badge badge-pill badge-warning mt-4">75%</h5>
+                                    </div>
                                 </div>
                                 <div class="d-flex align-items-center mb-30 justify-content-between">
-                                            <div class="d-flex align-items-center fw-500">
-                                                <div class="me-15 w-50 d-table">
-                                                    <img src="	https://eduadmin-template.multipurposethemes.com/bs5/images/avatar/avatar-2.png" class="avatar avatar-lg rounded-10" alt="" />
-                                                </div>
-                                                <div>
-                                                    <a href="#" class="text-dark hover-primary mb-2 d-block fs-16">Cumulative Test Score</a>
-                                                    <div class="w-200">
-                                                        <div class="progress progress-sm mb-0">
-                                                            <div class="progress-bar progress-bar-success progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `75%` }}>
-                                                            </div>
-                                                        </div>
+                                    <div class="d-flex align-items-center fw-500">
+                                        <div class="me-15 w-50 d-table">
+                                            <img src={test_icon} class="avatar avatar-lg rounded-10" alt="" />
+                                        </div>
+                                        <div>
+                                            <a href="#" class="text-dark hover-primary mb-2 d-block fs-16">Cumulative Test Score</a>
+                                            <div class="w-200">
+                                                <div class="progress progress-sm mb-0">
+                                                    <div class="progress-bar progress-bar-success progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `75%` }}>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="text-end">
-                                                <h5 class="fw-600 mb-0 badge badge-pill badge-succes mt-4">75%</h5>
-                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <h5 class="fw-600 mb-0 badge badge-pill badge-succes mt-4">75%</h5>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="col-lg-4">
-                    <div className="mb-4">
+                    <div className="mb-4 d-none">
                         <div className="bg-blue-light rounded py-2">
-                                    <div className=" ">
-                                        <div className="px-2 py-0 d-flex justify-content-between align-items-center border-bottom">
-                                            <h6 className=" mb-0 custom-card-header text-dark">Attendance</h6>
-                                            <a href="#" className="btn btn-link p-0 mb-0"><FontAwesomeIcon icon={faEye} /></a>
-                                        </div>
-                                        <div className="card-body pr-0">
-                                            <div className="row">
-                                                <div className="col-lg-8 p-0">
-                                                    <div className="progress mt-1">
-                                                        {/* <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${studentAttendance}%` }}></div> */}
-                                                        <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `50%` }}></div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-lg-3 px-0 text-right line-height-1 ">
-                                                    <span className='badge badge-pill badge-primary'>50%</span>
-                                                </div>
+                            <div className=" ">
+                                <div className="px-2 py-0 d-flex justify-content-between align-items-center border-bottom">
+                                    <h6 className=" mb-0 custom-card-header text-dark">Attendance</h6>
+                                    <a href="#" className="btn btn-link p-0 mb-0"><FontAwesomeIcon icon={faEye} /></a>
+                                </div>
+                                <div className="card-body pr-0">
+                                    <div className="row">
+                                        <div className="col-lg-8 p-0">
+                                            <div className="progress mt-1">
+                                                {/* <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${studentAttendance}%` }}></div> */}
+                                                <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `50%` }}></div>
                                             </div>
+                                        </div>
+                                        <div className="col-lg-3 px-0 text-right line-height-1 ">
+                                            <span className='badge badge-pill badge-primary'>50%</span>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
                     </div>
                     {/* Counter item*/}
-                    <div className="">
+                    <div className="d-none">
                         <div className="d-flex justify-content-center align-items-center  bg-success bg-opacity-10 rounded py-2">
                             <span className="display-6 lh-1 text-success mb-0">
                                 <FontAwesomeIcon icon={faIdBadge} />
@@ -456,6 +524,99 @@ const Student_Overview_new = () => {
                                     <h5 className="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="8" data-purecounter-delay="300" data-purecounter-duration="0">8</h5>
                                 </div>
                                 <p className="mb-0 h6 fw-light text-dark">Achieved Certificates</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className=' pt-0'>
+                        <div>
+                            <div className="pb-2 border-bottom d-flex justify-content-between align-items-center">
+                                <h5 className="card-header-title">Attendance overview</h5>
+                            </div>
+
+                            {/* Donut chart Student sAttendance overview */}
+                            <div className="card-body p-0 box-shadow mt-2 d-none">
+                                <StudentClassOverview />
+                            </div>
+                            <div className="card-body p-0 box-shadow mt-2">
+                                <div className=" ">
+                                    <div className="card-body pr-0">
+                                        <div className="row">
+                                            <div className="col-lg-8 p-0">
+                                                <div className="progress mt-1">
+                                                    {/* <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${studentAttendance}%` }}></div> */}
+                                                    <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `50%` }}></div>
+                                                </div>
+                                            </div>
+                                            <div className="col-lg-3 px-0 text-right line-height-1 ">
+                                                <span className='badge badge-pill badge-primary'>50%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <StudentAttendanceOverviewColumnChart />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-lg-3 d-none">
+                    <div className="">
+                        <div className="card-body box-shadow rounded py-2 pr-0">
+                            <div className=" ">
+                                <div className="px-2 py-0 d-flex justify-content-between align-items-center border-bottom">
+                                    <h6 className=" mb-0 custom-card-header text-dark">Attendance</h6>
+                                    <a href="#" className="btn btn-link p-0 mb-0"><FontAwesomeIcon icon={faEye} /></a>
+                                </div>
+                                <div className="card-body px-0">
+                                    <div className="row">
+                                        <div className="col-lg-9 p-0">
+                                            <div className="progress mt-1">
+                                                {/* <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${studentAttendance}%` }}></div> */}
+                                                <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `50%` }}></div>
+                                            </div>
+                                        </div>
+                                        <div className="col-lg-3 px-0 text-right line-height-1 ">
+                                            <span className='badge badge-pill badge-primary'>50%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-1">
+                        <div className="card-body box-shadow rounded py-2">
+                            <div className=" ">
+                                <div className="px-2 py-0 d-flex justify-content-between align-items-center border-bottom">
+                                    <h6 className=" mb-0 custom-card-header text-dark">Grade</h6>
+                                </div>
+                                <div className="card-body pr-0">
+                                    <div className="row">
+                                        <div className="col-lg-7 p-0 font-30">
+                                            <FontAwesomeIcon icon={faRankingStar} />
+                                        </div>
+                                        <div className="col-lg-3 px-0 text-right line-height-1 font-25">
+                                            <span className='badge badge-pill badge-danger bg-danger'>E</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-1">
+                        <div className="card-body box-shadow rounded py-2">
+                            <div className=" ">
+                                <div className="px-2 py-0 d-flex justify-content-between align-items-center border-bottom">
+                                    <p className=" mb-0 custom-card-header text-dark font-weight-bold">Qualified for Placement</p>
+                                </div>
+                                <div className="card-body pr-0">
+                                    <div className="row">
+                                        <div className="col-lg-7 p-0 font-30">
+                                            <FontAwesomeIcon icon={faTimesCircle} />
+                                        </div>
+                                        <div className="col-lg-3 px-0 text-right line-height-1 font-25">
+                                            <span className='badge badge-pill badge-danger bg-danger'>No</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -497,7 +658,7 @@ const Student_Overview_new = () => {
                     </div> */}
             </div>
 
-            <div className="row mt-5">
+            <div className="row mt-5 d-none">
                 <div className="col-lg-6">
                     <div>
                         <div class="shadow-box-header">
@@ -640,7 +801,7 @@ const Student_Overview_new = () => {
                                                     </p>
                                                 </div>
                                             </div>
-                                            
+
                                             <a href="#">
                                                 <span><FontAwesomeIcon icon={faPlay} /></span>
                                             </a>
@@ -741,6 +902,116 @@ const Student_Overview_new = () => {
                 </div>
             </div>
 
+            <div className='mt-4 px-2' style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(600px, 1fr))", gap: "10px", height: "310px", marginBottom: "20px", }}>
+                {/* Today's Classes */}
+                <div className="row">
+                    <div className="col-lg-6">
+                        <div className='rounded' style={{ borderRadius: "10px", backgroundColor: "white" }}>
+                            <p className="text-center p-2" style={{ fontSize: "20px" }}>Today's Classes</p>
+                            <div style={{ backgroundColor: "white" }} >
+                                {paginatedTodaysMeetings?.length > 0 ? (
+                                    paginatedTodaysMeetings.map((meeting, index) => (
+                                        <div key={index} className="list-group-item mb-10 card text-gray" style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            // alignItems: 'center',
+                                            padding: '10px',
+                                            marginBottom: '10px',
+                                            borderRadius: '8px',
+                                            boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+                                        }}>
+                                            <div className="box-body">
+                                                <div className="d-flex align-items-center justify-content-between">
+                                                    <div className="d-flex align-items-center">
+                                                        <div className="mr-15 w-45 h-40 line-height-3 color-fff bg-theme rounded text-center">
+                                                            <span><FontAwesomeIcon icon={faBookOpen} /></span>
+                                                        </div>
+                                                        <div className="d-flex flex-column fw-500">
+                                                            <p className="text-theme hover-primary mb-1 fs-16">{meeting?.topic}</p>
+                                                            <p className="mb-0 font-12">
+                                                                <span className="text-fade mr-1"><FontAwesomeIcon icon={faClock} /></span>
+                                                                <span>{meeting?.startTime} - {meeting?.endTime}</span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <a href="#" onClick={() => handleMeeting(meeting?.meetingLink)}>
+                                                        <span><FontAwesomeIcon icon={faPlay} /></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    ))
+                                ) : (
+                                    <div style={{ padding: '10px', color: '#666' }}>No meetings available for today</div>
+                                )}
+                                <Pagination
+                                    count={Math.ceil(todaysMeetings?.length / itemsPerPage)}
+                                    page={currentPageToday}
+                                    onChange={handlePageChangeToday}
+                                    color="primary"
+                                    style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Upcoming Classes */}
+                    <div className="col-lg-6">
+                        <div className='' style={{ borderRadius: "10px", backgroundColor: "white" }}>
+                            <p className="text-center p-2" style={{ fontSize: "20px" }}>Upcoming Classes</p>
+                            <div style={{ backgroundColor: "white" }}>
+                                {paginatedUpcomingMeetings?.length > 0 ? (
+                                    paginatedUpcomingMeetings.map((meeting, index) => (
+                                        <div key={index} className="list-group-item mb-10 card text-gray" style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            padding: '10px',
+                                            marginBottom: '10px',
+                                            borderRadius: '8px',
+                                            boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+                                        }}>
+                                            <div className="box-body">
+                                                <div className="d-flex align-items-center justify-content-between">
+                                                    <div className="d-flex align-items-center">
+                                                        <div className="mr-15 w-45 h-40 line-height-3 color-fff bg-theme rounded text-center">
+                                                            <span><FontAwesomeIcon icon={faBookOpen} /></span>
+                                                        </div>
+                                                        <div className="d-flex flex-column fw-500">
+                                                            <p className="text-theme hover-primary mb-1 fs-16">{meeting?.topic}</p>
+                                                            <p className="mb-0 font-12">
+                                                                <span className="text-fade mr-1"><FontAwesomeIcon icon={faClock} /></span>
+                                                                <span>{meeting?.startTime} - {meeting?.endTime}</span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <a href="#" onClick={() => handleMeeting(meeting?.meetingLink)}>
+                                                        <span><FontAwesomeIcon icon={faPlay} /></span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div style={{ padding: '10px', color: '#666' }}>No upcoming meetings available</div>
+                                )}
+                                <Pagination
+                                    count={Math.ceil(upcomingMeetings?.length / itemsPerPage)}
+                                    page={currentPageUpcoming}
+                                    onChange={handlePageChangeUpcoming}
+                                    color="primary"
+                                    style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}
+                                />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
         </>
     )
 }

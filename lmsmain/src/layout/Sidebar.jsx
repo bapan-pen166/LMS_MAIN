@@ -5,7 +5,7 @@ import { useState } from 'react';
 import "../assets/css/Sidebar/Sidebar.css"
 import Mntor_Sidebar from '../Mentor_section/pages/Mntor_Sidebar';
 import axios from 'axios';
-import Student_Sidebar from '../Student_section/Pages/Student_Sidebar';
+import Student_Sidebar_new from '../Student_section/Pages/Student_Sidebar_new';
 import Placement_Sidebar from '../Placement_section/Pages/Placement_Sidebar';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Datacontext } from '../Context';
@@ -137,7 +137,7 @@ function Sidebar() {
                       
                     </div>) : userType === "Mentor" ?
                          
-                       <Mntor_Sidebar/> : userType === "Student" ? <Student_Sidebar/> : userType === "Placement" ? <Placement_Sidebar/>:null
+                       <Mntor_Sidebar/> : userType === "Student" ? <Student_Sidebar_new/> : userType === "Placement" ? <Placement_Sidebar/>:null
                     }
                 </ul>
             </div>

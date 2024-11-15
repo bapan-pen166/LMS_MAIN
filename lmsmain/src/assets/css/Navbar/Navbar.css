@@ -170,7 +170,7 @@
     color:white
   }
   .list-style, .nav-link{
-    color: black !important;
+    color: black;
   }
   .list-style, .nav-link:hover {
     /* background-color: rgb(50, 95, 63); */
@@ -186,7 +186,7 @@
    
   }
   .active{
-    color:white !important;
+    color:white;
     background-color:  #0c5273;
     border-radius: 3%;
     font-size: larger;

@@ -523,3 +523,19 @@
 .list-group-item-action:focus, .list-group-item-action:hover{
     color: #282c33 !important;
 }
+
+.list-group a{
+      padding: 8px;
+      color: #fff;
+}
+
+.list-group a.active{
+  background-color: #fff;
+  color: #000;
+  font-size: 14px;
+}
+
+.nav-link .list-item{
+  padding: 8px!important;
+  color: #fff;
+}
