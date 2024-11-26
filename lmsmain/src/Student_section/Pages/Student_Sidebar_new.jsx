@@ -5,7 +5,7 @@ import "../../assets/css/Sidebar/Sidebar.css"
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendar, faListCheck, faAngleDown, faBook, faUserGraduate, faAward, faCogs, faHomeUser, faArrowTrendUp, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+import { faCalendar, faListCheck, faAngleDown, faBook, faUserGraduate, faAward, faCogs, faUserPen, faArrowTrendUp, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 
 const Student_Sidebar_new = () => {
     const [userType, setUserType] = useState();
@@ -58,13 +58,15 @@ const Student_Sidebar_new = () => {
             {dropdownOpen && (
                 <ul className="dropdown-menu-item" >
 
-                    <NavLink style={{ paddingLeft: "10%" }} className="list-group" to='/Student_Assignment'>
+                    <NavLink style={{  display: 'inline-block', paddingLeft: "10%" }} className="list-group w-100" to='/Student_Assignment'>
                         <FontAwesomeIcon className='mr-10' icon={faClipboardList} />
                         Assignment
                     </NavLink>
+                    
 
-
-                    <NavLink style={{ paddingLeft: "10%" }} className="list-group" to="/student-test"> Tests</NavLink>
+                    <NavLink style={{ display: 'inline-block',paddingLeft: "10%" }} className="list-group  w-100" to="/student-test"> 
+                        <FontAwesomeIcon className='mr-10' icon={faUserPen} />
+                    Tests</NavLink>
 
 
                     {/* <NavLink style={{ paddingLeft: "30%" }} className="" to="/view-test">View Tests</NavLink> */}

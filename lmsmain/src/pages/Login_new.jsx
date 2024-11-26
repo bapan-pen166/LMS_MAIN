@@ -217,68 +217,114 @@ function Login_new() {
 
     return (
         <>
-            <section className="ftco-section">
-                <div className="container">
-                    {/* <div className="row justify-content-center">
-                        <div className="col-md-6 text-center mb-5">
-                            <h2 className="heading-section"></h2>
-                        </div>
-                    </div> */}
-                    <div className="row justify-content-center mt-3">
-                        <div className="col-md-12 col-lg-10">
-                            <div className="wrap d-md-flex height-95">
-                                <div className="img" style={{ backgroundImage: `url(${bg_image})`, backgroundSize: 'contain' }}>
-                                </div>
-                                <div className="login-wrap p-4 p-md-5">
-                                    <div className="d-flex flex-column text-center">
-                                        <div className="w-100">
-                                            {/* <p className="social-media justify-content-end d-none">
-                                                <a href="#" className="social-icon d-flex align-items-center justify-content-center"><span className="fa fa-facebook"></span></a>
-                                                <a href="#" className="social-icon d-flex align-items-center justify-content-center"><span className="fa fa-twitter"></span></a>
-                                            </p> */}
-                                            <img src={logo} alt="" className='nav-logo' />
-                                        </div>
-                                        <div className="w-100 mt-3">
-                                            <h3 className="mb-4">Log In</h3>
-                                        </div>
+            <section className="section">
+                {!forgetPage && 
+                    <div className="container">
+                        {/* <div className="row justify-content-center">
+                            <div className="col-md-6 text-center mb-5">
+                                <h2 className="heading-section"></h2>
+                            </div>
+                        </div> */}
+                        <div className="row justify-content-center mt-3">
+                            <div className="col-md-12 col-lg-10">
+                                <div className="wrap d-md-flex height-95">
+                                    <div className="img" style={{ backgroundImage: `url(${bg_image})`, backgroundSize: 'contain' }}>
                                     </div>
-                                    <form action="#" className="signin-form" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
-                                        <div className="form-group mb-3 w-100">
-                                            <label className="label" htmlFor="name">Username</label>
-                                            <input type="text" className="form-control" placeholder="Username" required=""
-                                                onChange={(e) => setUsername(e.target.value)}
-                                                value={username} // Keep the username in the input field
-                                            />
-                                        </div>
-                                        <div className="form-group mb-3 w-100">
-                                            <label className="label" htmlFor="password">Password</label>
-                                            <input type="password" className="form-control" placeholder="Password" required=""
-                                                onChange={(e) => setPassword(e.target.value)}
-                                                value={password} // Keep the password in the input field
-                                            />
-                                        </div>
-                                        <div className="d-flex">
-                                            <div className="w-50 text-left">
-                                                <label className="checkbox-wrap checkbox-primary mb-0 d-none">Remember Me
-                                                    <input type="checkbox" checked="" />
-                                                    <span className="checkmark"></span>
-                                                </label>
+                                    <div className="login-wrap p-4 p-md-5">
+                                        <div className="d-flex flex-column text-center">
+                                            <div className="w-100">
+                                                {/* <p className="social-media justify-content-end d-none">
+                                                    <a href="#" className="social-icon d-flex align-items-center justify-content-center"><span className="fa fa-facebook"></span></a>
+                                                    <a href="#" className="social-icon d-flex align-items-center justify-content-center"><span className="fa fa-twitter"></span></a>
+                                                </p> */}
+                                                <img src={logo} alt="" className='nav-logo' />
                                             </div>
-                                            <div className="w-50 text-md-right">
-                                                <a href="#">Forgot Password</a>
+                                            <div className="w-100 mt-3">
+                                                <h3 className="mb-4">Log In</h3>
                                             </div>
                                         </div>
-                                        <div className="form-group w-100">
-                                            <button type="submit" className="form-control btn btn-primary rounded submit px-3">Sign In</button>
-                                        </div>
-                                    </form>
-                                    {/* <p className="text-center">Not Registered? <a data-toggle="tab" href="#signup">Register</a></p> */}
+                                        <form action="#" className="signin-form" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+                                            <div className="form-group mb-3 w-100">
+                                                <label className="label" htmlFor="name">Username</label>
+                                                <input type="text" className="form-control" placeholder="Username" required=""
+                                                    onChange={(e) => setUsername(e.target.value)}
+                                                    value={username} // Keep the username in the input field
+                                                />
+                                            </div>
+                                            <div className="form-group mb-3 w-100">
+                                                <label className="label" htmlFor="password">Password</label>
+                                                <input type="password" className="form-control" placeholder="Password" required=""
+                                                    onChange={(e) => setPassword(e.target.value)}
+                                                    value={password} // Keep the password in the input field
+                                                />
+                                            </div>
+                                            <div className="d-flex">
+                                                <div className="w-50 text-left">
+                                                    <label className="checkbox-wrap checkbox-primary mb-0 d-none">Remember Me
+                                                        <input type="checkbox" checked="" />
+                                                        <span className="checkmark"></span>
+                                                    </label>
+                                                </div>
+                                                <div className="w-100 text-md-right mb-3">
+                                                    <button type="button" onClick={()=>setForgetPage(true)} style={{    background: "none", color: "blue"}}>Forgot Password ?</button>
+                                                </div>
+                                            </div>
+                                            <div className="form-group w-100">
+                                                <button type="submit" className="form-control btn btn-primary rounded submit px-3">Sign In</button>
+                                            </div>
+                                        </form>
+                                        {/* <p className="text-center">Not Registered? <a data-toggle="tab" href="#signup">Register</a></p> */}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+
+                }
+                {forgetPage && 
+                   <div class="containerBox" >
+                       {/* forget wala */}
+                   <div className="loginPage">
+                       <div className="loginBox">
+                           <div className="LoginForm">
+                               <img src={logo} width="60%" alt="" />
+                               <form onSubmit={handlePasswordChangeConfirm}>
+                                   <div className="row">
+                                       <input type="email" readOnly={activeAfterMailVerified}  className="lms-login-input-box" id="username" placeholder="Email Id" onChange={(e) => setEmailID(e.target.value)} />
+                                   </div>
+                                   {!activeAfterMailVerified &&<div className="row">
+                                       <input type="button" className="lms-button form-control" value="Send OTP" onClick={handleOTPsendForThe} />
+                                   </div>}
+                                   {forenterOTP && <><div className="row">
+                                       <input type="text" readOnly={forTheReadonlyOTPField}  className="lms-login-input-box" id="username" placeholder="Enter OTP" onChange={(e) => setVerifyotp(e.target.value)} />
+                                   </div>
+                                   <div className='row'>
+                                      <input type="button" disabled={forTheReadonlyOTPField} className="lms-button form-control" value="Verify OTP" onClick={handleVerifyOtp} />
+                                   </div> </>}
+
+                                   {verified && <><div className="row">
+                                       <input type="password" className="lms-login-input-box" id="password" placeholder="Password" onChange={(e) => setPasswordFoget(e.target.value)} />
+                                       {errors.passwordFoget && <div style={{ color: 'red' }}>{errors.passwordFoget}</div>}
+                                    </div>
+                                   <div className="row">
+                                       <input type="password" className="lms-login-input-box" id="password" placeholder="Confirm Password" onChange={(e) => setconfirmPasswordFoget(e.target.value)} />
+                                       {errors.confirmPasswordFoget && <div style={{ color: 'red' }}>{errors.confirmPasswordFoget}</div>}
+                                   </div>
+                                   <div className="row">
+                                       <input type="submit"  className="lms-button form-control" value="Update"  />
+                                   </div> </>}
+                               </form>
+                               <div className="row inputspace justify-content-center">
+                                   <p style={{color:"blue",cursor:"pointer"}} onClick={()=>setForgetPage(false)}>Click here to Login</p>
+                               </div>
+                           </div>
+                       </div>
+                       <div className="loginPageImage"></div>
+                   </div>
+               </div>
+                }
             </section>
+            <ToastContainer />
         </>
     )
 }

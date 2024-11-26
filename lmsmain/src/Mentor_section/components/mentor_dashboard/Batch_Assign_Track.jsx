@@ -50,71 +50,73 @@ const { categories, series } = prepareChartData(assignmentDetails);
 
 
     
-    const options = {
-        chart: {
-            type: 'column'
-        },
-        credits: {
-            enabled: false
-        },
+const options = {
+    chart: {
+        type: 'column'
+    },
+    credits: {
+        enabled: false
+    },
+    title: {
+        text: null,
+        align: 'left'
+    },
+    xAxis: {
+        categories: categories, 
         title: {
-            text: null,
-            align: 'left'
+            text: null
         },
-        xAxis: {
-            categories: categories, // Combined categories (batch -> assignment)
-            title: {
-                text: null
-            },
-            labels: {
-                rotation: -45,
-                align: 'right'
-            }
+        labels: {
+            rotation: -45,
+            align: 'right'
         },
-        yAxis: {
-            min: 0,
-            title: {
-                text: null
-            },
-            stackLabels: {
-                enabled: true,
-                style: {
-                    fontWeight: 'bold',
-                    color: (Highcharts.defaultOptions.title.style && Highcharts.defaultOptions.title.style.color) || 'gray'
-                }
-            }
+        gridLineWidth: 0 
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: null
         },
-        tooltip: {
-            formatter: function () {
-                return `<b>${this.x}</b><br/>${this.series.name}: ${this.y}`;
+        gridLineWidth: 0, 
+        stackLabels: {
+            enabled: true,
+            style: {
+                fontWeight: 'bold',
+                color: (Highcharts.defaultOptions.title.style && Highcharts.defaultOptions.title.style.color) || 'gray'
             }
+        }
+    },
+    tooltip: {
+        formatter: function () {
+            return `<b>${this.x}</b><br/>${this.series.name}: ${this.y}`;
+        }
+    },
+    plotOptions: {
+        column: {
+            stacking: 'normal', 
+            dataLabels: {
+                enabled: true
+            }
+        }
+    },
+    series: [
+        {
+            name: 'Completed',
+            data: series.Completed,
+            color: '#38bdf8' 
         },
-        plotOptions: {
-            column: {
-                stacking: 'normal', // Stack the sections within each bar
-                dataLabels: {
-                    enabled: true
-                }
-            }
+        {
+            name: 'In Progress',
+            data: series['In progress'],
+            color: '#1d4ed8' 
         },
-        series: [
-            {
-                name: 'Completed',
-                data: series.Completed,
-                color: '#38bdf8' // Green for Completed
-            },
-            {
-                name: 'In Progress',
-                data: series['In progress'],
-                color: '#1d4ed8' // Orange for In Progress
-            },
-            {
-                name: 'Not Started',
-                data: series['Not Started'],
-                color: '#dbeafe' // Red for Not Started
-            }
-        ]
-    };
+        {
+            name: 'Not Started',
+            data: series['Not Started'],
+            color: '#dbeafe' 
+        }
+    ]
+};
 
     return (
         <div>
@@ -124,6 +126,8 @@ const { categories, series } = prepareChartData(assignmentDetails);
 };
 
 export default Batch_Assign_Track;
+
+
 
 // import React, { useState, useEffect } from 'react';
 // import { Bar } from 'react-chartjs-2';

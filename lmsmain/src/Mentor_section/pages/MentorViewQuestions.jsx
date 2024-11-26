@@ -66,10 +66,10 @@ const MentorViewQuestions = () => {
 
 
     return (
-        <div style={{ marginTop: "58px" }}>
+        <div >
             <div className="row">
                 <div className="container-fluid">
-                    <div className='col-md-12 col-lg-12 headLineBox d-flex justify-content-start'>
+                    <div className='col-md-12 col-lg-12 d-flex justify-content-start'>
                         <h4>View Questions</h4>
                     </div>
                     {forPDF ? <div style={{display:"flex", justifyContent:"center",alignItems:"center",marginTop:"20px"}}>

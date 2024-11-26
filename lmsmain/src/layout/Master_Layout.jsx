@@ -12,8 +12,8 @@ import '../assets/css/Navbar/Navbar.css';
 import { useLocation, matchPath } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSliders, faCalendar } from '@fortawesome/free-solid-svg-icons';
-import { api } from '../ApiUrl/ApiUrl';
-import StundentCourseProgressChart from '../Student_section/Components/student_overview/StundentCourseProgress';
+import { api, api2 } from '../ApiUrl/ApiUrl';
+import StudentCourseProgressChart from '../Student_section/Components/student_overview/StudentCourseProgressChart';
 import axios from 'axios';
 function Master_Layout() {
     const { hamburger } = useContext(Datacontext);
@@ -47,26 +47,17 @@ function Master_Layout() {
     // State to manage sidebar visibility
     const [isSidebarVisible, setSidebarVisible] = useState(false);
     const [getBatchName, setGetBatchName] = useState();
+    const [getCourseName, setGetCourseName] = useState();
     const [firstName, setFirstName] = useState();
     const [lastName, setLastName] = useState();
     const [userId, setUserId] = useState()
     const [studentMail, setStudentMail] = useState();
     const [userType,setUserType] = useState();
+    const [courseProgress, setCourseProgress] = useState();
     const toggleSidebar = () => {
         setSidebarVisible(!isSidebarVisible);
     };
     
-
-    useEffect(() => {
-        if (studentMail) {
-            getBatchNM()
-        }
-    }, [studentMail]);
-
-    useEffect(()=>{
-        setUserType(localStorage.getItem('userType'))
-     },[]);
-     
     useEffect(() => {
         setStudentMail(localStorage.getItem('studentEmail'))
         setLastName(localStorage.getItem('lastName'))
@@ -74,13 +65,50 @@ function Master_Layout() {
         setUserId(localStorage.getItem('id'))
     }, []);
 
+    useEffect(() => {
+        if (studentMail) {
+            getBatchNM()
+        }
+    }, [studentMail]);
+
+   
+     
+    
+
     const getBatchNM = () => {
         axios.post(`${api}/dashboard/getStudentBatchName`, { studentEmail: studentMail })
             .then((Response) => {
-                console.log("BatchName", Response?.data?.batch);
-                setGetBatchName(Response?.data?.batch)
+                console.log("BatchName", Response?.data?.batchName);
+                setGetBatchName(Response?.data?.batchName);
+                setGetCourseName(Response?.data?.courseName);
             })
     }
+
+    useEffect(() => {
+        const storedUser_Type = localStorage.getItem('userType');
+        setUserType(storedUser_Type);
+        
+        if (storedUser_Type === 'Student') {
+            courseProgressBar();
+        }
+    }, [studentMail, getBatchName]);
+
+    const courseProgressBar = () => {
+
+        axios.post(`${api2}/dashboard/getIndividualCourseProgressBar`, { studentEmail: studentMail, batchName: getBatchName })
+
+            .then((Response) => {
+                console.log(" course progress barrr ", Response?.data?.completion_percentage);
+                setCourseProgress(Response?.data?.completion_percentage);
+                
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+    useEffect(() => {
+        console.log("Course progress updated: ", courseProgress);
+    }, [courseProgress]);
     return (
         <>
             <div className='full-page'>
@@ -96,7 +124,7 @@ function Master_Layout() {
                             <div class="row">
                                 <div class="col-12">
                                     <div class="bg-transparent card-body p-0 mt-2 mt-sm-0 d-flex">
-                                        <div class="row d-sm-flex justify-sm-content-between mt-2 mt-md-0">
+                                        <div class="row d-sm-flex mt-2 mt-md-0">
                                             {/* Avatar */}
                                             <div class="col-md-2">
                                                 <div class="avatar avatar-xxl position-relative mt-n3">
@@ -105,9 +133,11 @@ function Master_Layout() {
                                                 </div>
                                             </div>
                                             {/* Profile info */}
-                                            <div class="col-lg-7 mt-2 ml-3 px-0 d-sm-flex justify-content-between align-items-center">
+                                            <div class="col-lg-8 mt-2 px-0 d-sm-flex align-items-center">
                                                 <div className='mt-n3'>
-                                                    <h1 class="mb-2 mt-n4 fs-4">Bapan Ghosh</h1>
+                                                    <h1 class="mb-2 mt-n4 fs-4">
+                                                        <span className='mr-2'>{firstName ? firstName : ''}</span>
+                                                        <span>{lastName ? lastName : ''}</span></h1>
                                                     <ul class="list-inline mb-0 mt-2">
                                                     {userType == 'Student' ?
                                                             <>
@@ -118,7 +148,7 @@ function Master_Layout() {
                                                                 </li>
                                                                 <li class="list-inline-item me-3 mb-1 mb-sm-0">
                                                                     <span class="fw-light mr-1">Course Name</span>
-                                                                    <span class="text-body font-weight-bold h6 mr-1">BIM - Ready+</span>
+                                                                    <span class="text-body font-weight-bold h6 mr-1">{getCourseName ? getCourseName : ''}</span>
                                                                 </li>
                                                                 <li class="list-inline-item me-3 mb-1 mb-sm-0">
                                                                     <span class="fw-light mr-1">Student ID</span>
@@ -132,25 +162,20 @@ function Master_Layout() {
                                                 </div>
                                                 {/* Button */}
                                             </div>
-                                            
-                                        </div>
-                                        <div class="col-lg-2">
-                                                {/* <a href="student-course-list.html" class="btn btn-outline-primary mb-0">Join live classes</a> */}
-                                                { userType == 'Student' ?
-                                                    <StundentCourseProgressChart /> : <></>
-                                                }
+                                            <div class="col-lg-2">
+                                                    {/* <a href="student-course-list.html" class="btn btn-outline-primary mb-0">Join live classes</a> */}
+                                                    { userType === 'Student' ? 
+                                                        <StudentCourseProgressChart courseProgressValue = {courseProgress} /> : 
+                                                        <div className="pt-2 mt-n3 pl-5" style={{height: '165px'}}></div>
+                                                    }
+                                            </div>
                                         </div>
                                     </div>
 
                                     {/* Advanced filter responsive toggler START */}
                                     {/* Divider */}
                                     <span class="d-xl-none" />
-                                    <div class="col-12 col-xl-3 d-flex justify-content-between align-items-center">
-                                        <a class="h6 mb-0 fw-bold d-xl-none" href="#">Menu</a>
-                                        <button class="btn btn-primary d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
-                                            <FontAwesomeIcon icon={faSliders} onClick={toggleSidebar}/>
-                                        </button>
-                                    </div>
+                                    
                                     {/* Advanced filter responsive toggler END */}
                                 </div>
                             </div>
@@ -176,7 +201,7 @@ function Master_Layout() {
                         <div className="container-fluid mt-4 px-5">
                             <div className="row">
                                 <div className="col-md-2">
-                                    {!isErrorPage && <Sidebar_new className={`sidebar ${isSidebarVisible ? 'show' : ''}`}/>}
+                                    {!isErrorPage && <Sidebar_new />}
                                 </div>
                                 <div className="col-md-10">
                                     <Body />

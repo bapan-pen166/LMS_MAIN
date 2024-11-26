@@ -163,7 +163,7 @@ function Student_Schedule_meeting({ meeting, setMeeting, holidaylist }) {
             view === 'month'
                 ? event.isHoliday
                     ? 'lightcoral' // Holiday color in month view
-                    : 'rgb(125, 11, 148)' // Regular event color in month view
+                    : 'rgb(8 85 92 / 24%)' // Regular event color in month view
                 : ''; // Default color for other views
 
         return {
@@ -198,7 +198,7 @@ function Student_Schedule_meeting({ meeting, setMeeting, holidaylist }) {
                     onView={handleViewChange}
                     startAccessor="start"
                     endAccessor="end"
-                    style={{ height: '80vw' }}
+                    // style={{ height: '80vw' }}
                     step={10}
                     timeslots={6}
                     components={customComponents}

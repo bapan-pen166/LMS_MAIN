@@ -28,7 +28,7 @@ import cert_lock from "../../assets/img/student overview/lock_certificate.jpg"
 import "../../assets/css/Student_dashboard/student_dashboard.css";
 import TopBar from '../../layout/TopBar';
 import SideBar from '../../layout/Sidebar_new';
-import { faIdBadge, faCheck, faBookOpen, faPlay, faClock, faMedal, faEye, faRankingStar, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faIdBadge, faCheckCircle, faBookOpen, faPlay, faClock, faMedal, faEye, faRankingStar, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Pagination } from '@mui/material';
 const Student_Overview_new = () => {
@@ -87,8 +87,8 @@ const Student_Overview_new = () => {
     const getBatchNM = () => {
         axios.post(`${api}/dashboard/getStudentBatchName`, { studentEmail: studentMail })
             .then((Response) => {
-                console.log("BatchName", Response?.data?.batch);
-                setGetBatchName(Response?.data?.batch)
+                console.log("BatchName", Response?.data?.batchName);
+                setGetBatchName(Response?.data?.batchName)
             })
     }
 
@@ -217,8 +217,12 @@ const Student_Overview_new = () => {
 
             .then((Response) => {
                 console.log(" student grade ", Response?.data);
-                setStudentGrade(Response?.data)
-                setQualifiedForPlacement(Response?.data)
+                setStudentGrade(Response?.data?.finalGrade)
+                if (Response?.data?.qualifyForPlacement === 1) {
+                    setQualifiedForPlacement('Yes');
+                } else {
+                    setQualifiedForPlacement('No');
+                }
 
             })
             .catch((error) => {
@@ -352,7 +356,7 @@ const Student_Overview_new = () => {
                                 <span className="display-6 lh-1 text-orange mb-0"><i className="fa fa-television"></i></span>
                                 <div className="ml-3">
                                     <div className="d-flex">
-                                        <h5 className="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="9" data-purecounter-delay="200" data-purecounter-duration="0">21.21%</h5>
+                                        <h5 className="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="9" data-purecounter-delay="200" data-purecounter-duration="0">{overallPerformn ? overallPerformn : ''}</h5>
                                     </div>
                                     <p className="mb-0 h6 fw-light text-dark">Overall Performance</p>
                                 </div>
@@ -377,35 +381,35 @@ const Student_Overview_new = () => {
                     </div>
                 </div>
                 <div className="col-lg-8">
-                    <div className="">
-                        <div className="pb-2 border-bottom d-flex justify-content-between align-items-center">
-                            <h5 className="card-header-title">Performance overview</h5>
-                        </div>
-                        <div className="row card-body pr-0 pt-4 box-shadow mt-2 d-flex">
-                            <div className="col-lg-6">
+                    <div className="pb-2 border-bottom rounded-lg d-flex justify-content-between align-items-center">
+                        <h5 className="card-header-title">Performance overview</h5>
+                    </div>
+                    <div className="row card-body pr-0 pt-4 box-shadow mt-2 rounded-lg">
+                        <div className="col-lg-4">
                                 <div className="mt-1">
-                                    <div className="card-body box-shadow rounded py-2">
+                                    <div className="card-body rounded py-2">
                                         <div className=" ">
                                             <div className="px-2 py-0 d-flex justify-content-between align-items-center border-bottom">
                                                 <p className=" mb-0 custom-card-header text-dark font-weight-bold">Qualified for Placement</p>
                                             </div>
                                             <div className="card-body pr-0">
                                                 <div className="row">
-                                                    <div className="col-lg-7 p-0 font-30">
-                                                        <FontAwesomeIcon icon={faTimesCircle} />
-                                                    </div>
-                                                    <div className="col-lg-3 px-0 text-right line-height-1 font-25">
-                                                        <span className='badge badge-pill badge-danger bg-danger'>No</span>
+                                                    {/* <div className="col-lg-7 p-0 font-30">
+                                                        {qualifiedForPlacement ==='Yes' ? <FontAwesomeIcon icon={faCheckCircle} className='text-success' color='green'/> : <FontAwesomeIcon icon={faTimesCircle} className='text-danger' color='red'/>}
+                                                        
+                                                    </div> */}
+                                                    <div className="col-lg-6 px-0 text-right line-height-1 font-25">
+                                                        <span className={`mr-3 badge badge-pill ${qualifiedForPlacement =='Yes' ? 'badge-success' : 'badge-danger'}`}> 
+                                                        {qualifiedForPlacement ==='Yes' ? <FontAwesomeIcon icon={faCheckCircle} /> : <FontAwesomeIcon icon={faTimesCircle}/>}{qualifiedForPlacement}
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="col-lg-6">
                                 <div className="mt-1">
-                                    <div className="card-body box-shadow rounded py-2">
+                                    <div className="card-body rounded py-2">
                                         <div className=" ">
                                             <div className="px-2 py-0 d-flex justify-content-between align-items-center border-bottom">
                                                 <h6 className=" mb-0 custom-card-header text-dark">Grade</h6>
@@ -416,73 +420,75 @@ const Student_Overview_new = () => {
                                                         <FontAwesomeIcon icon={faRankingStar} />
                                                     </div>
                                                     <div className="col-lg-3 px-0 text-right line-height-1 font-25">
-                                                        <span className='badge badge-pill badge-danger bg-danger'>E</span>
+                                                        <span className='badge badge-pill badge-primary'>{studentGrade ? studentGrade : ''}</span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                         </div>
-                        <div className="card-body pr-0 pt-4 box-shadow mt-2">
 
-                            <div class="pr-3">
-                                <div class="d-flex align-items-center mb-30 gap-items-3 justify-content-between">
-                                    <div class="d-flex align-items-center fw-500">
-                                        <div class="me-15 w-50 d-table">
-                                            <img src={performance_icon} class="avatar avatar-lg rounded-10" alt="" />
-                                        </div>
-                                        <div>
-                                            <a href="#" class="text-dark hover-primary mb-2 d-block fs-16">Overall Performance</a>
-                                            <div class="w-200">
-                                                <div class="progress progress-sm mb-0">
-                                                    <div class="progress-bar progress-bar-primary progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `70%` }}>
+                        <div className="col-lg-8">
+                            <div className="row px-5 pt-4 mt-2">
+
+                                <div class="pr-3">
+                                    <div class="d-flex align-items-center mb-30 justify-content-between">
+                                        <div class="d-flex align-items-center fw-500">
+                                            <div class="me-15 w-50px d-table">
+                                                <img src={performance_icon} class="avatar avatar-lg rounded-10" alt="" />
+                                            </div>
+                                            <div>
+                                                <a href="#" class="text-dark hover-primary mb-2 d-block fs-16">Overall Performance</a>
+                                                <div class="w-200">
+                                                    <div class="progress progress-sm mb-0">
+                                                        <div class="progress-bar progress-bar-primary progress-bar-striped progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${overallPerformn}%` }}>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="text-end">
-                                        <h5 class="fw-600 mb-0 badge badge-pill badge-primary mt-4">75%</h5>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center mb-30 justify-content-between">
-                                    <div class="d-flex align-items-center fw-500">
-                                        <div class="me-15 w-50 d-table">
-                                            <img src={assignment_icon} class="avatar avatar-lg rounded-10" alt="" />
+                                        <div class="text-end">
+                                            <h5 class="fw-600 mb-0 badge badge-pill badge-primary mt-4">{overallPerformn ? overallPerformn : ""}</h5>
                                         </div>
-                                        <div>
-                                            <a href="#" class="text-dark hover-primary mb-2 d-block fs-16">Cumulative Assignment Score </a>
-                                            <div class="w-200">
-                                                <div class="progress progress-sm mb-0">
-                                                    <div class="progress-bar progress-bar-primary progress-bar-warning progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `75%` }}>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-30 justify-content-between">
+                                        <div class="d-flex align-items-center fw-500">
+                                            <div class="me-15 w-50px d-table">
+                                                <img src={assignment_icon} class="avatar avatar-lg rounded-10" alt="" />
+                                            </div>
+                                            <div>
+                                                <a href="#" class="text-dark hover-primary mb-2 d-block fs-16">Cumulative Assignment Score </a>
+                                                <div class="w-200">
+                                                    <div class="progress progress-sm mb-0">
+                                                        <div class="progress-bar progress-bar-primary progress-bar-warning progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${assignmentPercentage}%` }}>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="text-end">
-                                        <h5 class="fw-600 mb-0 badge badge-pill badge-warning mt-4">75%</h5>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center mb-30 justify-content-between">
-                                    <div class="d-flex align-items-center fw-500">
-                                        <div class="me-15 w-50 d-table">
-                                            <img src={test_icon} class="avatar avatar-lg rounded-10" alt="" />
+                                        <div class="text-end">
+                                            <h5 class="fw-600 mb-0 badge badge-pill badge-warning mt-4">{assignmentPercentage}%</h5>
                                         </div>
-                                        <div>
-                                            <a href="#" class="text-dark hover-primary mb-2 d-block fs-16">Cumulative Test Score</a>
-                                            <div class="w-200">
-                                                <div class="progress progress-sm mb-0">
-                                                    <div class="progress-bar progress-bar-success progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `75%` }}>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-30 justify-content-between">
+                                        <div class="d-flex align-items-center fw-500">
+                                            <div class="me-15 w-50px d-table">
+                                                <img src={test_icon} class="avatar avatar-lg rounded-10" alt="" />
+                                            </div>
+                                            <div>
+                                                <a href="#" class="text-dark hover-primary mb-2 d-block fs-16">Cumulative Test Score</a>
+                                                <div class="w-200">
+                                                    <div class="progress progress-sm mb-0">
+                                                        <div class="progress-bar progress-bar-success progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${testResult}%` }}>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="text-end">
-                                        <h5 class="fw-600 mb-0 badge badge-pill badge-succes mt-4">75%</h5>
+                                        <div class="text-end">
+                                            <h5 class="fw-600 mb-0 badge badge-pill badge-succes mt-4">{testResult}%</h5>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -501,12 +507,12 @@ const Student_Overview_new = () => {
                                     <div className="row">
                                         <div className="col-lg-8 p-0">
                                             <div className="progress mt-1">
-                                                {/* <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${studentAttendance}%` }}></div> */}
-                                                <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `50%` }}></div>
+                                                <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${studentAttendance}%` }}></div>
+                                                {/* <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `50%` }}></div> */}
                                             </div>
                                         </div>
                                         <div className="col-lg-3 px-0 text-right line-height-1 ">
-                                            <span className='badge badge-pill badge-primary'>50%</span>
+                                            <span className='badge badge-pill badge-primary'>{studentAttendance}%</span>
                                         </div>
                                     </div>
                                 </div>
@@ -537,23 +543,23 @@ const Student_Overview_new = () => {
                             <div className="card-body p-0 box-shadow mt-2 d-none">
                                 <StudentClassOverview />
                             </div>
-                            <div className="card-body p-0 box-shadow mt-2">
+                            <div className="card-body p-0 box-shadow mt-2 rounded-lg">
                                 <div className=" ">
-                                    <div className="card-body pr-0">
+                                    <div className="pl-5 pr-0 pt-5">
                                         <div className="row">
                                             <div className="col-lg-8 p-0">
                                                 <div className="progress mt-1">
                                                     {/* <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${studentAttendance}%` }}></div> */}
-                                                    <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `50%` }}></div>
+                                                    <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${studentAttendance}%` }}></div>
                                                 </div>
                                             </div>
                                             <div className="col-lg-3 px-0 text-right line-height-1 ">
-                                                <span className='badge badge-pill badge-primary'>50%</span>
+                                                <span className='badge badge-pill badge-primary'>{studentAttendance}%</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <StudentAttendanceOverviewColumnChart />
+                                <StudentAttendanceOverviewColumnChart StudentRemainingClasses={remainingClassesStudent} studentMinClassToAttendToReachFifty = {minClassToAttendToReachFifty}/>
                             </div>
                         </div>
                     </div>
@@ -902,7 +908,7 @@ const Student_Overview_new = () => {
                 </div>
             </div>
 
-            <div className='mt-4 px-2' style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(600px, 1fr))", gap: "10px", height: "310px", marginBottom: "20px", }}>
+            <div className='mt-4 px-2' style={{ height: "310px", marginBottom: "20px", }}>
                 {/* Today's Classes */}
                 <div className="row">
                     <div className="col-lg-6">
@@ -965,8 +971,7 @@ const Student_Overview_new = () => {
                                 {paginatedUpcomingMeetings?.length > 0 ? (
                                     paginatedUpcomingMeetings.map((meeting, index) => (
                                         <div key={index} className="list-group-item mb-10 card text-gray" style={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
+                                            
                                             padding: '10px',
                                             marginBottom: '10px',
                                             borderRadius: '8px',

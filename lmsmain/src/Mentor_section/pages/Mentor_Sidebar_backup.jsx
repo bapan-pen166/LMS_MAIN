@@ -59,32 +59,32 @@ const Mentor_Sidebar = () => {
                     Tests
                 </NavLink>
              */}
-            <span onClick={toggleDropdown} className=" " style={{ fontSize: '14px', color:'#fff', paddingLeft: "3%", display: "flex", alignItems: 'center' }}> <FontAwesomeIcon className='mr-10 ' icon={faFilePen} /><div>Tests</div>  <div style={{ cursor: "pointer" }}> {dropdownOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</div> </span>
+            <span onClick={toggleDropdown} className=" " style={{ fontSize: '12pt', color:'#fff', paddingLeft: "3%", display: "flex", alignItems: 'center' }}> <FontAwesomeIcon className='mr-10 ' icon={faFilePen} /><div>Tests</div>  <div style={{ cursor: "pointer" }}> {dropdownOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</div> </span>
             {dropdownOpen && (
                 <ul className="dropdown-menu-item" >
 
-                    <NavLink style={{ display: 'inline-block', paddingLeft: "10%" }} className="list-group w-100" to="/mentor-test"><FontAwesomeIcon className='mr-10  ' icon={faPlus} />Create Tests</NavLink>
-                    
+                    <NavLink style={{ paddingLeft: "10%", display: 'flex-inline' }} className="list-group" to="/mentor-test"><FontAwesomeIcon className='mr-10 ' icon={faPlus} />Create Tests</NavLink>
 
-                    <NavLink style={{ display: 'inline-block', paddingLeft: "10%" }} className="list-group w-100" to="/view-test"><FontAwesomeIcon className='mr-10  ' icon={faList} />View Tests</NavLink>
-                    
-                    <NavLink style={{ display: 'inline-block', paddingLeft: "10%" }} className=" list-group w-100" to="/test_evaluation"><FontAwesomeIcon className='mr-10  ' icon={faMagnifyingGlassChart} />Test Evaluation</NavLink>
-                    
-                    <NavLink style={{ display: 'inline-block', paddingLeft: "10%" }} className="list-group w-100" to="/mentor-see-results"><FontAwesomeIcon className='mr-10  ' icon={faSquarePollHorizontal} />Results</NavLink>
+
+                    <NavLink style={{ paddingLeft: "10%" }} className="border-bottom" to="/view-test"><FontAwesomeIcon className='mr-10 ' icon={faList} />View Tests</NavLink>
+
+                    <NavLink style={{ paddingLeft: "10%" }} className="border-bottom nav-link" to="/test_evaluation"><FontAwesomeIcon className='mr-10 ' icon={faMagnifyingGlassChart} />Test Evaluation</NavLink>
+
+                    <NavLink style={{ paddingLeft: "10%" }} className="" to="/mentor-see-results"><FontAwesomeIcon className='mr-10 ' icon={faSquarePollHorizontal} />Results</NavLink>
 
 
                 </ul>
             )}
 
-            <span onClick={toggleDropdownForAssignmets} className=" " style={{ fontSize: '14px', color:'#fff', paddingLeft: "3%", display: "flex", alignItems: 'center'  }}> <FontAwesomeIcon className='mr-10 ' icon={faFileClipboard} /><div>Assignments</div>  <div style={{ cursor: "pointer" }}> {dropdownOpenForAssignmets ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</div> </span>
+            <span onClick={toggleDropdownForAssignmets} className=" " style={{ fontSize: '12pt', color:'#fff', paddingLeft: "3%", display: "flex", alignItems: 'center' }}> <FontAwesomeIcon className='mr-10 ' icon={faFileClipboard} /><div>Assignments</div>  <div style={{ cursor: "pointer" }}> {dropdownOpenForAssignmets ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</div> </span>
             {dropdownOpenForAssignmets && (
                 <ul className="dropdown-menu-item" >
 
 
-                    <NavLink style={{ display: 'inline-block', paddingLeft: "10%" }} className="list-group w-100" to="/Mentor-Assignments-creation"><FontAwesomeIcon className='mr-10' icon={faPlus} />Create</NavLink>
-                    
+                    <NavLink style={{ paddingLeft: "10%" }} className="list-group" to="/Mentor-Assignments-creation"><FontAwesomeIcon className='mr-10 border-bottom' icon={faPlus} />Create</NavLink>
 
-                    <NavLink style={{ display: 'inline-block', paddingLeft: "10%" }} className="list-group w-100" to="/Mentor-Submission-List"><FontAwesomeIcon className='mr-10 ' icon={faListCheck} />Submission List</NavLink>
+
+                    <NavLink style={{ paddingLeft: "10%" }} className="" to="/Mentor-Submission-List"><FontAwesomeIcon className='mr-10 ' icon={faListCheck} />Submission List</NavLink>
 
 
 

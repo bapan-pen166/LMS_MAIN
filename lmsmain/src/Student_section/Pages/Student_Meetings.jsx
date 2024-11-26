@@ -774,13 +774,13 @@ function Student_Meetings() {
 
   return (
     <>
-      <div className="row content-body container-fluid main-meeting">
+      <div className="container-fluid main-meeting">
         <div className="row ">
           <div className="container-fluid">
             <div className="row">
-              <div className=" col-md-12 col-lg-12 col-sm-12 headLineBox">
+              {/* <div className=" col-md-12 col-lg-12 col-sm-12 headLineBox">
                 <h4>Classes</h4>
-              </div>
+              </div> */}
               {/* <div className="col-md-4 col-lg-4 col-sm-4 d-flex justify-content-end headLineBox">
                 <button onClick={handleClick} style={{ border: 'none', background: 'transparent' }}
                 ><i class="fa fa-ellipsis-v" style={{ fontSize: '20px', fontWeight: 'bold', color: 'white' }}></i></button>
@@ -789,9 +789,9 @@ function Student_Meetings() {
           </div>
         </div>
         <div className="container-fluid " style={{ minHeight: "100vh" }}>
-          <div className="row pt-3">
+          <div className="row">
 
-            <div className="col-md-12 p-2 bg-white m-2">
+            <div className="col-md-12 bg-white">
               <Student_Schedule_meeting meeting={meeting} setMeeting={setMeeting} holidaylist={holidaylist} />
             </div>
           </div>

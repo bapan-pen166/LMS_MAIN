@@ -8,7 +8,9 @@ import { placements } from '@patternfly/react-core/dist/esm/helpers/Popper/third
 import { api2 } from '../../ApiUrl/ApiUrl';
 import axios from 'axios';
 import "../../assets/css/TableStyle/TableStyle.css";
-
+import "../../assets/css/StudentPlacement/student_placement.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBuilding, faLocationPin, faIndianRupee, faClockRotateLeft, faBriefcase, faEdit, faUserTie, faCheck, faEye } from '@fortawesome/free-solid-svg-icons';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -95,7 +97,7 @@ export default function Students_Placements() {
         data.append('companyName', applyDetails?.companyName);
         data.append('courseName', applyDetails?.courseName);
         data.append('designation', applyDetails?.designation);
-        data.append('companyId',applyDetails?.companyId)
+        data.append('companyId', applyDetails?.companyId)
         console.log('applyDetails', applyDetails)
         axios.post(`${api2}/student/studentPlacementapply`, data, {})
 
@@ -116,7 +118,7 @@ export default function Students_Placements() {
     const [placementDetails, setplacementDetails] = useState();
     const [placementstatus, setPlamentStatus] = useState();
     const [placementRoundClear, setPlamentRoundClear] = useState();
-    const [offerLetter,setOfferletter]=useState();
+    const [offerLetter, setOfferletter] = useState();
     const [flag, setFlag] = useState(false);
     const handleStudentPlacementDetails = (email) => {
         console.log('submit click');
@@ -158,45 +160,47 @@ export default function Students_Placements() {
     }, [flag])
 
     const viewDoc = (foldername) => {
-        
+
         window.open(`${api2}/static/${foldername}`);
-       
-      };
+
+    };
 
 
     return (
         <>
-            <div style={{ marginTop: '58px', backgroundColor: "#f2edf3"}}>
+            <div >
                 <div className="container-fluid">
                     <div className="row">
-                        <div className=" col-md-8 col-lg-8 col-sm-8 ">
-                            {/* <h4>Placement</h4> */}
+                        <div className=" col-md-6 col-lg-6 col-sm-6 ">
+                            <h4>Placement</h4>
                         </div>
-                        <div className="col-md-4 col-lg-4 col-sm-4 d-flex justify-content-end ">
-                            <button onClick={handleClick} style={{ border: 'none', background: 'transparent' }}
-                            ><i class="fa fa-ellipsis-v" style={{ fontSize: '25px', fontWeight: 'bold', color: 'blue',marginRight:"20px" }}></i></button>
+                        <div className="col-md-6 col-lg-6 col-sm-6 ">
+                            <p className='text-right'>
+                                <button className='btn btn-success px-1 mr-1 py-0' >Download Resume</button>
+                                <button className='btn btn-info px-1 py-0' onClick={handleProjectModalShow}>Update Project Details</button>
+                            </p>
                         </div>
-                        <div className='col-md-12 '>
+                        <div className='col-md-12 d-none'>
                             <div className="custom-table-container" style={{ minHeight: '90vh', overflow: 'scroll' }} >
-                                <table className="custom-table table-bordered pt-1" >
-                                    <thead className="custom-thead" style={{ position: 'sticky', top: -2, zIndex: 3 }}>
+                                <table className=" table-bordered pt-1" >
+                                    <thead className="bg-theme-green" style={{ position: 'sticky', top: -2, zIndex: 3 }}>
                                         <tr>
-                                            <th style={{ textAlign: 'center' }}>Company name</th>
-                                            {/* <th style={{textAlign: 'center'}}>Course</th> */}
-                                            <th style={{ textAlign: 'center' }}>Industry Type</th>
-                                            <th style={{ textAlign: 'center' }}>Employment Type</th>
-                                            <th style={{ textAlign: 'center' }}>Graduation Year</th>
-                                            <th style={{ textAlign: 'center' }}>Location</th>
-                                            <th style={{ textAlign: 'center' }}>Designation</th>
-                                            <th style={{ textAlign: 'center' }}>Date Of Arrival</th>
-                                            <th style={{ textAlign: 'center' }}>Experience</th>
-                                            <th style={{ textAlign: 'center' }}>Salary Range(LPA)</th>
-                                            <th style={{ textAlign: 'center' }}>Total Rounds</th>
-                                            <th style={{ textAlign: 'center' }}>Rounds Cleared</th>
-                                            <th style={{ textAlign: 'center' }}>Placement Co-Ordunator</th>
-                                            <th style={{ textAlign: 'center' }}>Status</th>
-                                            <th style={{ textAlign: 'center' }}>Offer Letter</th>
-                                            <th style={{ textAlign: 'center' }}>Action</th>
+                                            <th className='p-2' style={{ textAlign: 'center' }}>Company name</th>
+                                            {/* <th className='p-2' style={{textAlign: 'center'}}>Course</th> */}
+                                            <th className='p-2' style={{ textAlign: 'center' }}>Industry Type</th>
+                                            <th className='p-2' style={{ textAlign: 'center' }}>Employment Type</th>
+                                            <th className='p-2' style={{ textAlign: 'center' }}>Graduation Year</th>
+                                            <th className='p-2' style={{ textAlign: 'center' }}>Location</th>
+                                            <th className='p-2' style={{ textAlign: 'center' }}>Designation</th>
+                                            <th className='p-2' style={{ textAlign: 'center' }}>Date Of Arrival</th>
+                                            <th className='p-2' style={{ textAlign: 'center' }}>Experience</th>
+                                            <th className='p-2' style={{ textAlign: 'center' }}>Salary Range(LPA)</th>
+                                            <th className='p-2' style={{ textAlign: 'center' }}>Total Rounds</th>
+                                            <th className='p-2' style={{ textAlign: 'center' }}>Rounds Cleared</th>
+                                            <th className='p-2' style={{ textAlign: 'center' }}>Placement Co-Ordunator</th>
+                                            <th className='p-2' style={{ textAlign: 'center' }}>Status</th>
+                                            <th className='p-2' style={{ textAlign: 'center' }}>Offer Letter</th>
+                                            <th className='p-2' style={{ textAlign: 'center' }}>Action</th>
 
                                         </tr>
                                     </thead>
@@ -219,9 +223,9 @@ export default function Students_Placements() {
                                                         <td>{placementDetail?.totalRounds}</td>
                                                         <td>{placementRoundClear?.[placementDetail?.companyName] ? placementRoundClear[placementDetail?.companyName] : 'Not Yet'}</td>
                                                         <td>{placementDetail?.placementCoOrdinator}</td>
-                                                        <td>{placementstatus?.[placementDetail?.companyName] == 0 ? 'Applied' : placementstatus?.[placementDetail?.companyName] == 1 ? 'Rejected' : placementstatus?.[placementDetail?.companyName] == 2 ? 'Proceed' :placementstatus?.[placementDetail?.companyName] == 3 ? 'Hold':placementstatus?.[placementDetail?.companyName] == 4 ? 'Placed':'Not Applied'}</td>
-                                                        
-                                                        <td>{offerLetter?.[placementDetail?.companyName]!=null?<Button onClick={()=>viewDoc(offerLetter?.[placementDetail?.companyName])} variant="outlined">View</Button>:'Not Yet'}</td>
+                                                        <td>{placementstatus?.[placementDetail?.companyName] == 0 ? 'Applied' : placementstatus?.[placementDetail?.companyName] == 1 ? 'Rejected' : placementstatus?.[placementDetail?.companyName] == 2 ? 'Proceed' : placementstatus?.[placementDetail?.companyName] == 3 ? 'Hold' : placementstatus?.[placementDetail?.companyName] == 4 ? 'Placed' : 'Not Applied'}</td>
+
+                                                        <td>{offerLetter?.[placementDetail?.companyName] != null ? <Button onClick={() => viewDoc(offerLetter?.[placementDetail?.companyName])} variant="outlined">View</Button> : 'Not Yet'}</td>
 
                                                         <td>
                                                             {console.log('placementstatus?.companyName', placementstatus[placementDetail?.companyName])}
@@ -233,7 +237,7 @@ export default function Students_Placements() {
                                                                         companyName: placementDetail?.companyName,
                                                                         courseName: placementDetail?.course?.courseName,
                                                                         designation: placementDetail?.designation,
-                                                                        companyId:placementDetail?.companyId
+                                                                        companyId: placementDetail?.companyId
                                                                     })
                                                                 }}
                                                                 title='Apply'
@@ -249,6 +253,103 @@ export default function Students_Placements() {
                                 </table>
                             </div>
                         </div>
+                    </div>
+                    <div className="row">
+                        {placementDetails?.map(placementDetail => {
+                            return (
+                                <>
+                                    <div className="col-xl-6 py-2">
+                                        <div className="card">
+                                            <div className="card-body">
+                                                <p className="card-title d-flex justify-content-between align-items-center">
+                                                    <span> <h4>{placementDetail?.designation}</h4></span>
+
+                                                    {placementstatus?.[placementDetail?.companyName] == 0 ? <span className='badge badge-primary'>Applied</span> : placementstatus?.[placementDetail?.companyName] == 1 ? <span className='badge badge-danger'>Rejected</span> : placementstatus?.[placementDetail?.companyName] == 2 ? <span className='badge badge-info'>Proceed</span> : placementstatus?.[placementDetail?.companyName] == 3 ? <span className='badge badge-warning'>Hold</span> : placementstatus?.[placementDetail?.companyName] == 4 ? <span className="badge badge-success">Placed</span> : ''}
+                                                </p>
+                                                <div className="listline-wrapper mb-3 pt-2">
+                                                    <div className="item">
+                                                        <FontAwesomeIcon icon={faBuilding} />
+                                                        {placementDetail?.companyName}
+                                                    </div>
+                                                    <div className="item">
+                                                        <FontAwesomeIcon icon={faLocationPin} />
+                                                        {placementDetail?.jobLocation}
+                                                    </div>
+                                                    <div className="item">
+                                                        <FontAwesomeIcon icon={faIndianRupee} />
+                                                        {placementDetail?.salaryRange}
+                                                    </div>
+                                                    <div className="item">
+                                                        <FontAwesomeIcon icon={faClockRotateLeft} />
+                                                        {placementDetail?.employementType}
+                                                    </div>
+                                                    <div className="item">
+                                                        <FontAwesomeIcon icon={faBriefcase} />
+                                                        {placementDetail?.relevant_experience}
+                                                    </div>
+                                                </div>
+                                                <p className="mb-0 h-100px overflow-hidden cursor-pointer" onClick={() => {
+                                                            handlePlacementModalShow();
+                                                            setjobDesc(placementDetail?.jobDescription);
+                                                            setApplyDetails({
+                                                                companyName: placementDetail?.companyName,
+                                                                courseName: placementDetail?.course?.courseName,
+                                                                designation: placementDetail?.designation,
+                                                                companyId: placementDetail?.companyId
+                                                            });
+                                                        }}>{placementDetail?.jobDescription}</p>
+                                            </div>
+                                            <div className="card-footer d-flex justify-content-between align-items-center flex-wrap">
+                                                <div>
+                                                    <span><FontAwesomeIcon icon={faEdit} className='mr-1' />Posted by</span>
+                                                    <p className="mb-0 text-black font-w500 mt-1">{placementDetail?.dateOfArrival}</p>
+                                                </div>
+                                                <div className="mt-sm-0 mt-3">
+                                                    <span className="mx-2"><FontAwesomeIcon icon={faUserTie} className='mr-1' />{placementDetail?.placementCoOrdinator}</span>
+                                                    {placementstatus?.[placementDetail?.companyName] == 4 ? 
+
+                                                       <> 
+                                                            <button className='btn btn-success py-0 px-1' 
+                                                                onClick={() => viewDoc(offerLetter?.[placementDetail?.companyName])} 
+                                                            >
+                                                                View Offer letter
+                                                            </button>
+                                                        
+                                                        </> :
+                                                    <button
+                                                        className={`btn ${placementstatus?.[placementDetail?.companyName] ? 'btn-success' : 'btn-primary'} btn-sm apply-job ml-1 py-0 px-1`}
+                                                        disabled={placementstatus?.[placementDetail?.companyName] ? true : false}
+                                                        
+                                                        onClick={() => {
+                                                            handlePlacementModalShow();
+                                                            setjobDesc(placementDetail?.jobDescription);
+                                                            setApplyDetails({
+                                                                companyName: placementDetail?.companyName,
+                                                                courseName: placementDetail?.course?.courseName,
+                                                                designation: placementDetail?.designation,
+                                                                companyId: placementDetail?.companyId
+                                                            });
+                                                        }}
+                                                        title='Apply'
+                                                    >
+                                                        {placementstatus?.[placementDetail?.companyName] == 0 ? (
+                                                            <>
+                                                                <FontAwesomeIcon icon={faCheck} /> Applied
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                Apply
+                                                            </>
+                                                        )}
+                                                    </button> }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            )
+                        })
+                        }
                     </div>
                 </div>
             </div>

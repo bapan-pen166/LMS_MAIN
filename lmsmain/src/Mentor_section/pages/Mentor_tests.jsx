@@ -398,14 +398,14 @@ const Mentor_tests = () => {
 
 
   return (
-    <div style={{ marginTop: "58px" }}>
+    <div style={{ }}>
       <div className="row">
         <div className="container-fluid">
-          <div className='col-md-12 col-lg-12 headLineBox d-flex justify-content-start'>
+          <div className='col-md-12 col-lg-12 d-flex justify-content-start mb-3'>
             <h4>Create Test</h4>
           </div>
 
-          <div style={{ marginTop: "52px", margin: "auto", width: "90%" }}>
+          <div style={{ marginTop: "52px", margin: "auto", width: "100%",boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)",padding:"20px",marginBottom:"20px" }}>
             <Form onSubmit={handleSubmit}>
               <div className='row' style={{ marginTop: "10px" }}>
                 <div className="col-md-6">

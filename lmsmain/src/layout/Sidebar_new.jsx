@@ -37,7 +37,7 @@ const Sidebar_new = () => {
                     <button type="button" className="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasSidebar" aria-label="Close"></button>
                 </div>
                 <div className="offcanvas-body p-3 p-xl-0">
-                    <div className="bg-theme-green border rounded p-2 w-100">
+                    <div className="bg-theme-green border rounded p-2 w-100 height-55vh overflow-auto">
                         {/* Dashboard menu */}
                         <div className="list-group list-group-dark list-group-borderless collapse-list">
                             {userType === "Admin" ? (
@@ -60,7 +60,7 @@ const Sidebar_new = () => {
                                             <li className="nav-item">
                                                 <NavLink className="nav-link pl-3" to="mentor-students-dashboard">Student Dashboard</NavLink>
                                             </li>
-                                            <hr className='my-1' />
+                                            
                                             <li className="nav-item">
                                                 <NavLink className="nav-link pl-3" to={'/Student-List'}>Student List</NavLink>
                                             </li>
@@ -95,11 +95,11 @@ const Sidebar_new = () => {
                                             <li className="nav-item">
                                                 <NavLink className="nav-link pl-3" to={'/placement-dashboard'}>Placement Dashboard</NavLink>
                                             </li>
-                                            <hr className='my-1' />
+                                            
                                             <li className="nav-item">
                                                 <NavLink className="nav-link pl-3" to='/placements'>Company Details</NavLink>
                                             </li>
-                                            <hr className='my-1' />
+                                            
                                             <li className="nav-item">
                                                 <NavLink className="nav-link pl-3" to={'/admin-placement-list'}>Placement List</NavLink>
                                             </li>

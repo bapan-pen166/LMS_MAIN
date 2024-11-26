@@ -2,7 +2,12 @@ import React, { useEffect, useRef } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
-const StundentCourseProgress = () => {
+const StudentCourseProgressChart = ({courseProgressValue}) => {
+    console.log("courseProgressValcourseProgressVal", courseProgressValue);
+    
+    // const StudentcourseProgress = courseProgressVal.courseProgressValue;
+    const StudentcourseProgress = courseProgressValue;
+    
     const chartRef = useRef(null);  // We will use this reference to update the chart
 
     const gaugeOptions = {
@@ -52,7 +57,7 @@ const StundentCourseProgress = () => {
             {
                 name: 'Course Progress',
                 linecap: 'round',
-                data: [80],  // Replace with dynamic data if needed
+                data: [StudentcourseProgress],  // Replace with dynamic data if needed
                 dataLabels: {
                     enabled: false,  // Disable data labels on the gauge itself
                 },
@@ -60,7 +65,7 @@ const StundentCourseProgress = () => {
         ],
         // Adding a custom center label
         subtitle: {
-            text: '80', // Show the number in the center of the gauge
+            text: StudentcourseProgress, // Show the number in the center of the gauge
             style: {
                 fontSize: '20px',
                 fontWeight: 'bold',
@@ -82,4 +87,4 @@ const StundentCourseProgress = () => {
     );
 };
 
-export default StundentCourseProgress;
+export default StudentCourseProgressChart;

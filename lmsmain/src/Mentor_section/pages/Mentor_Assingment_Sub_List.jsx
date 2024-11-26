@@ -10,6 +10,8 @@ import { assignmentUrl } from '../../ApiUrl/ApiUrl';
 import '../../assets/css/Custom_Global_Style/Global.css';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import PreviewIcon from '@mui/icons-material/Preview';
+
 
 export default function Mentor_Assingment_Sub_List(){
 
@@ -94,47 +96,43 @@ export default function Mentor_Assingment_Sub_List(){
 
     return(
         <>
-        <div style={{ marginTop: '58px' }}>
+        <div >
                 <div className="container-fluid">
                     <div className="row">
-                        <div className=" col-md-12 col-lg-12 col-sm-12 headLineBox">
+                        <div className=" col-md-12 col-lg-12 col-sm-12">
                             <h4>Assignments</h4>
                         </div>
                         
                         <div className='col-md-12'>
-                            <div className="table-container" style={{ minHeight: '90vh', overflow: 'scroll' }} >
-                                <table className="table table-bordered pt-1" >
-                                    <thead style={{ position: 'sticky', top: -2, zIndex: 3 }}>
+                            <div className="p-0 custom-table-container" style={{paddingTop:"0px", height: '400px', overflowY: 'auto' }} >
+                                <table className="table-bordered custom-table" >
+                                    <thead className="custom-thead " style={{ position: 'sticky', top: 0, zIndex: 3 }}>
                                         <tr>
-                                            <th style={{ textAlign: 'center' }}>No</th>
+                                            <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>No</th>
                                             
-                                            <th style={{ textAlign: 'center' }}>Student Name</th>
-                                            <th style={{ textAlign: 'center' }}>Batch Name</th>
-                                            <th style={{ textAlign: 'center' }}>Assignment Name</th>
-                                            <th style={{ textAlign: 'center' }}>Submission Date</th>
-                                            <th style={{ textAlign: 'center' }}>Last Date</th>
-                                            <th style={{ textAlign: 'center' }}>Total Marks</th>
-                                            <th style={{ textAlign: 'center' }}>Marks</th>
-                                            {/* <th style={{ textAlign: 'center' }}>Assignment</th>
-                                            <th style={{ textAlign: 'center' }}>Upload</th>
-                                            <th style={{ textAlign: 'center' }}>Status</th> */}
-                                            <th style={{ textAlign: 'center' }}>Action</th>
-
+                                            <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Student Name</th>
+                                            <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Batch Name</th>
+                                            <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Assignment Name</th>
+                                            <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Submission Date</th>
+                                            <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Last Date</th>
+                                            <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Total Marks</th>
+                                            <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Marks</th>
+                                            <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody className="custom-tbody ">
                                         {
                                             assignmentAll?.map((assignment,index)=>{
                                                 return(
                                                     <tr>
-                                            <td>{index+1}</td>
-                                            <td>{assignment?.studentName}</td>
-                                            <td>{assignment?.batch}</td>
-                                            <td>{assignment?.assignmentName}</td>
-                                            <td>{assignment?.submittedDate}</td>
-                                            <td>{assignment?.endDate}</td>
-                                            <td>{assignment?.totalMarks}</td>
-                                            <td class="text-center align-middle">
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{index+1}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{assignment?.studentName}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{assignment?.batch}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{assignment?.assignmentName}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{assignment?.submittedDate}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{assignment?.endDate}</td>
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{assignment?.totalMarks}</td>
+                                            <td class="text-center align-middle" style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             {assignment?.marks?assignment?.marks+'/'+assignment?.totalMarks:
                                              <Box
                                              component="form"
@@ -158,47 +156,30 @@ export default function Mentor_Assingment_Sub_List(){
                                             }
                                                
                                             </td>
-                                            {/* <td class="text-center align-middle">
-                                                <Button variant="contained" onClick={() => {
-                                                    handleDownloadXLS(assignment?.filePath)
-                                                    }}>Download
-                                                    </Button> 
-                                            </td>
-                                            <td>
-                                            <div class="input-group ">
-                                                <input type="file" name='content' class="form-control-file" id="exampleFormControlFile1"
-                                                onChange={(e)=>{setAssignmentFile(e.target.files[0])}}
-                                                />
-                                            </div>
-                                            </td>
-                                            <td>{assignment?.uploadStatus==1?'Submitted':'Pending'}</td> */}
-                                            <td>
+                             
+                                            <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
                                             <button style={{ background: 'transparent', border: 'none' }} className="custom-button" onClick={()=>{viewDoc(assignment?.assignmentPath)}}>
-                                            <i class="fa fa-eye" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }} ></i></button>
+                                            <PreviewIcon style={{color:"green"}}/> </button>
                                             {assignment?.marks?
                                             <button className="custom-button"
                                             style={{ 
                                                 background: 'transparent', 
-                                                border: 'none', color:'rgb(212, 139, 2)'
-                                                // cursor: assignmentFile && selectedRowIndex === index ? 'pointer' : 'not-allowed',
-                                                // color: assignmentFile && selectedRowIndex === index ? 'rgb(212, 139, 2)' : 'gray'
+                                                border: 'none', color:"green"
                                             }} 
                                             onClick={() => 
-                                                // handleAssignmentmarks(assignment?.id)
+                                                
                                                 handleEditMarks(index)
                                             } 
-                                            // disabled={!assignmentFile || selectedRowIndex !== index}
+                                            
                                             >
                                             <i className="fa fa-edit" style={{ fontSize: "14pt", padding: '2px' }}></i>
                                             </button>:<button className="custom-button"
                                             style={{ 
-                                                background: 'transparent', 
-                                                border: 'none', color:'rgb(212, 139, 2)'
-                                                // cursor: assignmentFile && selectedRowIndex === index ? 'pointer' : 'not-allowed',
-                                                // color: assignmentFile && selectedRowIndex === index ? 'rgb(212, 139, 2)' : 'gray'
+                                                
+                                                border: 'none', color:'green'
                                             }} 
                                             onClick={() => handleAssignmentmarks(assignment?.id)} 
-                                            // disabled={!assignmentFile || selectedRowIndex !== index}
+                                            
                                             >
                                             <i className="fa fa-save" style={{ fontSize: "14pt", padding: '2px' }}></i>
                                             </button>
@@ -209,27 +190,7 @@ export default function Mentor_Assingment_Sub_List(){
                                                 )
                                             })
                                         }
-                                        {/* <tr>
-                                            <td>1</td>
-                                            <td>Physics</td>
-                                            <td>27/8/2024</td>
-                                            <td>5/9/2024</td>
-                                            <td class="text-center align-middle">
-                                                <Button variant="contained" onClick={() => {
-                                                    handleDownloadXLS()
-                                                    }}>Download
-                                                    </Button> 
-                                            </td>
-                                            <td>
-                                            <div class="input-group ">
-                                                <input type="file" name='content' class="form-control-file" id="exampleFormControlFile1"
-                                                
-                                                />
-                                            </div>
-                                            </td>
-                                            <td>Not Uploaded</td>
-                                            <td><button style={{ background: 'transparent', border: 'none' }} ><i class="fa fa-save" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }} ></i></button></td>
-                                        </tr> */}
+                                      
                                     </tbody>
                                 </table>
                             </div>

@@ -1121,16 +1121,16 @@ function Mentor_Meeting() {
 
   return (
     <>
-      <div className="row content-body container-fluid main-meeting">
+      <div className="row  container-fluid main-meeting">
         <div className="row ">
           <div className="container-fluid">
             <div className="row">
-              <div className=" col-md-8 col-lg-8 col-sm-8 headLineBox">
-                <h4>Classes</h4>
+              <div className=" col-md-8 col-lg-8 col-sm-8 ">
+                {/* <h4>Calender</h4> */}
               </div>
-              <div className="col-md-4 col-lg-4 col-sm-4 d-flex justify-content-end headLineBox">
-                <button onClick={handleClick} style={{ border: 'none', background: 'transparent' }}
-                ><i class="fa fa-ellipsis-v" style={{ fontSize: '20px', fontWeight: 'bold', color: 'white' }}></i></button>
+              <div className="col-md-4 col-lg-4 col-sm-4 d-flex justify-content-end " style={{color:"white"}}>
+                <button onClick={handleClick} style={{ border: 'none',color:"white" }}
+                ><i class="fa fa-ellipsis-v" style={{ fontSize: '20px', fontWeight: 'bold', color: 'green' }}></i></button>
               </div>
             </div>
           </div>

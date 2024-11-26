@@ -14,291 +14,370 @@ import Batch_Assign_Track from '../components/mentor_dashboard/Batch_Assign_Trac
 import Assignment_tracker from '../components/mentor_dashboard/Assignment_tracker';
 import { IoCalendarNumberOutline } from "react-icons/io5";
 import { Pagination } from '@mui/material';
-import { faIdBadge, faClipboardCheck, faBookOpen, faPlay, faClock, faMedal } from '@fortawesome/free-solid-svg-icons';
+import { faIdBadge, faClipboardCheck, faBookOpen, faPlay, faClock, faMedal,faUserGraduate,faPeopleGroup,faFileClipboard, faUserCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import mentor_batch from "../../assets/img/mentor_overview/mentor_batches.png";
 
 
 
 
 const Mentor_Overview = () => {
-    const [userType, setUserType] = useState('');
-    const [mentorMail, setMentorMail] = useState();
-    const [firstName, setFirstName] = useState();
-    const [lastName, setLastName] = useState();
+  const [userType, setUserType] = useState('');
+  const [mentorMail, setMentorMail] = useState();
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
 
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-    const [userId, setUserId] = useState()
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [userId, setUserId] = useState()
 
-    const [todaysMeetings, setTodaysMeetings] = useState();
-    const [upcomingMeetings, setUpcomingMeetings] = useState();
+  const [todaysMeetings, setTodaysMeetings] = useState();
+  const [upcomingMeetings, setUpcomingMeetings] = useState();
 
-    // for the pagination
-    const [currentPageToday, setCurrentPageToday] = useState(1);
-    const [currentPageUpcoming, setCurrentPageUpcoming] = useState(1);
-    const itemsPerPage = 2;
-
-
-    useEffect(() => {
-        const type = localStorage.getItem('userType');
-        setUserType(type);
-        setMentorMail(localStorage.getItem('mentorEmail'))
-        setLastName(localStorage.getItem('lastName'))
-        setFirstName(localStorage.getItem('firstName'))
-        setUserId(localStorage.getItem('id'))
-    }, []);
-
-    useEffect(() => {
-        if (userType === 'Mentor') {
-            todaysClass();
-        }
-    }, [mentorMail]);
-
-    useEffect(() => {
-        if (userType === 'Mentor') {
-            upcomingClass();
-        }
-    }, [mentorMail]);
+  // for the pagination
+  const [currentPageToday, setCurrentPageToday] = useState(1);
+  const [currentPageUpcoming, setCurrentPageUpcoming] = useState(1);
+  const itemsPerPage = 3;
 
 
-    useEffect(() => {
-        const handleResize = () => setWindowWidth(window.innerWidth);
-        window.addEventListener('resize', handleResize);
+  useEffect(() => {
+    const type = localStorage.getItem('userType');
+    setUserType(type);
+    setMentorMail(localStorage.getItem('mentorEmail'))
+    setLastName(localStorage.getItem('lastName'))
+    setFirstName(localStorage.getItem('firstName'))
+    setUserId(localStorage.getItem('id'))
+  }, []);
 
-        // Clean up the event listener
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-
-    if (userType !== 'Mentor') {
-        return (<>
-            <p>This page doesn't exist!</p>
-        </>);
+  useEffect(() => {
+    if (userType === 'Mentor') {
+      todaysClass();
     }
+  }, [mentorMail]);
 
-    // today's class 
-    const todaysClass = () => {
-        axios.post(`${api}/mentor/getMentorTodayMeeting`, { email: mentorMail })
-            .then((Response) => {
-                console.log("today's meetings : ", Response?.data?.meetings);
-                setTodaysMeetings(Response?.data?.meetings)
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+  useEffect(() => {
+    if (userType === 'Mentor') {
+      upcomingClass();
     }
-    // upcoming Class 
-    const upcomingClass = () => {
-        axios.post(`${api}/mentor/getUpcomingMeeting`, { email: mentorMail })
-            .then((Response) => {
-                console.log("upcoming : ", Response?.data?.meetings);
-                setUpcomingMeetings(Response?.data?.meetings);
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
+  }, [mentorMail]);
+
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+
+  if (userType !== 'Mentor') {
+    return (<>
+      <p>This page doesn't exist!</p>
+    </>);
+  }
+
+  // today's className 
+  const todaysClass = () => {
+    axios.post(`${api}/mentor/getMentorTodayMeeting`, { email: mentorMail })
+      .then((Response) => {
+        console.log("today's meetings : ", Response?.data?.meetings);
+        setTodaysMeetings(Response?.data?.meetings)
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+  // upcoming Class 
+  const upcomingClass = () => {
+    axios.post(`${api}/mentor/getUpcomingMeeting`, { email: mentorMail })
+      .then((Response) => {
+        console.log("upcoming : ", Response?.data?.meetings);
+        setUpcomingMeetings(Response?.data?.meetings);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
 
 
 
-    const handleMeeting = (meetingLink) => {
-        window.open(`${meetingLink}?username=${firstName || ''}%20${lastName || ''}_${userId}`, '_blank');
-    }
-
-
-
-
-
-
-    // Helper function to group meetings by date
-    const groupByDate = (meetings) => {
-        return meetings?.reduce((acc, meeting) => {
-            const date = meeting.startDate; // Assuming `startDate` holds the date value
-            if (!acc[date]) {
-                acc[date] = [];
-            }
-            acc[date].push(meeting);
-            return acc;
-        }, {}) || {}; // Return an empty object if meetings is undefined
-    };
-
-    const groupedMeetings = groupByDate(upcomingMeetings);
-
-    const currentDay = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(new Date());
-
-
-    //   :::::::::::::::::::::::::::: FOR THE PAGINATION  ::::::::::::::::::::::::::::::::::::::
-    const paginatedTodaysMeetings = todaysMeetings?.slice((currentPageToday - 1) * itemsPerPage, currentPageToday * itemsPerPage);
-    const paginatedUpcomingMeetings = upcomingMeetings?.slice((currentPageUpcoming - 1) * itemsPerPage, currentPageUpcoming * itemsPerPage);
-
-    const handlePageChangeToday = (_, value) => {
-        setCurrentPageToday(value);
-    };
-
-    const handlePageChangeUpcoming = (_, value) => {
-        setCurrentPageUpcoming(value);
-    };
+  const handleMeeting = (meetingLink) => {
+    window.open(`${meetingLink}?username=${firstName || ''}%20${lastName || ''}_${userId}`, '_blank');
+  }
 
 
 
 
-    return (
-        <div className='row  mentor-overview-main' style={{ backgroundColor: "white", fontFamily: "Roboto, sans-serif" }} >
-            <div className="" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(600px, 1fr))", gap: "10px", width: "100%", height: "310px" }}>
-                {/* Today's Classes */}
-                <div style={{ boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)", borderRadius: "10px", backgroundColor: "white" }}>
-                    <p className="text-center p-2" style={{ fontSize: "20px" }}>Today's Classes</p>
-                    <div style={{ backgroundColor: "white" }} >
-                        {paginatedTodaysMeetings?.length > 0 ? (
-                            paginatedTodaysMeetings.map((meeting, index) => (
-                                <div key={index} className="list-group-item mb-10 card text-gray" style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    // alignItems: 'center',
-                                    padding: '10px',
-                                    marginBottom: '10px',
-                                    borderRadius: '8px',
-                                    boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
-                                }}>
-                                    <div className="box-body">
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <div className="d-flex align-items-center">
-                                                <div className="mr-15 w-45 h-40 line-height-3 color-fff bg-theme rounded text-center">
-                                                    <span><FontAwesomeIcon icon={faBookOpen} /></span>
-                                                </div>
-                                                <div className="d-flex flex-column fw-500">
-                                                    <p className="text-theme hover-primary mb-1 fs-16">{meeting?.topic}</p>
-                                                    <p className="mb-0 font-12">
-                                                        <span className="text-fade mr-1"><FontAwesomeIcon icon={faClock} /></span>
-                                                        <span>{meeting?.startTime} - {meeting?.endTime}</span>
-                                                    </p>
-                                                </div>
-                                            </div>
 
-                                            <a href="#" onClick={() => handleMeeting(meeting?.meetingLink)}>
-                                                <span><FontAwesomeIcon icon={faPlay} /></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
 
-                            ))
-                        ) : (
-                            <div style={{ padding: '10px', color: '#666' }}>No meetings available for today</div>
-                        )}
-                        <Pagination
-                            count={Math.ceil(todaysMeetings?.length / itemsPerPage)}
-                            page={currentPageToday}
-                            onChange={handlePageChangeToday}
-                            color="primary"
-                            style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}
-                        />
-                    </div>
-                </div>
+  // Helper function to group meetings by date
+  const groupByDate = (meetings) => {
+    return meetings?.reduce((acc, meeting) => {
+      const date = meeting.startDate; // Assuming `startDate` holds the date value
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(meeting);
+      return acc;
+    }, {}) || {}; // Return an empty object if meetings is undefined
+  };
 
-                {/* Upcoming Classes */}
-                <div style={{ boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)", borderRadius: "10px", backgroundColor: "white" }}>
-                    <p className="text-center p-2" style={{ fontSize: "20px" }}>Upcoming Classes</p>
-                    <div style={{ backgroundColor: "white" }}>
-                        {paginatedUpcomingMeetings?.length > 0 ? (
-                            paginatedUpcomingMeetings.map((meeting, index) => (
-                                <div key={index} className="list-group-item mb-10 card text-gray" style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    padding: '10px',
-                                    marginBottom: '10px',
-                                    borderRadius: '8px',
-                                    boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
-                                }}>
-                                    <div className="box-body">
-                                        <div className="d-flex align-items-center justify-content-between">
-                                            <div className="d-flex align-items-center">
-                                                <div className="mr-15 w-45 h-40 line-height-3 color-fff bg-theme rounded text-center">
-                                                    <span><FontAwesomeIcon icon={faBookOpen} /></span>
-                                                </div>
-                                                <div className="d-flex flex-column fw-500">
-                                                    <p className="text-theme hover-primary mb-1 fs-16">{meeting?.topic}</p>
-                                                    <p className="mb-0 font-12">
-                                                        <span className="text-fade mr-1"><FontAwesomeIcon icon={faClock} /></span>
-                                                        <span>{meeting?.startTime} - {meeting?.endTime}</span>
-                                                    </p>
-                                                </div>
-                                            </div>
+  const groupedMeetings = groupByDate(upcomingMeetings);
 
-                                            <a href="#" onClick={() => handleMeeting(meeting?.meetingLink)}>
-                                                <span><FontAwesomeIcon icon={faPlay} /></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))
-                        ) : (
-                            <div style={{ padding: '10px', color: '#666' }}>No upcoming meetings available</div>
-                        )}
-                        <Pagination
-                            count={Math.ceil(upcomingMeetings?.length / itemsPerPage)}
-                            page={currentPageUpcoming}
-                            onChange={handlePageChangeUpcoming}
-                            color="primary"
-                            style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}
-                        />
-                    </div>
+  const currentDay = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(new Date());
 
-                </div>
+
+  //   :::::::::::::::::::::::::::: FOR THE PAGINATION  ::::::::::::::::::::::::::::::::::::::
+  const paginatedTodaysMeetings = todaysMeetings?.slice((currentPageToday - 1) * itemsPerPage, currentPageToday * itemsPerPage);
+  const paginatedUpcomingMeetings = upcomingMeetings?.slice((currentPageUpcoming - 1) * itemsPerPage, currentPageUpcoming * itemsPerPage);
+
+  const handlePageChangeToday = (_, value) => {
+    setCurrentPageToday(value);
+  };
+
+  const handlePageChangeUpcoming = (_, value) => {
+    setCurrentPageUpcoming(value);
+  };
+
+
+
+
+  return (
+    <div className='row  mentor-overview-main' style={{ backgroundColor: "white", fontFamily: "Roboto, sans-serif", marginTop: "-20px" }} >
+      <div className='row'>
+      <div className="col-md-4 mb-4 mt-4 ml-0 mr-0 row g-2" style={{gap:"10px"}}>
+        <div className=" mb-3 mb-lg-0 col-md-12" >
+          <div className="d-flex justify-content-between align-items-center p-5 bg-orange bg-opacity-15 rounded-3 h-100" style={{borderRadius:"10px"}}>
+            <span className=" text-orange mb-0 mr-5 " ><FontAwesomeIcon style={{fontSize:"56px"}}  icon={faPeopleGroup} /></span>
+            <div className="ms-4">
+              <div className="d-flex pb-1" >
+                <h5 style={{fontSize:"40px"}}  className="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="9" data-purecounter-delay="200" data-purecounter-duration="0">9</h5>
+              </div>
+              <p className="mb-0 h6 fw-light">Total Batches</p>
             </div>
-
-
-            <div className='mt-4 px-2' style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(400px, 1fr))", gap: "10px", width: "100%" }}>
-                <div style={{ boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)", borderRadius: "10px", backgroundColor: "white" }}>
-                    <p className='text-center p-2' style={{ fontSize: "20px" }}>Batch-wise Number of Students</p>
-                    <hr />
-                    <Batch_wise_no_of_classes />
-                </div>
-                <div style={{ boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)", borderRadius: "10px", backgroundColor: "white" }}>
-                    <p className='text-center p-2' style={{ fontSize: "20px" }}>Batch-wise Attendance %</p>
-                    <hr />
-                    <Batch_wise_attendance_percentage />
-                </div>
-                <div style={{ boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)", borderRadius: "10px", backgroundColor: "white" }}>
-                    <p className='text-center p-2' style={{ fontSize: "20px" }}>Batch-wise Course Completed</p>
-                    <hr />
-                    <Batch_Wise_Course_Percent />
-                </div>
-            </div>
-
-
-
-            <div className='row mt-4 ml-2 mr-2 mb-4' style={{
-                display: "grid",
-                gridTemplateColumns: `repeat(auto-fill, minmax(${windowWidth < 768 ? '400px' : '600px'}, 1fr))`,
-                gap: "10px",
-                width: "100%",
-            }}>
-                <div style={{
-                    boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)",
-                    borderRadius: "10px",
-                    backgroundColor: "white"
-                }}>
-                    <p className='text-center p-2' style={{ fontSize: "20px" }}>Assignment Tracker</p>
-                    <hr />
-                    <Assignment_tracker />
-                </div>
-                <div style={{
-                    boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)",
-                    borderRadius: "10px",
-                    backgroundColor: "white"
-                }}>
-                    <p className='text-center p-2' style={{ fontSize: "20px" }}>Batch Assignment Status Tracker</p>
-                    <hr />
-                    <Batch_Assign_Track />
-                </div>
-            </div>
-
-
-            {/* </div> */}
-
-
+          </div>
         </div>
-    );
+
+        <div className=" mb-lg-0 col-md-12">
+          <div className="d-flex justify-content-between align-items-center p-5 bg-purple bg-opacity-15 rounded-3 h-100" style={{borderRadius:"10px"}}>
+            <span className="display-6 lh-1 text-purple mb-0 mr-5"><FontAwesomeIcon style={{fontSize:"56px"}} icon={faUserGraduate} /></span>
+            <div className="ms-4">
+              <div className="d-flex pb-1">
+                <h5 style={{fontSize:"40px"}} className="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="52" data-purecounter-delay="200" data-purecounter-duration="0">52</h5>
+              </div>
+              <p className="mb-0 h6 fw-light">Total Students</p>
+            </div>
+          </div>
+        </div>
+
+        <div className=" mb-3 mb-lg-0 col-md-12" >
+          <div className="d-flex justify-content-between align-items-center p-5 bg-success bg-opacity-10 rounded-3 h-100" style={{borderRadius:"10px"}}>
+            <span className="display-6 lh-1 text-success mb-0 mr-5"><FontAwesomeIcon style={{fontSize:"56px"}} icon={faFileClipboard} /></span>
+            <div className="ms-4">
+              <div className="d-flex pb-1">
+                <h5 style={{fontSize:"40px"}} className="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="8" data-purecounter-delay="300" data-purecounter-duration="0">8</h5>
+              </div>
+              <p className="mb-0 h6 fw-light">Total number of assignments</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className='col-md-4'>
+     
+        {/* Today's Classes */}
+        <div style={{ borderRadius: "10px", backgroundColor: "white", }} className='col-md-12'>
+          <p className="text-center p-2" style={{ fontSize: "20px" }}>
+            Today's Classes
+          </p>
+          <div style={{ backgroundColor: "white" }}>
+            {paginatedTodaysMeetings?.length > 0 ? (
+              paginatedTodaysMeetings.map((meeting, index) => (
+                <div
+                  key={index}
+                  className="list-group-item mb-10 card text-gray"
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    padding: "10px",
+                    marginBottom: "10px",
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+                  }}
+                >
+                  <div className="box-body">
+                    <div className="d-flex align-items-center justify-content-between">
+                      <div className="d-flex align-items-center">
+                        <div className="mr-15 w-45 h-40 line-height-3 color-fff bg-theme rounded text-center">
+                          <span>
+                            <FontAwesomeIcon icon={faBookOpen} />
+                          </span>
+                        </div>
+                        <div className="d-flex flex-column fw-500">
+                          <p className="text-theme hover-primary mb-1 fs-16">
+                            {meeting?.topic}
+                          </p>
+                          <p className="mb-0 font-12">
+                            <span className="text-fade mr-1">
+                              <FontAwesomeIcon icon={faClock} />
+                            </span>
+                            <span>
+                              {meeting?.startTime} - {meeting?.endTime}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+
+                      <a href="#" onClick={() => handleMeeting(meeting?.meetingLink)}>
+                        <span>
+                          <FontAwesomeIcon icon={faPlay} />
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div style={{ padding: "10px", color: "#666" }}>
+                No meetings available for today
+              </div>
+            )}
+            <Pagination
+              count={Math.ceil(todaysMeetings?.length / itemsPerPage)}
+              page={currentPageToday}
+              onChange={handlePageChangeToday}
+              color="primary"
+              style={{ display: "flex", justifyContent: "center", padding: "10px" }}
+            />
+          </div>
+        </div>
+
+      </div>
+      <div className="col-md-4">
+            {/* Upcoming Classes */}
+        <div style={{ borderRadius: "10px", backgroundColor: "white" }} className='col-md-12'>
+          <p className="text-center p-2" style={{ fontSize: "20px" }}>
+            Upcoming Classes
+          </p>
+          <div style={{ backgroundColor: "white" }}>
+            {paginatedUpcomingMeetings?.length > 0 ? (
+              paginatedUpcomingMeetings.map((meeting, index) => (
+                <div
+                  key={index}
+                  className="list-group-item mb-10 card text-gray"
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    padding: "10px",
+                    marginBottom: "10px",
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+                  }}
+                >
+                  <div className="box-body">
+                    <div className="d-flex align-items-center justify-content-between">
+                      <div className="d-flex align-items-center">
+                        <div className="mr-15 w-45 h-40 line-height-3 color-fff bg-theme rounded text-center">
+                          <span>
+                            <FontAwesomeIcon icon={faBookOpen} />
+                          </span>
+                        </div>
+                        <div className="d-flex flex-column fw-500">
+                          <p className="text-theme hover-primary mb-1 fs-16">
+                            {meeting?.topic}
+                          </p>
+                          <p className="mb-0 font-12">
+                            <span className="text-fade mr-1">
+                              <FontAwesomeIcon icon={faClock} />
+                            </span>
+                            <span>
+                              {meeting?.startTime} - {meeting?.endTime}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+
+                      <a href="#" onClick={() => handleMeeting(meeting?.meetingLink)}>
+                        <span>
+                          <FontAwesomeIcon icon={faPlay} />
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div style={{ padding: "10px", color: "#666" }}>
+                No upcoming meetings available
+              </div>
+            )}
+            <Pagination
+              count={Math.ceil(upcomingMeetings?.length / itemsPerPage)}
+              page={currentPageUpcoming}
+              onChange={handlePageChangeUpcoming}
+              color="primary"
+              style={{ display: "flex", justifyContent: "center", padding: "10px" }}
+            />
+          </div>
+        </div>
+      </div>
+
+      </div>
+     
+
+
+      <div className='mt-4 px-2' style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(370px, 1fr))", gap: "10px", width: "100%" }}>
+        <div style={{ boxShadow: "rgba(82, 63, 105, 0.05) 0px 0px 30px 1px", borderRadius: "10px", backgroundColor: "white" }}>
+          <p className='text-center p-2' style={{ fontSize: "20px" }}>Batch-wise Number of Students</p>
+          <hr />
+          <Batch_wise_no_of_classes />
+        </div>
+        <div style={{ boxShadow: "rgba(82, 63, 105, 0.05) 0px 0px 30px 1px", borderRadius: "10px", backgroundColor: "white" }}>
+          <p className='text-center p-2' style={{ fontSize: "20px" }}>Batch-wise Attendance %</p>
+          <hr />
+          <Batch_wise_attendance_percentage />
+        </div>
+        <div style={{ boxShadow: "rgba(82, 63, 105, 0.05) 0px 0px 30px 1px", borderRadius: "10px", backgroundColor: "white" }}>
+          <p className='text-center p-2' style={{ fontSize: "20px" }}>Batch-wise Course Completed %</p>
+          <hr />
+          <Batch_Wise_Course_Percent />
+        </div>
+      </div>
+
+
+
+      <div className='row mt-4 ml-2 mr-2 mb-4' style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(auto-fill, minmax(${windowWidth < 768 ? '400px' : '490px'}, 1fr))`,
+        gap: "10px",
+        width: "100%",
+      }}>
+        <div style={{
+          boxShadow: "rgba(82, 63, 105, 0.05) 0px 0px 30px 1px",
+          borderRadius: "10px",
+          backgroundColor: "white"
+        }}>
+          <p className='text-center p-2' style={{ fontSize: "20px" }}>Assignment Tracker</p>
+          <hr />
+          <Assignment_tracker />
+        </div>
+        <div style={{
+          boxShadow: "rgba(82, 63, 105, 0.05) 0px 0px 30px 1px",
+          borderRadius: "10px",
+          backgroundColor: "white"
+        }}>
+          <p className='text-center p-2' style={{ fontSize: "20px" }}>Batch Assignment Status Tracker</p>
+          <hr />
+          <Batch_Assign_Track />
+        </div>
+      </div>
+
+
+      {/* </div> */}
+
+
+    </div>
+  );
 };
 
 export default Mentor_Overview;

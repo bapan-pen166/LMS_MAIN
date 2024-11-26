@@ -514,8 +514,14 @@
 .list-group-item{
     color: #fff;
 }
+.mr-8{
+    margin-right: 8px;
+}
 .mr-10{
     margin-right: 10px;
+}
+.mr-12{
+    margin-right: 12px;
 }
 .list-group-item-action{
     color: #fff !important;
@@ -525,17 +531,53 @@
 }
 
 .list-group a{
-      padding: 8px;
+      font-size: 15px;
+      padding: 12px;
       color: #fff;
+      margin-top: 2px;
+}
+
+.list-group span{
+  font-size: 15px;
+  padding: 12px;
+  color: #fff;
 }
 
 .list-group a.active{
   background-color: #fff;
   color: #000;
-  font-size: 14px;
+  font-size: 15px;
+  border-radius: 0.25rem
+}
+.list-group a:hover{
+  background-color: #fff;
+  color: #000;
+  font-size: 15px;
+  border-radius: 0.25rem
 }
 
 .nav-link .list-item{
   padding: 8px!important;
   color: #fff;
 }
+.height-55vh{
+  height: 55vh;
+}
+/* Custom styling for the modal (sidebar) to slide from the right */
+.modal-dialog-slide {
+  transform: translateX(100%);
+  transition: transform 1s ease-out;
+}
+
+.modal.show .modal-dialog-slide {
+  transform: translateX(0);
+}
+
+/* Optional: Adjust width for sidebar-like look */
+/* .modal-dialog {
+  max-width: 300px; 
+}
+
+.modal-content {
+  height: 100vh; 
+} */

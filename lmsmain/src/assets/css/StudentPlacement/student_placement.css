@@ -1,0 +1,40 @@
+.listline-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+.listline-wrapper .item {
+    display: flex;
+    align-items: center;
+    color: #312a2a;
+}
+
+@media only screen and (min-width: 575px) {
+    .listline-wrapper .item:not(:last-child) {
+        border-right: 1px solid #e6e6e6;
+        margin-right: 5px;
+        padding: 2px 0;
+        padding-right: 10px;
+    }
+}
+@media only screen and (max-width: 575px) {
+    .listline-wrapper .item {
+        width: 50%;
+        padding: 4px 15px;
+    }
+}
+.listline-wrapper .item svg {
+    padding-right: 5px;
+    height: 1rem;
+    width: 1.6rem;
+    fill: #888888;
+    color: #888888;
+}
+.h-100px{
+    height: 100px;
+}   
+.overflow-hidden{
+    overflow: hidden;
+}
+.cursor-pointer{
+    cursor: pointer;
+}

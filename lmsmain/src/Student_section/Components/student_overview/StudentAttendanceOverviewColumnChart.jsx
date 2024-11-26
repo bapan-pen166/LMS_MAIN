@@ -2,7 +2,9 @@ import React from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
-const StudentAttendanceOverviewColumnChart = () => {
+const StudentAttendanceOverviewColumnChart = ({ StudentRemainingClasses, studentMinClassToAttendToReachFifty }) => {
+
+    
     const totalClasses = 26; // Total minimum classes
     const remainingClasses = 5; // Remaining classes
     const attendedClasses = totalClasses - remainingClasses; // Classes attended
@@ -15,6 +17,7 @@ const StudentAttendanceOverviewColumnChart = () => {
         chart: {
             type: 'column', // Change chart type to column
             backgroundColor: 'transparent',
+            height: '250px',
         },
         credits: {
             enabled: false,
@@ -42,7 +45,7 @@ const StudentAttendanceOverviewColumnChart = () => {
             },
         },
         xAxis: {
-            categories: ['Attended Classes', 'Remaining Classes'], // Categories for X-axis
+            categories: ['Minimum Class to attend', 'Remaining Classes'], // Categories for X-axis
             title: {
                 text: '',
                 style: {
@@ -51,7 +54,7 @@ const StudentAttendanceOverviewColumnChart = () => {
                 },
             },
             labels: {
-                enabled: false, // Hide the y-axis labels
+                enabled: true, // Hide the y-axis labels
             },
         },
         yAxis: {
@@ -70,7 +73,7 @@ const StudentAttendanceOverviewColumnChart = () => {
         },
         lagends: false,
         series: [{
-            data: [attendedClasses, remainingClasses], // Data for attended and remaining
+            data: [studentMinClassToAttendToReachFifty, StudentRemainingClasses], // Data for attended and remaining
             color: '#185055', // Color for attended classes
             zoneAxis: 'y',
             labels: {
@@ -78,10 +81,10 @@ const StudentAttendanceOverviewColumnChart = () => {
             },
             showInLegend: false,
             zones: [{
-                value: attendedClasses, // Zone for attended classes
+                value: studentMinClassToAttendToReachFifty, // Zone for attended classes
                 color: '#28a745', // Green color for attended
             }, {
-                value: remainingClasses, // Zone for remaining classes
+                value: StudentRemainingClasses, // Zone for remaining classes
                 color: '#28a7453d', // Greyish color for remaining
             }],
         }],
