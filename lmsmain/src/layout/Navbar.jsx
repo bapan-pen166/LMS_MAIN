@@ -3,9 +3,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../assets/css/Navbar/Navbar.css';
 import Main_arch from '../Main_arch';
 import { Datacontext } from '../Context';
-import company_logo from "../assets/img/Navbar_img/company_Logo.jpg";
+// import company_logo from "../assets/img/Navbar_img/company_Logo.jpg";
+import user_icon from "../assets/img/Navbar_img/user.png";
+
+import company_logo from "../assets/img/Navbar_img/logo1.png";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { faUser, faSignOut, faUserEdit} from '@fortawesome/free-solid-svg-icons';
 
 // for the material ui dropdown
 import Button from '@mui/material/Button';
@@ -96,17 +102,18 @@ function Navber() {
             <ArrowForwardIosIcon/>
           </button>}
           {/* <Link to={"/"}><img style={{ width: "50px", height: "35px" }} src={company_logo} alt="company_logo" /></Link> */}
+          <Link to={"/"}><img style={{ width: "140px", height: "40px", marginTop:"-10px" }} src={company_logo} alt="company_logo" /></Link>
         </div>
-        {userType === "Admin" ? (
-          <div className='nav-wel-back'>Welcome Back , {fisrtName} {lastName}</div>
-        ) : userType === "Mentor" ? (
-          <div className='nav-wel-back'>Welcome Back , {fisrtName} {lastName} !</div>
-        ) : userType === "Student" ? (
-          <div className='nav-wel-back'>Welcome Back , {fisrtName} {lastName} !</div>
-        ) : userType === "Placement" ? (
-          <div className='nav-wel-back'>Welcome Back , {fisrtName} {lastName} !</div>
-        ) :
-         null}
+        {/*{userType === "Admin" ? (*/}
+        {/*  <div className='nav-wel-back'>Welcome Back , {fisrtName} {lastName}</div>*/}
+        {/*) : userType === "Mentor" ? (*/}
+        {/*  <div className='nav-wel-back'>Welcome Back , {fisrtName} {lastName} !</div>*/}
+        {/*) : userType === "Student" ? (*/}
+        {/*  <div className='nav-wel-back'>Welcome Back , {fisrtName} {lastName} !</div>*/}
+        {/*) : userType === "Placement" ? (*/}
+        {/*  <div className='nav-wel-back'>Welcome Back , {fisrtName} {lastName} !</div>*/}
+        {/*) :*/}
+        {/* null}*/}
         <div style={{ display: 'flex', alignItems: 'center', padding: '0' }}>
           <Button
             id="basic-button"
@@ -152,13 +159,13 @@ function Navber() {
               ()=>{openInNewTab('https://www.youtube.com')
                 setSupportReq(!SupportRqst)
                 handleClose()}}
-                 style={{textDecoration:"none",color:"black",paddingLeft:'20px'}} >IT Support</Link> </MenuItem>} 
+                 style={{textDecoration:"none",color:"black",paddingLeft:'20px'}} >IT Support</Link> </MenuItem>}
             {userType === 'Student' && SupportRqst && <MenuItem> <Link onClick={
               ()=>{
                 openInNewTab('https://www.google.com')
                 setSupportReq(!SupportRqst)
                 handleClose()}
-            } style={{textDecoration:"none",color:"black",paddingLeft:'20px'}} >Class Support</Link> </MenuItem>} 
+            } style={{textDecoration:"none",color:"black",paddingLeft:'20px'}} >Class Support</Link> </MenuItem>}
             {userType === 'Admin' && <MenuItem> <Link onClick={handleClose} style={{textDecoration:"none",color:"black"}} to={"admin-change-password"}>Change Password</Link> </MenuItem>}
             {/* {userType === 'Mentor' && <MenuItem> <Link onClick={handleClose} style={{textDecoration:"none",color:"black"}} to={"change-password"}>Change Password</Link> </MenuItem>} */}
             <MenuItem onClick={handleLogout}><Logout fontSize="small" /> Logout</MenuItem>

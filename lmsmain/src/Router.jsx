@@ -8,6 +8,7 @@ import Overview from './pages/Overview';
 import Login from './pages/Login';
 import Test from './pages/Test';
 import Student_List from './pages/Student_List';
+import Login_new from './pages/Login_new.jsx';
 import Meeting from './pages/Meeting';
 import Courses from './pages/Courses';
 import Mentors from './pages/Mentors';
@@ -38,6 +39,7 @@ import Mentor_Change_Password from './Mentor_section/pages/Mentor_Change_Passwor
 import Exam_Evaluation from './Mentor_section/pages/Exam_Evaluation.jsx'
 // Student Pages 
 import Student_Overview from './Student_section/Pages/Student_Overview.jsx';
+import Student_Overview_new from './Student_section/Pages/Student_Overview_new.jsx';
 import Student_courses from './Student_section/Pages/Student_courses.jsx';
 import Student_test from './Student_section/Pages/Student_test.jsx';
 import Student_Update_Profile from './Student_section/Pages/Student_Update_Profile.jsx';
@@ -80,13 +82,13 @@ const Router = () => {
       <Route index element={<Mentor_Overview />} />
     )
     : usertype === 'Student' ? (
-      <Route index element={<Student_Overview />} />
+      <Route index element={<Student_Overview_new />} />
     )
     : usertype === 'Placement' ? (
       <Route index element={<Placement_Drives/>} />
     )
     : (
-      <Route index element={<Login />} />
+      <Route index element={<Login_new />} />
     );
 
     // const basename = '/lms'
@@ -94,7 +96,6 @@ const Router = () => {
     createRoutesFromElements(
       <Route path='/' element={<App />}>
         {defaultRoute}
-
         {/* Admin  */}
         {/* <Route path='login' element={<Login />} /> */}
         <Route path='test' element={<Test />} />
