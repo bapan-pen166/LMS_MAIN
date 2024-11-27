@@ -33,11 +33,11 @@ const Sidebar_new = () => {
         <>
             <div className='offcanvas'>
                 <div className="offcanvas-header bg-light">
-                    <h5 className="offcanvas-title" id="offcanvasNavbarLabel">My profile</h5>
+                    {/* <h5 className="offcanvas-title" id="offcanvasNavbarLabel">My profile</h5> */}
                     <button type="button" className="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasSidebar" aria-label="Close"></button>
                 </div>
                 <div className="offcanvas-body p-3 p-xl-0">
-                    <div className="bg-theme-green border rounded p-2 w-100 height-55vh overflow-auto">
+                    <div className="bg-theme-green border rounded p-2 height-55vh overflow-auto">
                         {/* Dashboard menu */}
                         <div className="list-group list-group-dark list-group-borderless collapse-list">
                             {userType === "Admin" ? (

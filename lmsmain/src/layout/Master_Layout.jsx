@@ -56,6 +56,8 @@ function Master_Layout() {
     const [courseProgress, setCourseProgress] = useState();
     const toggleSidebar = () => {
         setSidebarVisible(!isSidebarVisible);
+        console.log("isSidebarVisible", isSidebarVisible);
+
     };
 
 
@@ -65,13 +67,13 @@ function Master_Layout() {
         setFirstName(localStorage.getItem('firstName'));
         setUserId(localStorage.getItem('id'));
     }, []);
-    
+
     useEffect(() => {
         if (studentMail) {
             getBatchNM();
         }
     }, [studentMail]);
-    
+
     const getBatchNM = () => {
         axios.post(`${api}/dashboard/getStudentBatchName`, { studentEmail: studentMail })
             .then((Response) => {
@@ -83,16 +85,16 @@ function Master_Layout() {
                 console.error("Error fetching batch name:", error);
             });
     }
-    
+
     useEffect(() => {
         const storedUser_Type = localStorage.getItem('userType');
         setUserType(storedUser_Type);
-    
+
         if (storedUser_Type === 'Student' && studentMail && getBatchName) {
             courseProgressBar();
         }
     }, [studentMail, getBatchName, userType]);  // Add userType to the dependencies to ensure it's up to date
-    
+
     const courseProgressBar = () => {
         // Ensure both studentMail and getBatchName are available before making the API request
         if (studentMail && getBatchName) {
@@ -108,7 +110,7 @@ function Master_Layout() {
             console.log("Missing studentMail or getBatchName, cannot fetch course progress.");
         }
     };
-    
+
     useEffect(() => {
         console.log("Course progress updated: ", courseProgress);
     }, [courseProgress]);
@@ -125,69 +127,72 @@ function Master_Layout() {
                         </div>
                         <div class="container-fluid mt-n4 px-5">
                             <div class="row">
+                                <div class="col-md-2">
+                                    <div class="avatar avatar-xxl position-relative mt-n3">
+                                        <img class="avatar-img rounded-circle " src={student_profile} alt="" />
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 mt-2 px-0 d-sm-flex align-items-center">
+                                    <div className='mt-n3'>
+                                        <h1 class="mb-2 mt-n4 fs-4">
+                                            <span className='mr-2'>{firstName ? firstName : ''}</span>
+                                            <span>{lastName ? lastName : ''}</span></h1>
+                                        <ul class="list-inline mb-0 mt-2">
+                                            {userType == 'Student' ?
+                                                <>
+                                                    <li class="list-inline-item me-3 mb-1 mb-sm-0">
+                                                        <span class=" fw-light mr-1">Batch Name</span>
+                                                        <span class="text-body h6 font-weight-bold mr-1">{getBatchName}</span>
+
+                                                    </li>
+                                                    <li class="list-inline-item me-3 mb-1 mb-sm-0">
+                                                        <span class="fw-light mr-1">Course Name</span>
+                                                        <span class="text-body font-weight-bold h6 mr-1">{getCourseName ? getCourseName : ''}</span>
+                                                    </li>
+                                                    <li class="list-inline-item me-3 mb-1 mb-sm-0">
+                                                        <span class="fw-light mr-1">Student ID</span>
+                                                        <span class="text-body font-weight-bold h6 mr-1">{userId}</span>
+                                                    </li>
+                                                </>
+                                                : <></>
+
+                                            }
+                                        </ul>
+
+
+                                        {userType === 'Mentor' &&
+                                            <ul class="list-inline mb-0">
+                                                <li className="list-inline-item h6 fw-light me-3 mb-1 mb-sm-0 d-flex align-items-center" style={{ gap: "4px" }}>
+                                                    <FontAwesomeIcon style={{ fontSize: "60px" }} className="fas fa-star text-warning me-2" icon={faStar} />
+                                                    <span>4.5/5.0</span>
+                                                </li>
+
+
+                                            </ul>
+
+                                        }
+
+                                    </div>
+                                    {/* Button */}
+                                </div>
+                                <div class="col-lg-2">
+                                    {/* <a href="student-course-list.html" class="btn btn-outline-primary mb-0">Join live classes</a> */}
+                                    {userType === 'Student' ?
+                                        <StudentCourseProgressChart courseProgressValue={courseProgress} /> :
+                                        <div className="pt-2 mt-n3 pl-5" style={{ height: '165px' }}></div>
+                                    }
+                                </div>
                                 <div class="col-12">
                                     <div class="bg-transparent card-body p-0 mt-2 mt-sm-0 d-flex">
                                         <div class="row d-sm-flex justify-sm-content-between mt-2 mt-md-0">
                                             {/* Avatar */}
-                                            <div class="col-md-2">
-                                                <div class="avatar avatar-xxl position-relative mt-n3">
-                                                    <img class="avatar-img rounded-circle " src={student_profile} alt="" />
 
-                                                </div>
-                                            </div>
                                             {/* Profile info */}
-                                            <div class="col-lg-7 mt-2 ml-3 px-0 d-sm-flex justify-content-between align-items-center">
-                                                <div className='mt-n3'>
-                                                    <h1 class="mb-2 mt-n4 fs-4">
-                                                        <span className='mr-2'>{firstName ? firstName : ''}</span>
-                                                        <span>{lastName ? lastName : ''}</span></h1>
-                                                    <ul class="list-inline mb-0 mt-2">
-                                                        {userType == 'Student' ?
-                                                            <>
-                                                                <li class="list-inline-item me-3 mb-1 mb-sm-0">
-                                                                    <span class=" fw-light mr-1">Batch Name</span>
-                                                                    <span class="text-body h6 font-weight-bold mr-1">{getBatchName}</span>
 
-                                                                </li>
-                                                                <li class="list-inline-item me-3 mb-1 mb-sm-0">
-                                                                    <span class="fw-light mr-1">Course Name</span>
-                                                                    <span class="text-body font-weight-bold h6 mr-1">{getCourseName ? getCourseName : ''}</span>
-                                                                </li>
-                                                                <li class="list-inline-item me-3 mb-1 mb-sm-0">
-                                                                    <span class="fw-light mr-1">Student ID</span>
-                                                                    <span class="text-body font-weight-bold h6 mr-1">{userId}</span>
-                                                                </li>
-                                                            </>
-                                                            : <></>
-
-                                                        }
-                                                    </ul>
-
-
-                                                    {userType === 'Mentor' &&
-                                                        <ul class="list-inline mb-0">
-                                                            <li className="list-inline-item h6 fw-light me-3 mb-1 mb-sm-0 d-flex align-items-center" style={{gap:"4px"}}>
-                                                                <FontAwesomeIcon style={{fontSize:"60px"}} className="fas fa-star text-warning me-2" icon={faStar} />
-                                                                <span>4.5/5.0</span>
-                                                            </li>
-
-
-                                                        </ul>
-
-                                                    }
-
-                                                </div>
-                                                {/* Button */}
-                                            </div>
 
                                         </div>
-                                        <div class="col-lg-2">
-                                            {/* <a href="student-course-list.html" class="btn btn-outline-primary mb-0">Join live classes</a> */}
-                                            {userType === 'Student' ?
-                                                <StudentCourseProgressChart courseProgressValue={courseProgress} /> :
-                                                <div className="pt-2 mt-n3 pl-5" style={{ height: '165px' }}></div>
-                                            }
-                                        </div>
+                                        
                                     </div>
 
                                     {/* Advanced filter responsive toggler START */}
@@ -223,9 +228,19 @@ function Master_Layout() {
                         } */}
                         <div className="container-fluid mt-4 px-5">
                             <div className="row">
-                                <div className="col-md-2">
-                                    {!isErrorPage && <Sidebar_new className={`sidebar ${isSidebarVisible ? 'show' : ''}`} />}
+                                <div className="col-md-2 d-sm-done">
+                                    <div>
+
+                                        {!isErrorPage && <Sidebar_new />}
+                                    </div>
                                 </div>
+                                <div className="col-md-2 d-lg-none d-xl-none">
+                                    <div className={`sidebar transition-width duration-300 bgt bgo  ${isSidebarVisible ? ' ' : 'sidebar translate-100'}`}>
+
+                                        {!isErrorPage && <Sidebar_new />}
+                                    </div>
+                                </div>
+
                                 <div className="col-md-10">
                                     <Body />
                                     <Footer />

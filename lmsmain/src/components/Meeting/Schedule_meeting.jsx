@@ -17,7 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const localizer = momentLocalizer(moment);
 
-function Schedule_meeting({ meeting, setMeeting, holidaylist,setRecallGetcall,handleMeetingListView }) {
+function Schedule_meeting({ meeting, setMeeting, holidaylist,setRecallGetcall,handleMeetingListView, userEmail }) {
     const [showJoinMeet, setShowJoinMeet] = useState(false);
     const handleCloseJoinMeet = () => setShowJoinMeet(false);
     const handleShowJoinMeet = () => setShowJoinMeet(true);
@@ -62,7 +62,8 @@ function Schedule_meeting({ meeting, setMeeting, holidaylist,setRecallGetcall,ha
         [holidaylist]
     );
 
-    const handleEventSelection = (e) => {
+    const handleEventSelection = (e,event) => {
+        e.stopPropagation();
         console.log(e, "Event data");
     };
 
@@ -80,7 +81,13 @@ function Schedule_meeting({ meeting, setMeeting, holidaylist,setRecallGetcall,ha
         e.preventDefault();
         console.log(event);
         setSelectedEvent(event);
-        setContextMenuPosition({ x: e.clientX, y: e.clientY });
+        if(view === 'month')
+
+            {
+
+                setContextMenuPosition({ x: e.clientX, y: e.clientY });
+
+            }
     };
 
     // For deleting meetings
@@ -189,7 +196,7 @@ function Schedule_meeting({ meeting, setMeeting, holidaylist,setRecallGetcall,ha
             view === 'month'
                 ? event.isHoliday
                     ? 'lightcoral' // Holiday color in month view
-                    : 'rgb(125, 11, 148)' // Regular event color in month view
+                    : getColorCode(event.start, event.end)//'rgb(125, 11, 148)' // Regular event color in month view
                 : ''; // Default color for other views
 
         return {
@@ -199,6 +206,35 @@ function Schedule_meeting({ meeting, setMeeting, holidaylist,setRecallGetcall,ha
         };
     };
 
+    function getColorCode(startDateTime, endDateTime) {
+
+        // Convert the input strings to Date objects
+
+        const start = new Date(startDateTime);
+
+        const end = new Date(endDateTime);
+
+        const now = new Date(); // Current date and time
+
+      
+
+        // Check if the current time is before the start time, within the range, or after the end time
+
+        if (now < start) {
+
+          return 'blue'; // Upcoming
+
+        } else if (now >= start && now <= end) {
+
+          return 'green'; // Running
+
+        } else {
+
+          return 'gray'; // Over
+
+        }
+
+      }
     // Updated filteredEvents to exclude holidays in agenda view
     const filteredEvents = (events, view) => {
         if (view === 'month') {
@@ -242,8 +278,15 @@ function Schedule_meeting({ meeting, setMeeting, holidaylist,setRecallGetcall,ha
 
                 <Custom_Dlt_Menu
                     contextMenuPosition={contextMenuPosition}
-                    handleDelete={handleDelete}
+                    //handleDelete={handleDelete}
                     handleCloseMenu={handleCloseMenu}
+                    selectedEvent={selectedEvent}
+
+                    firstName={firstName} 
+
+                    lastName={lastName}
+
+                    userID={userID}
                 />
 
             </div>

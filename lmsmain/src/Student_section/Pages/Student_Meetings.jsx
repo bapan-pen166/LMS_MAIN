@@ -44,6 +44,7 @@ import Mentor_Meeting_reschedule_dropdown from "../../Mentor_section/components/
 import Mentor_ScheduleEmChip from "../../Mentor_section/components/Meeting/Mentor_ScheduleEmChip";
 import Mentor_Monthlymeetschedule from "../../Mentor_section/components/Meeting/Mentor_Monthlymeetschedule";
 import { api, api_meet } from "../../ApiUrl/ApiUrl";
+import Schedule_meeting from "../../components/Meeting/Schedule_meeting";
 
 
 const ITEM_HEIGHT = 40;
@@ -118,6 +119,28 @@ function Student_Meetings() {
 
   const [getStudentMailFromLocalStorage, setGetStudentMailFromLocalStorage] = useState();
 
+  // page validation for userType
+  const [userType, setUserType] = useState('');
+  const [userEmail,setUserEmail]=useState('');
+  const [recallGetcall,setRecallGetcall] = useState(false);
+
+  useEffect(() => {
+    const type = localStorage.getItem('userType');
+    const adminEmail=localStorage.getItem('adminEmail');
+    const mentorEmail=localStorage.getItem('mentorEmail');
+    const studentEmail=localStorage.getItem('studentEmail');
+    // let email
+    if(adminEmail)
+      {setUserEmail(adminEmail);}
+    else if (mentorEmail)
+      {setUserEmail(mentorEmail);}
+    else if(studentEmail)
+      {setUserEmail(studentEmail);}
+    
+
+    setUserType(type);
+    
+  }, []);
 
   // Apply leave
   const [showApplyLeave, setShowApplyLeave] = useState(false);
@@ -791,9 +814,8 @@ function Student_Meetings() {
         <div className="container-fluid " style={{ minHeight: "100vh" }}>
           <div className="row">
 
-              <Student_Schedule_meeting meeting={meeting} setMeeting={setMeeting} holidaylist={holidaylist} />
-            
-          </div>
+              <Schedule_meeting meeting={meeting} setMeeting={setMeeting} holidaylist={holidaylist} setRecallGetcall={setRecallGetcall} handleMeetingListView={handleMeetingListView} userEmail={userEmail}/>
+         </div>
 
         </div>
       </div>

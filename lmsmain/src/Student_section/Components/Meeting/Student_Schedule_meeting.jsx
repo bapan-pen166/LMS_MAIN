@@ -265,7 +265,7 @@ function Student_Schedule_meeting({ meeting, setMeeting, holidaylist }) {
         <>
             {console.log('re-render events', events)}
             {console.log('re-render meetings', meeting)}
-            <div className='col-md-9 bg-white'>
+            <div className='col-lg-9 col-md-12 col-sm-12 bg-white'>
                 <Calendar
                     localizer={localizer}
                     events={filteredEvents(events, view)} // Pass current view to filter events

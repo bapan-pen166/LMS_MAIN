@@ -5,6 +5,9 @@
        width: 60%;
        opacity: 2;
     }
+    .d-sm-done{
+      display: none;
+    }
 }
 
 .full-sidebar{
@@ -581,3 +584,16 @@
 .modal-content {
   height: 100vh; 
 } */
+.bgt {
+  transition-timing-function: linear;
+}
+
+.bgo {
+  transition-duration: 300ms;
+}
+.translate-100{
+  transform: translateX(-100%);
+}
+.translate100{
+  transform: translateX(100%);
+}

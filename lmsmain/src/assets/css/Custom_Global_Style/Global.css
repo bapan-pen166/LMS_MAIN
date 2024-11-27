@@ -40,3 +40,9 @@
   .font-40{
     font-size: 40px;
   }
+  @media screen and (max-width:540px){
+      .d-xs-none{
+        display: none;
+      }
+  }
+  
