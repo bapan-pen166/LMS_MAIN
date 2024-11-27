@@ -25,3 +25,18 @@
   .w-50px{
     width: 50px;
   }
+  .font-11{
+    font-size: 11px;
+  }
+  .font-13{
+    font-size: 13px;
+  }
+  .left-double-border{
+    border-left: 2px solid #185055;
+  }
+  .height-555{
+    height: 555px;
+  }
+  .font-40{
+    font-size: 40px;
+  }

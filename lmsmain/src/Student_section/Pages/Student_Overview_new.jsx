@@ -432,62 +432,62 @@ const Student_Overview_new = () => {
                         <div className="col-lg-8">
                             <div className="row px-5 pt-4 mt-2">
 
-                                <div class="pr-3">
-                                    <div class="d-flex align-items-center mb-30 justify-content-between">
-                                        <div class="d-flex align-items-center fw-500">
-                                            <div class="me-15 w-50px d-table">
-                                                <img src={performance_icon} class="avatar avatar-lg rounded-10" alt="" />
+                                <div className="pr-3">
+                                    <div className="d-flex align-items-center mb-30 justify-content-between">
+                                        <div className="d-flex align-items-center fw-500">
+                                            <div className="me-15 w-50px d-table">
+                                                <img src={performance_icon} className="avatar avatar-lg rounded-10" alt="" />
                                             </div>
                                             <div>
-                                                <a href="#" class="text-dark hover-primary mb-2 d-block fs-16">Overall Performance</a>
-                                                <div class="w-200">
-                                                    <div class="progress progress-sm mb-0">
-                                                        <div class="progress-bar progress-bar-primary progress-bar-striped progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${overallPerformn}%` }}>
+                                                <a href="#" className="text-dark hover-primary mb-2 d-block fs-16">Overall Performance</a>
+                                                <div className="w-200">
+                                                    <div className="progress progress-sm mb-0">
+                                                        <div className="progress-bar progress-bar-primary progress-bar-striped progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${overallPerformn}%` }}>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="text-end">
-                                            <h5 class="fw-600 mb-0 badge badge-pill badge-primary mt-4">{overallPerformn ? overallPerformn : ""}</h5>
+                                        <div className="text-end">
+                                            <h5 className="fw-600 mb-0 badge badge-pill badge-primary mt-4">{overallPerformn ? overallPerformn : ""}</h5>
                                         </div>
                                     </div>
-                                    <div class="d-flex align-items-center mb-30 justify-content-between">
-                                        <div class="d-flex align-items-center fw-500">
-                                            <div class="me-15 w-50px d-table">
-                                                <img src={assignment_icon} class="avatar avatar-lg rounded-10" alt="" />
+                                    <div className="d-flex align-items-center mb-30 justify-content-between">
+                                        <div className="d-flex align-items-center fw-500">
+                                            <div className="me-15 w-50px d-table">
+                                                <img src={assignment_icon} className="avatar avatar-lg rounded-10" alt="" />
                                             </div>
                                             <div>
-                                                <a href="#" class="text-dark hover-primary mb-2 d-block fs-16">Cumulative Assignment Score </a>
-                                                <div class="w-200">
-                                                    <div class="progress progress-sm mb-0">
-                                                        <div class="progress-bar progress-bar-primary progress-bar-warning progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${assignmentPercentage}%` }}>
+                                                <a href="#" className="text-dark hover-primary mb-2 d-block fs-16">Cumulative Assignment Score </a>
+                                                <div className="w-200">
+                                                    <div className="progress progress-sm mb-0">
+                                                        <div className="progress-bar progress-bar-primary progress-bar-warning progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${assignmentPercentage}%` }}>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="text-end">
-                                            <h5 class="fw-600 mb-0 badge badge-pill badge-warning mt-4">{assignmentPercentage}%</h5>
+                                        <div className="text-end">
+                                            <h5 className="fw-600 mb-0 badge badge-pill badge-warning mt-4">{assignmentPercentage}%</h5>
                                         </div>
                                     </div>
-                                    <div class="d-flex align-items-center mb-30 justify-content-between">
-                                        <div class="d-flex align-items-center fw-500">
-                                            <div class="me-15 w-50px d-table">
-                                                <img src={test_icon} class="avatar avatar-lg rounded-10" alt="" />
+                                    <div className="d-flex align-items-center mb-30 justify-content-between">
+                                        <div className="d-flex align-items-center fw-500">
+                                            <div className="me-15 w-50px d-table">
+                                                <img src={test_icon} className="avatar avatar-lg rounded-10" alt="" />
                                             </div>
                                             <div>
-                                                <a href="#" class="text-dark hover-primary mb-2 d-block fs-16">Cumulative Test Score</a>
-                                                <div class="w-200">
-                                                    <div class="progress progress-sm mb-0">
-                                                        <div class="progress-bar progress-bar-success progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${testResult}%` }}>
+                                                <a href="#" className="text-dark hover-primary mb-2 d-block fs-16">Cumulative Test Score</a>
+                                                <div className="w-200">
+                                                    <div className="progress progress-sm mb-0">
+                                                        <div className="progress-bar progress-bar-success progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style={{ width: `${testResult}%` }}>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="text-end">
-                                            <h5 class="fw-600 mb-0 badge badge-pill badge-succes mt-4">{testResult}%</h5>
+                                        <div className="text-end">
+                                            <h5 className="fw-600 mb-0 badge badge-pill badge-succes mt-4">{testResult}%</h5>
                                         </div>
                                     </div>
                                 </div>
@@ -667,8 +667,8 @@ const Student_Overview_new = () => {
             <div className="row mt-5 d-none">
                 <div className="col-lg-6">
                     <div>
-                        <div class="shadow-box-header">
-                            <h5 class="shadow-box-title">Today's Classes</h5>
+                        <div className="shadow-box-header">
+                            <h5 className="shadow-box-title">Today's Classes</h5>
                         </div>
                         <div className="shadow-box-body">
                             <ul className="list-group">
@@ -688,7 +688,7 @@ const Student_Overview_new = () => {
                                                 </div>
                                             </div>
                                             <button className="btn btn-link p-3">
-                                                <span class="badge bg-success bg-opacity-15 text-success">Live</span>
+                                                <span className="badge bg-success bg-opacity-15 text-success">Live</span>
                                             </button>
                                             <a href="#">
                                                 <span><FontAwesomeIcon icon={faPlay} /></span>
@@ -787,8 +787,8 @@ const Student_Overview_new = () => {
                 </div>
                 <div className="col-lg-6">
                     <div>
-                        <div class="shadow-box-header">
-                            <h5 class="shadow-box-title">Upcoming Classes</h5>
+                        <div className="shadow-box-header">
+                            <h5 className="shadow-box-title">Upcoming Classes</h5>
                         </div>
                         <div className="shadow-box-body">
                             <ul className="list-group">

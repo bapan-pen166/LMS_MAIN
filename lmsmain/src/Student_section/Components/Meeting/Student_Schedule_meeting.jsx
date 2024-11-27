@@ -10,27 +10,28 @@ import { useState } from 'react';
 import Custom_Dlt_Menu from '../../../Mentor_section/components/Meeting/Mentor_Custom_Dlt_Menu';
 import Student_Join_meeting from './Student_Join_meeting';
 import { cleanDigitSectionValue } from '@mui/x-date-pickers/internals/hooks/useField/useField.utils';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 const localizer = momentLocalizer(moment);
 
 function Student_Schedule_meeting({ meeting, setMeeting, holidaylist }) {
     const [showJoinMeet, setShowJoinMeet] = useState(false);
     const handleCloseJoinMeet = () => setShowJoinMeet(false);
     const handleShowJoinMeet = () => setShowJoinMeet(true);
-    const [firstName,setFirstName] = useState();
-    const [lastName,setlastName] = useState();
-    const[userID,setUserID] = useState();
+    const [firstName, setFirstName] = useState();
+    const [lastName, setlastName] = useState();
+    const [userID, setUserID] = useState();
 
     const holidays = [
         new Date(2024, 0, 1), // January 1, 2024
         new Date(2024, 5, 26), // July 4, 2024
     ];
 
-    useEffect(()=>{
+    useEffect(() => {
         setFirstName(localStorage.getItem('firstName'))
         setlastName(localStorage.getItem('lastName'))
         setUserID(localStorage.getItem('id'))
-    },[])
+    }, [])
 
     const holidayGetter = useCallback(
         (date) => {
@@ -100,7 +101,7 @@ function Student_Schedule_meeting({ meeting, setMeeting, holidaylist }) {
         const handleCloseJoinMeet = () => setShowJoinMeet(false);
         const handleShowJoinMeet = () => setShowJoinMeet(true);
 
-        const [meetinfo, setmeetinfo] = useState({  meetlink: '', id: '', firstName: '',lastName: '',userID:''});
+        const [meetinfo, setmeetinfo] = useState({ meetlink: '', id: '', firstName: '', lastName: '', userID: '' });
         const handleJoin = (meetlink, id, password) => {
             console.log(meetlink);
             console.log('id', id);
@@ -121,10 +122,10 @@ function Student_Schedule_meeting({ meeting, setMeeting, holidaylist }) {
                         {/* <div>{moment(event.start).format('MMMM Do YYYY')}</div> */}
                         <strong>{event.title}</strong>
                         <button type='button' className='btn btn-success' onClick={() => {
-                            handleJoin(event.meetingLink, event.meeting_id, event.meeting_password,firstName,lastName)
+                            handleJoin(event.meetingLink, event.meeting_id, event.meeting_password, firstName, lastName)
                             console.log('event.meeting_id', event)
                             console.log('event.meeting_password', event.meeting_password);
-                            setmeetinfo({ meetlink: event.meetingLink, id: event.id, firstName: firstName,lastName: lastName,userID:userID})
+                            setmeetinfo({ meetlink: event.meetingLink, id: event.id, firstName: firstName, lastName: lastName, userID: userID })
                         }}>Join</button>
                         <Student_Join_meeting showJoinMeet={showJoinMeet} handleCloseJoinMeet={handleCloseJoinMeet} meetinfo={meetinfo} />
                     </div>
@@ -186,11 +187,85 @@ function Student_Schedule_meeting({ meeting, setMeeting, holidaylist }) {
         setView(newView); // Update the current view
     };
 
+    const [meetingsForDay, setMeetingsForDay] = useState([]);
+    const [selectedDate, setSelectedDate] = useState(null);
+
+    const handleDayClick = (date) => {
+        // Normalize to start of the day (00:00:00) and end of the day (23:59:59.999)
+        const selectedDayStart = new Date(date);
+        selectedDayStart.setHours(0, 0, 0, 0); // Set to start of the day
+
+        const selectedDayEnd = new Date(date);
+        selectedDayEnd.setHours(23, 59, 59, 999); // Set to end of the day
+
+        // Filter events to only include those that fall within the clicked date's range
+        const filteredMeetings = events.filter(event => {
+            const eventStart = new Date(event.start).getTime();
+            return eventStart >= selectedDayStart.getTime() && eventStart <= selectedDayEnd.getTime();
+        });
+
+        // Update state with filtered meetings for that day
+        setMeetingsForDay(filteredMeetings);
+        console.log("meetingsForDay", filteredMeetings);
+
+        setSelectedDate(date); // Store the clicked date for display
+        console.log("selectedDate", selectedDate);
+        
+    };
+
+    // Custom click handler for the rbc-day-bg div
+    const dayCellClick = (e) => {
+        const date = new Date(e.target.dataset.date);
+        handleDayClick(date);
+    };
+
+    useEffect(() => {
+        // Attach click event listener to each rbc-day-bg cell after render
+        const dayCells = document.querySelectorAll('.rbc-day-bg');
+        dayCells.forEach((cell) => {
+            cell.addEventListener('click', dayCellClick);
+        });
+
+        // Cleanup event listeners when the component is unmounted
+        return () => {
+            dayCells.forEach((cell) => {
+                cell.removeEventListener('click', dayCellClick);
+            });
+        };
+    }, [events]);
+
+    const formatDate = (date) => {
+        return new Date(date).toLocaleDateString('en-US', {
+            weekday: 'short',  // 'Fri'
+            year: 'numeric',   // '2024'
+            month: 'short',     // 'Nov'
+            day: '2-digit'      // '01'
+        });
+    };
+
+    const formatTime = (date) => {
+        return new Date(date).toLocaleTimeString('en-US', {
+            hour: '2-digit',   // '10'
+            minute: '2-digit', // '00'
+            hour12: true        // 'AM/PM'
+        });
+    };
+
+    const getTimeSpan = (start, end) => {
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+
+        const hours = endDate.getHours() - startDate.getHours();
+        const minutes = endDate.getMinutes() - startDate.getMinutes();
+        
+        return `${hours} hr ${minutes} min`;
+    };
+
     return (
         <>
             {console.log('re-render events', events)}
             {console.log('re-render meetings', meeting)}
-            <div>
+            <div className='col-md-9 bg-white'>
                 <Calendar
                     localizer={localizer}
                     events={filteredEvents(events, view)} // Pass current view to filter events
@@ -203,6 +278,8 @@ function Student_Schedule_meeting({ meeting, setMeeting, holidaylist }) {
                     timeslots={6}
                     components={customComponents}
                     // dayPropGetter={holidayGetter}
+                    onSelectSlot={(slotInfo) => handleDayClick(slotInfo.start)}
+
                     onSelectEvent={(event, e) => {
                         console.log(e)
                         if (e.target.tagName.toLowerCase() === 'button') {
@@ -212,6 +289,8 @@ function Student_Schedule_meeting({ meeting, setMeeting, holidaylist }) {
                             handleContextMenu(event, e)
                         }
                     }}
+                    views={['month', 'week', 'day']}
+                    selectable
                 />
 
                 <Custom_Dlt_Menu
@@ -220,6 +299,36 @@ function Student_Schedule_meeting({ meeting, setMeeting, holidaylist }) {
                     handleCloseMenu={handleCloseMenu}
                 />
 
+            </div>
+
+            <div className="col-lg-3 bordered pr-0  d-xs-none">
+                <div className="height-555 overflow-auto">
+                    <h6 className='mt-1'>{selectedDate ? formatDate(selectedDate) : '' }</h6>
+                    {meetingsForDay.length === 0 ? (
+                        <>
+                            <div className='d-flex align-center justify-content-center'>
+                                <span className='font-40'><FontAwesomeIcon icon={faCalendarDays} /></span>
+                                <span className='ml-2'>No Meeting Scheduled</span>
+                            </div>
+                        </>
+                    ) : 
+                    meetingsForDay.map((meeting, index) => (
+                        <div class="card left-double-border mt-1">
+                            <div class="row py-2">
+                                <div className="col-lg-4 pr-0 d-flex flex-column font-11 justify-content-center align-center">
+                                    <span className="py-2 pl-1 text-center">
+                                            {formatTime(meeting.start)} 
+                                        </span>
+                                    <span className="py-1 text-center">{getTimeSpan(meeting.start, meeting.end)}</span>
+                                </div>
+                                <div className="col-lg-8 pr-0 py-2 font-13">
+                                    <p>{meeting.title}</p>
+                                </div>
+                            </div>
+                        </div>
+                        ))
+                    }
+                </div>
             </div>
         </>
     );
