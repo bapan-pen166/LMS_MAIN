@@ -5,27 +5,37 @@ import { api } from '../../ApiUrl/ApiUrl';
 import { IoMdDownload } from "react-icons/io";
 import { ToastContainer, toast } from 'react-toastify';
 import { CiSearch } from "react-icons/ci";
-import Fab from '@mui/material/Fab';
-import Tooltip from '@mui/material/Tooltip';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 
 const Exam_Evaluation = () => {
     const [allStudentDetails, setAllStudentDetails] = useState();
     const [mail, setMail] = useState();
-    const [marks, setMarks] = useState({}); 
+    const [marks, setMarks] = useState({});
+    const [userType,setUserType]=useState(); 
 
       // For the search 
       const [searchres, setSearchres] = useState([]);
       const [searchquery, setSearchquery] = useState('');
 
     useEffect(() => {
-        setMail(localStorage.getItem('mentorEmail'))
+        // setMail(localStorage.getItem('mentorEmail'))
+        setUserType(localStorage.getItem('userType'))
     }, [])
+
+    useEffect(()=>{
+        if(userType=="Mentor")
+        {setMail(localStorage.getItem('mentorEmail'))}
+        else if(userType=="Mentor_Assistant")
+          {
+            setMail(localStorage.getItem('mentorAssistantEmail'))
+          }
+      },[userType])
 
 
     const getAllData = () => {
-        axios.post(`${api}/mentor/getStudentSubmittedAnswers`, { email: mail })
+        // const data=userType=="Mentor"?{email:mail,adminUploadFlag:2}:{adminUploadFlag:1};
+        const data=userType=="Mentor"?{email:mail,adminUploadFlag:2}:userType=="Mentor_Assistant"?{email:mail,adminUploadFlag:2}:{adminUploadFlag:1};
+        axios.post(`${api}/mentor/getStudentSubmittedAnswers`, data)
             .then((Response) => {
                 console.log("submitted data",Response?.data?.data);
                 setAllStudentDetails(Response?.data?.data)
@@ -37,10 +47,10 @@ const Exam_Evaluation = () => {
     }
 
     useEffect(() => {
-        if (mail) {
+        if(userType=='Admin' || userType=='Mentor' || userType=="Mentor_Assistant") {
             getAllData()
         }
-    }, [mail])
+    }, [userType,mail])
 
     const downloadSample = async (uploadFileDes) => {
         try {
@@ -143,14 +153,14 @@ const Exam_Evaluation = () => {
 
 
     return (
-        <div>
+        <div style={{ marginTop: "58px" }}>
             <div className="row">
                 <div className="container-fluid">
-                    <div className='col-md-12 col-lg-12 d-flex justify-content-start'>
+                    <div className='col-md-12 col-lg-12 headLineBox d-flex justify-content-start'>
                         <h4>Test Evaluation</h4>
                     </div>
 
-                    <div className="row mt-4 ml-1">
+                    <div className="row mt-4">
                         <div className="col-md-6">
                             <div className="d-flex align-items-center">
                                 <input
@@ -166,14 +176,18 @@ const Exam_Evaluation = () => {
                        
                     </div>
 
-                    <div className="col-md-12 col-lg-12 col-sm-12 mt-4">
-                        <div className="p-0 custom-table-container" style={{paddingTop:"0px", height: '400px', overflowY: 'auto' }}>
-                            <table className="table-bordered custom-table" >
-                                <thead className="custom-thead " style={{ position: 'sticky', top: 0, zIndex: 3 }}>
+                    <div className="col-md-12 col-lg-12 col-sm-12">
+                        <div className="table-container" style={{ height: '90vh', overflowY: 'auto' }}>
+                            <table className="table table-bordered pt-1">
+                                <thead style={{ position: 'sticky', top: -2, zIndex: 3 }}>
                                     <tr>
                                         <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Student Name</th>
                                         <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Test Name</th>
                                         <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Batch Name</th>
+                                        {/* <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Start Date</th>
+                                    <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>End Date</th>
+                                    <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Start Time</th>
+                                    <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>End Time</th> */}
                                         <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Uploaded question</th>
                                         <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Uploaded answer</th>
                                         <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Total Marks</th>
@@ -181,10 +195,11 @@ const Exam_Evaluation = () => {
                                         <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Status</th>
                                         <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Marks</th>
                                         <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Actions</th>
+
                                     </tr>
                                 </thead>
 
-                                <tbody  className="custom-tbody">
+                                <tbody style={{ zIndex: 1 }}>{console.log('allStudentDetails',allStudentDetails)}
                                     {allStudentDetails && allStudentDetails.map((allStudentDetail,index) => {
                                         // Parse the batchName array and extract the first batch object
                                         const batch = allStudentDetail?.batchName ? JSON.parse(allStudentDetail?.batchName)[0]?.batchName : 'N/A';
@@ -198,19 +213,19 @@ const Exam_Evaluation = () => {
                                             typeCheck ? (
                                                 allStudentDetail.studentAnswers.map((std,stdIndex) => (
                                                     <tr key={std?.id}>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{std?.name}</td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{allStudentDetail?.testName}</td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{batch}</td> {/* Display the parsed batchName */}
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}><div>
-                                                        <Tooltip title="Click here to download uploaded question" arrow> <Button style={{backgroundColor: "#185055",color:"white"}} onClick={() => downloadSample(allStudentDetail?.uploadFileDes)} variant="text">Download<IoMdDownload size={25} /></Button></Tooltip>
+                                                        <td>{std?.name}</td>
+                                                        <td>{allStudentDetail?.testName}</td>
+                                                        <td>{batch}</td> {/* Display the parsed batchName */}
+                                                        <td><div>
+                                                            <Button onClick={() => downloadSample(allStudentDetail?.uploadFileDes)} variant="text">Download<IoMdDownload size={25} /></Button>
                                                         </div></td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}><div>
-                                                        <Tooltip title="Click here to download uploaded answer" arrow> <Button style={{backgroundColor: "#185055",color:"white"}} onClick={() => downloadAnswer(std?.answers)} variant="text">Download<IoMdDownload size={25} /></Button></Tooltip>
+                                                        <td><div>
+                                                            <Button onClick={() => downloadAnswer(std?.answers)} variant="text">Download<IoMdDownload size={25} /></Button>
                                                         </div></td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{allStudentDetail?.totalMarks}</td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{allStudentDetail?.passingMarks}</td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{std?.status}</td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                                                        <td>{allStudentDetail?.totalMarks}</td>
+                                                        <td>{allStudentDetail?.passingMarks}</td>
+                                                        <td>{std?.status}</td>
+                                                        <td>
                                                             <input 
                                                                 placeholder='ex: 10'
                                                                 style={{ width: "80px" }}
@@ -219,7 +234,7 @@ const Exam_Evaluation = () => {
                                                                 value={marks[`${index}-${stdIndex}`] !== undefined ? marks[`${index}-${stdIndex}`] : std?.marksObtained || ''} 
                                                             />
                                                         </td>
-                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}> <Tooltip title="Click here to add marks" arrow> <Button style={{backgroundColor: "#185055"}} onClick={() => addMarks(`${index}-${stdIndex}`,std?.email,allStudentDetail?.testName,allStudentDetail?.passingMarks)} variant="contained">ADD MARKS <AddCircleIcon/> </Button>  </Tooltip> </td>
+                                                        <td><Button onClick={() => addMarks(`${index}-${stdIndex}`,std?.email,allStudentDetail?.testName,allStudentDetail?.passingMarks)} variant="contained">ADD MARKS</Button></td>
                                                     </tr>
                                                 ))
                                             ) : null

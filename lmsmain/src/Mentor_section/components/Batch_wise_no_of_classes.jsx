@@ -1,278 +1,15 @@
-// import React, { useState, useEffect } from 'react';
-// import Highcharts from 'highcharts';
-// import HighchartsReact from 'highcharts-react-official';
-// import axios from 'axios';
-// import { api } from '../../ApiUrl/ApiUrl';
-// // import 'bootstrap/dist/css/bootstrap.min.css';
-// import { Modal, Button } from 'react-bootstrap';
-// import Cert_Elegible_chart from './mentor_dashboard/Cert_Elegible_chart';
-// import Assignment_Summery from './mentor_dashboard/Assignment_Summery';
-// import { Feedback, Height } from '@mui/icons-material';
-// // import Course_Completion from './mentor_dashboard/Course_Completion';
-// import Course_Completion from './mentor_dashboard/Course_Completion';
-
-// const BatchWiseNoOfClasses = () => {
-//    const [classes, setClasses] = useState([]);
-//    const [mail, setMail] = useState('');
-
-//    const batchWiseApi = () => {
-//       axios.post(`${api}/mentor/getBatchWiseStudent`, { email: mail })
-//          .then((response) => {
-//             setClasses(response?.data?.result);
-//          })
-//          .catch((error) => {
-//             console.log(error);
-//          });
-//    };
-
-//    // assignment score count batchwise 
-//    const [batchName,setBatchName]=useState('')
-//    const [assignmentScore, setAssignmentScore] = useState('');
-
-//    const handlebatchAssignmentScore = (email) => {
-//       console.log('assignment score called')
-//       axios.post(`${api}/dashboard/getBatchWiseAssignmentData`, { mentorEmail: email })
-//          .then((response) => {
-//             console.log(response.data[0])
-//             setAssignmentScore(response?.data[0]?.totalAverageBatchAssignmentPerformance);
-//          })
-//          .catch((error) => {
-//             console.log(error);
-//          });
-//    };
-//    useEffect(()=>{console.log(assignmentScore)},[assignmentScore])
-
-//    useEffect(() => {
-//       setMail(localStorage.getItem('mentorEmail'));
-//    }, []);
-//    const [averagefeedback,setFeedback]=useState('');
-//    const [attendance,setAttendance]=useState('');
-
-//    // batch average feedback and attendance
-//    const handlebatchFeedAndAttendance = (email,batch) => {
-//       console.log('assignment score called')
-//       axios.post(`${api}/dashboard/getBatchWiseAttendanceData`, { mentorEmail: email, batch: batch })
-//          .then((response) => {
-//             console.log(response.data)
-//             setAttendance(response?.data.batchAverageAttendance);
-//             setFeedback(response?.data.batchAverageFeedback)
-            
-//          })
-//          .catch((error) => {
-//             console.log(error);
-//          });
-//    };
-//    // useEffect(()=>{console.log(assignmentScore)},[assignmentScore])
-   
-//    // test score
-//    const [testScore,setTestScore]=useState('') 
-//    const handlebatchAvgTestScore = (email,batch) => {
-//       // console.log('assignment score called')
-//       axios.post(`${api}/dashboard/getBatchWiseTestData`, { mentorEmail: email, batch: batch })
-//          .then((response) => {
-//             console.log(response.data)
-//             setTestScore(response?.data.totalAverageBatchTestPerformance);
-           
-            
-//          })
-//          .catch((error) => {
-//             console.log(error);
-//          });
-//    };
-   
-//    // overall performance 
-
-//    const [overallperformance,setOverallPerformance]=useState('') 
-//    const handleperformance = (email,batch) => {
-//       // console.log('assignment score called')
-//       axios.post(`${api}/dashboard/getBatchOverallPerformance`, { mentorEmail: email, batch: batch })
-//          .then((response) => {
-//             console.log(response.data)
-//             setOverallPerformance(response?.data.overallPerformance);
-           
-            
-//          })
-//          .catch((error) => {
-//             console.log(error);
-//          });
-//    };
-
-//    // Top and Bottom student list 
-
-//    const [TopStudentsPerformance,setTopStudentsPerformance]=useState([])
-//    const [BottomStudentsPerformance,setBottomStudentsPerformance]=useState([])
-//    const handleStudentAsperformance = (email,batch) => {
-//       // console.log('assignment score called')
-//       axios.post(`${api}/dashboard/getStudentsRatingPerformances`, { mentorEmail: email, batch: batch })
-//          .then((response) => {
-//             console.log(response.data)
-//             setTopStudentsPerformance(response?.data.top_3_students.sort((a,b)=>b.overallScore-a.overallScore));
-//             setBottomStudentsPerformance(response?.data.bottom_3_students.sort((a,b)=>a.overallScore-b.overallScore));
-           
-            
-//          })
-//          .catch((error) => {
-//             console.log(error);
-//          });
-//    };
-//    // useEffect(()=>{console.log(TopStudentsPerformance)},[TopStudentsPerformance])
-//    // useEffect(()=>{console.log(BottomStudentsPerformance)},[BottomStudentsPerformance])
-
-//    // Certificate eligible chart data 
-//    const [certElgData,setChartElgData]=useState({});
-//    const batchWiseCertElgCount = (email,batch) => {
-//       axios.post(`${api}/dashboard/getCertificateEligiblityData`, { mentorEmail: email, batch: batch})
-//          .then((response) => {
-//             setChartElgData(response?.data);
-//          })
-//          .catch((error) => {
-//             console.log(error);
-//          });
-//    };
-//    useEffect(()=>{console.log(certElgData)},[certElgData])
-
-
-//    // Assignment pass and fail percentage 
-//    const [assignmentPass,setAssignmentPass]=useState(100);
-//    const [assignmentFail,setAssignmentFail]=useState(30);
-//    const batchWiseAssignmentPassFail = (email,batch) => {
-//       axios.post(`${api}/dashboard/getBatchAssignmentReport`, { mentorEmail: email, batch: batch})
-//          .then((response) => {
-//             setAssignmentPass(response?.data?.percentage_pass);
-//             setAssignmentFail(response?.data?.percentage_fail);
-//          })
-//          .catch((error) => {
-//             console.log(error);
-//          });
-//    };
-//    useEffect(()=>{console.log(certElgData)},[certElgData])
-
-//    const[percentage,setpercentage]=useState(85)
-//     const handlebatchWiseCourseCompletion = (email,batch) => {
-//         axios.post(`${api}/dashboard/getCourseCompletion`, { mentorEmail: email, batch: batch })
-//            .then((response) => {
-//             setpercentage(response?.data?.completion_percentage);
-//            })
-//            .catch((error) => {
-//               console.log(error);
-//            });
-//      };
-//    //   useEffect(() => {
-//    //      handlebatchWiseCourseCompletion(localStorage.getItem('mentorEmail'));
-//    //  }, []);
-
-
-//    useEffect(() => {
-//       if (mail) {
-//          batchWiseApi();
-//       }
-//    }, [mail]);
-//    const [showModal, setShowModal] = useState(false);
-//    const modalClose=()=>setShowModal(false);
-//    const modalShow=()=>setShowModal(true);
-//    const [batchId,setBatchId]=useState('');
-
-//    const generateChartData = () => {
-
-//     const data = classes.map(batch => ({
-//         name: batch.name,
-//         y: batch.y,
-//         events: {
-//          click: () => {modalShow()
-//             setBatchId(batch.id)
-//             setBatchName(batch.name)
-//             handlebatchAssignmentScore(mail)
-//             handlebatchFeedAndAttendance(mail,batch.name)
-//             handlebatchAvgTestScore(mail,batch.name)
-//             handleperformance(mail,batch.name)
-//             handleStudentAsperformance(mail,batch.name)
-//             batchWiseCertElgCount(mail,batch.name)
-//             batchWiseAssignmentPassFail(mail,batch.name)
-//             handlebatchWiseCourseCompletion(mail,batch.name)
-//          }, // Trigger modal with batch id
-//        },
-//      }));
-
-//    //  const overall = data.reduce((sum, batch) => sum + batch.y, 0);
-      
-//    //    data.push({
-//    //       name: 'Overall',
-//    //       y: overall
-//    //    });
-
-//       return data;
-//    };
-
-//    const options = {
-//       chart: {
-//          type: 'column'
-//       },
-//       title: {
-//          text: null
-//       },
-//       accessibility: {
-//          announceNewData: {
-//             enabled: true
-//          }
-//       },
-//       xAxis: {
-//          type: 'category',
-//          gridLineWidth: 0, 
-//       },
-//       yAxis: {
-//          title: {
-//             text: null
-//          },
-//          min: 0,
-//          gridLineWidth: 0, 
-//          // gridLineColor: '#e0e0e0',
-//          // gridLineDashStyle: 'Solid', 
-//       },
-//       legend: {
-//          enabled: false
-//       },
-//       plotOptions: {
-//          series: {
-//             borderWidth: 0,
-//             dataLabels: {
-//                enabled: true,
-//                format: '{point.y}'
-//             }
-//          }
-//       },
-//       tooltip: {
-//          headerFormat: '<span style="font-size:11px">{point.name}</span><br>',
-//       },
-//       series: [
-//          {
-//             name: 'Activity',
-//             colorByPoint: true,
-//             data: generateChartData()
-//          }
-//       ],
-//       credits: {
-//          enabled: false
-//       }
-//    };
-
 import React, { useState, useEffect } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import axios from 'axios';
 import { api } from '../../ApiUrl/ApiUrl';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
 import Cert_Elegible_chart from './mentor_dashboard/Cert_Elegible_chart';
 import Assignment_Summery from './mentor_dashboard/Assignment_Summery';
 import { Feedback, Height } from '@mui/icons-material';
+// import Course_Completion from './mentor_dashboard/Course_Completion';
 import Course_Completion from './mentor_dashboard/Course_Completion';
-
-
-// Import the Highcharts Treemap module
-import HighchartsTreemap from 'highcharts/modules/treemap';
-
-// Initialize the treemap module
-HighchartsTreemap(Highcharts);
-
 
 const BatchWiseNoOfClasses = () => {
    const [classes, setClasses] = useState([]);
@@ -289,64 +26,80 @@ const BatchWiseNoOfClasses = () => {
    };
 
    // assignment score count batchwise 
-   const [batchName, setBatchName] = useState('');
+   const [batchName,setBatchName]=useState('')
    const [assignmentScore, setAssignmentScore] = useState('');
 
    const handlebatchAssignmentScore = (email) => {
-      console.log('assignment score called');
+      console.log('assignment score called')
       axios.post(`${api}/dashboard/getBatchWiseAssignmentData`, { mentorEmail: email })
          .then((response) => {
-            console.log(response.data[0]);
+            console.log(response.data[0])
             setAssignmentScore(response?.data[0]?.totalAverageBatchAssignmentPerformance);
          })
          .catch((error) => {
             console.log(error);
          });
    };
-
-   useEffect(() => { console.log(assignmentScore) }, [assignmentScore]);
+   useEffect(()=>{console.log(assignmentScore)},[assignmentScore])
 
    useEffect(() => {
-      setMail(localStorage.getItem('mentorEmail'));
+      // setMail(localStorage.getItem('mentorEmail'));
+      const type = localStorage.getItem('userType');
+      //   setUserType(type);
+        if(type=="Mentor")
+            {
+               setMail(localStorage.getItem('mentorEmail'))
+            }
+        else if(type=="Mentor_Assistant"){
+         setMail(localStorage.getItem('mentorAssistantEmail'))
+        } 
    }, []);
-
-   const [averagefeedback, setFeedback] = useState('');
-   const [attendance, setAttendance] = useState('');
+   const [averagefeedback,setFeedback]=useState('');
+   const [attendance,setAttendance]=useState('');
 
    // batch average feedback and attendance
-   const handlebatchFeedAndAttendance = (email, batch) => {
-      console.log('assignment score called');
+   const handlebatchFeedAndAttendance = (email,batch) => {
+      console.log('assignment score called')
       axios.post(`${api}/dashboard/getBatchWiseAttendanceData`, { mentorEmail: email, batch: batch })
          .then((response) => {
-            console.log(response.data);
+            console.log(response.data)
             setAttendance(response?.data.batchAverageAttendance);
-            setFeedback(response?.data.batchAverageFeedback);
+            setFeedback(response?.data.batchAverageFeedback)
+            
          })
          .catch((error) => {
             console.log(error);
          });
    };
-
+   // useEffect(()=>{console.log(assignmentScore)},[assignmentScore])
+   
    // test score
-   const [testScore, setTestScore] = useState('');
-   const handlebatchAvgTestScore = (email, batch) => {
+   const [testScore,setTestScore]=useState('') 
+   const handlebatchAvgTestScore = (email,batch) => {
+      // console.log('assignment score called')
       axios.post(`${api}/dashboard/getBatchWiseTestData`, { mentorEmail: email, batch: batch })
          .then((response) => {
-            console.log(response.data);
+            console.log(response.data)
             setTestScore(response?.data.totalAverageBatchTestPerformance);
+           
+            
          })
          .catch((error) => {
             console.log(error);
          });
    };
+   
+   // overall performance 
 
-   // overall performance
-   const [overallperformance, setOverallPerformance] = useState('');
-   const handleperformance = (email, batch) => {
+   const [overallperformance,setOverallPerformance]=useState('') 
+   const handleperformance = (email,batch) => {
+      // console.log('assignment score called')
       axios.post(`${api}/dashboard/getBatchOverallPerformance`, { mentorEmail: email, batch: batch })
          .then((response) => {
-            console.log(response.data);
+            console.log(response.data)
             setOverallPerformance(response?.data.overallPerformance);
+           
+            
          })
          .catch((error) => {
             console.log(error);
@@ -354,24 +107,30 @@ const BatchWiseNoOfClasses = () => {
    };
 
    // Top and Bottom student list 
-   const [TopStudentsPerformance, setTopStudentsPerformance] = useState([]);
-   const [BottomStudentsPerformance, setBottomStudentsPerformance] = useState([]);
-   const handleStudentAsperformance = (email, batch) => {
+
+   const [TopStudentsPerformance,setTopStudentsPerformance]=useState([])
+   const [BottomStudentsPerformance,setBottomStudentsPerformance]=useState([])
+   const handleStudentAsperformance = (email,batch) => {
+      // console.log('assignment score called')
       axios.post(`${api}/dashboard/getStudentsRatingPerformances`, { mentorEmail: email, batch: batch })
          .then((response) => {
-            console.log(response.data);
-            setTopStudentsPerformance(response?.data.top_3_students.sort((a, b) => b.overallScore - a.overallScore));
-            setBottomStudentsPerformance(response?.data.bottom_3_students.sort((a, b) => a.overallScore - b.overallScore));
+            console.log(response.data)
+            setTopStudentsPerformance(response?.data.top_3_students.sort((a,b)=>b.overallScore-a.overallScore));
+            setBottomStudentsPerformance(response?.data.bottom_3_students.sort((a,b)=>a.overallScore-b.overallScore));
+           
+            
          })
          .catch((error) => {
             console.log(error);
          });
    };
+   // useEffect(()=>{console.log(TopStudentsPerformance)},[TopStudentsPerformance])
+   // useEffect(()=>{console.log(BottomStudentsPerformance)},[BottomStudentsPerformance])
 
    // Certificate eligible chart data 
-   const [certElgData, setChartElgData] = useState({});
-   const batchWiseCertElgCount = (email, batch) => {
-      axios.post(`${api}/dashboard/getCertificateEligiblityData`, { mentorEmail: email, batch: batch })
+   const [certElgData,setChartElgData]=useState({});
+   const batchWiseCertElgCount = (email,batch) => {
+      axios.post(`${api}/dashboard/getCertificateEligiblityData`, { mentorEmail: email, batch: batch})
          .then((response) => {
             setChartElgData(response?.data);
          })
@@ -379,14 +138,14 @@ const BatchWiseNoOfClasses = () => {
             console.log(error);
          });
    };
+   useEffect(()=>{console.log(certElgData)},[certElgData])
 
-   useEffect(() => { console.log(certElgData) }, [certElgData]);
 
    // Assignment pass and fail percentage 
-   const [assignmentPass, setAssignmentPass] = useState(100);
-   const [assignmentFail, setAssignmentFail] = useState(30);
-   const batchWiseAssignmentPassFail = (email, batch) => {
-      axios.post(`${api}/dashboard/getBatchAssignmentReport`, { mentorEmail: email, batch: batch })
+   const [assignmentPass,setAssignmentPass]=useState(100);
+   const [assignmentFail,setAssignmentFail]=useState(30);
+   const batchWiseAssignmentPassFail = (email,batch) => {
+      axios.post(`${api}/dashboard/getBatchAssignmentReport`, { mentorEmail: email, batch: batch})
          .then((response) => {
             setAssignmentPass(response?.data?.percentage_pass);
             setAssignmentFail(response?.data?.percentage_fail);
@@ -395,76 +154,113 @@ const BatchWiseNoOfClasses = () => {
             console.log(error);
          });
    };
+   useEffect(()=>{console.log(certElgData)},[certElgData])
 
-   const [percentage, setpercentage] = useState(85);
-   const handlebatchWiseCourseCompletion = (email, batch) => {
-      axios.post(`${api}/dashboard/getCourseCompletion`, { mentorEmail: email, batch: batch })
-         .then((response) => {
+   const[percentage,setpercentage]=useState(85)
+    const handlebatchWiseCourseCompletion = (email,batch) => {
+        axios.post(`${api}/dashboard/getCourseCompletion`, { mentorEmail: email, batch: batch })
+           .then((response) => {
             setpercentage(response?.data?.completion_percentage);
-         })
-         .catch((error) => {
-            console.log(error);
-         });
-   };
+           })
+           .catch((error) => {
+              console.log(error);
+           });
+     };
+   //   useEffect(() => {
+   //      handlebatchWiseCourseCompletion(localStorage.getItem('mentorEmail'));
+   //  }, []);
+
 
    useEffect(() => {
       if (mail) {
          batchWiseApi();
       }
    }, [mail]);
-
    const [showModal, setShowModal] = useState(false);
-   const modalClose = () => setShowModal(false);
-   const modalShow = () => setShowModal(true);
-   const [batchId, setBatchId] = useState('');
+   const modalClose=()=>setShowModal(false);
+   const modalShow=()=>setShowModal(true);
+   const [batchId,setBatchId]=useState('');
 
    const generateChartData = () => {
-      return classes.map(batch => ({
-         id: batch.id,
-         parent: 'root',  
-         name: batch.name,
-         value: batch.y,
-         color: batch.y > 1 ? '#28a7453d' : batch.y > 5 ? '#7CC1D7' : '#4BAAC8',
-         events: {
-            click: () => {
-               modalShow();
-               setBatchId(batch.id);
-               setBatchName(batch.name);
-               handlebatchAssignmentScore(mail);
-               handlebatchFeedAndAttendance(mail, batch.name);
-               handlebatchAvgTestScore(mail, batch.name);
-               handleperformance(mail, batch.name);
-               handleStudentAsperformance(mail, batch.name);
-               batchWiseCertElgCount(mail, batch.name);
-               batchWiseAssignmentPassFail(mail, batch.name);
-               handlebatchWiseCourseCompletion(mail, batch.name);
-            }
-         }
-      }));
+
+    const data = classes?.map(batch => ({
+        name: batch.name,
+        y: batch.y,
+        events: {
+         click: () => {modalShow()
+            setBatchId(batch.id)
+            setBatchName(batch.name)
+            handlebatchAssignmentScore(mail)
+            handlebatchFeedAndAttendance(mail,batch.name)
+            handlebatchAvgTestScore(mail,batch.name)
+            handleperformance(mail,batch.name)
+            handleStudentAsperformance(mail,batch.name)
+            batchWiseCertElgCount(mail,batch.name)
+            batchWiseAssignmentPassFail(mail,batch.name)
+            handlebatchWiseCourseCompletion(mail,batch.name)
+         }, // Trigger modal with batch id
+       },
+     }));
+
+   //  const overall = data.reduce((sum, batch) => sum + batch.y, 0);
+      
+   //    data.push({
+   //       name: 'Overall',
+   //       y: overall
+   //    });
+
+      return data;
    };
 
    const options = {
       chart: {
-         type: 'treemap'
+         type: 'column'
       },
       title: {
-         text: ''
+         text: null
       },
-      series: [{
-         type: 'treemap',
-         data: generateChartData(),
-         layoutAlgorithm: 'stripes',  
-         dataLabels: {
-            enabled: true,
-            format: '{point.name}: {point.value}'
+      accessibility: {
+         announceNewData: {
+            enabled: true
          }
-      }],
+      },
+      xAxis: {
+         type: 'category',
+         gridLineWidth: 0
+      },
+      yAxis: {
+         title: {
+            text: null
+         },
+         min: 0,
+         gridLineWidth: 0
+      },
+      legend: {
+         enabled: false
+      },
+      plotOptions: {
+         series: {
+            borderWidth: 0,
+            dataLabels: {
+               enabled: true,
+               format: '{point.y}'
+            }
+         }
+      },
+      tooltip: {
+         headerFormat: '<span style="font-size:11px">{point.name}</span><br>',
+      },
+      series: [
+         {
+            name: 'Activity',
+            colorByPoint: true,
+            data: generateChartData()
+         }
+      ],
       credits: {
          enabled: false
       }
    };
-
-
 
    return (
       <div>

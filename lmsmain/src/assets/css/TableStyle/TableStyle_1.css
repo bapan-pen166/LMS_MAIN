@@ -1,27 +1,23 @@
-/* Container holding the table */
 .custom-table-container {
-   
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     background-color: white;
-    padding: 0px;
-    overflow-x: auto; 
+    padding: 16px;
+    overflow: hidden;
     color: black;
-    max-height: 500px;
-    overflow-y: auto; 
-}
-
-/* Table Styles */
-.custom-table {
-    width: 99.6%;
-    border-collapse: separate;
-    border-spacing: 0 1px;
     
-    font-size: 18px;
 }
 
+.custom-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px; /* Adds 12px vertical space between rows */
+    margin-top: 12px;
+    
+}
 
-/* Sticky Header Styling */
 .custom-thead th {
-    background-color: #185055;
+    background:radial-gradient(circle at 10% 20%, rgb(0, 107, 141) 0%, rgb(0, 69, 91) 90%);
     padding: 12px;
     font-weight: 600;
     border: none;
@@ -29,35 +25,38 @@
     position: sticky;
     top: 0;
     z-index: 3;
+    border-radius: 8px;
     color: white;
+
+    
 }
 
-/* Ensure row styling doesn't interfere with sticky behavior */
 .custom-tbody tr {
     background-color: #ffffff !important;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Shadow under each row */
+    border-radius: 12px; /* Rounded corners for each row */
+    overflow: hidden; /* Ensure content stays within the border radius */
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    border-spacing: 0 12px;
+    
 }
 
 .custom-tbody tr:hover {
-    transform: scale(1.01);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    transform: scale(1.01); /* Slight zoom effect on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Stronger shadow on hover */
+    
 }
 
-/* Table Cell Styling */
 .custom-cell {
     padding: 16px;
     text-align: center;
     color: #333;
-    border-bottom: none;
+    border-bottom: none; /* No bottom border to avoid conflict with spacing */
 }
-
 
 /* Status tag styling */
 .custom-status {
     padding: 6px 12px;
-    /* border-radius: 12px; */
+    border-radius: 12px;
     font-size: 12px;
     font-weight: bold;
     color: white;
@@ -128,11 +127,3 @@
     margin-bottom: 4px !important;
     background:radial-gradient(circle at 10% 20%, rgb(0, 107, 141) 0%, rgb(0, 69, 91) 90%) !important;
 }
-
-.card-hover {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-.card-hover:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  }

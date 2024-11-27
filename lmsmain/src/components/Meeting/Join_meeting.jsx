@@ -12,6 +12,10 @@ function Join_meeting({showJoinMeet,handleCloseJoinMeet,meetinfo}) {
     // const[meetInfo,SetMeetInfo]=useState({})
     
     async function handleMeeting(meetingLink,firstName,lastName,userID){
+      console.log('meetingLink',meetingLink)
+      console.log('firstName',firstName)
+      console.log('lastName',lastName)
+      console.log('userID',userID)
       // const id=meetid;
       // window.location.href='http://localhost:3002/'; https://localhost:3010/join/room=<ID>
       // const url=`http://localhost:3002?id=${id}`;

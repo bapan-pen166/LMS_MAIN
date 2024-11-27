@@ -64,7 +64,7 @@ const Student_test_details = () => {
             element.msRequestFullscreen();
         }
   
-    // window.location.href = `http://13.200.24.255:3002/?${queryParams}`;
+    // window.location.href = `http://localhost:3001/?${queryParams}`;
     
     window.location.href = `https://lms.technostructacademy.com/test/?${queryParams}`;
   };

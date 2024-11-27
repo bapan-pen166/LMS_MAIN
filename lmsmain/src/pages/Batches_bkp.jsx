@@ -1,7 +1,6 @@
-import React from 'react';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import { useState,useContext } from 'react';
+import { useState } from 'react';
 import { button, Modal } from 'react-bootstrap';
 import { api2 } from '../ApiUrl/ApiUrl';
 import axios from 'axios';
@@ -19,50 +18,6 @@ import * as Yup from 'yup';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-import InstructorCard from '../components/Batches/BatchCard';
-
-import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
-
-import BatchStudentDetails from '../components/Batches/StudentsDetails';
-import BatchMentorDetails from '../components/Batches/BatchMentorDetails';
-import Student_courses from '../Student_section/Pages/Student_courses';
-import { Datacontext } from '../Context';
-// import "../../assets/css/TableStyle/TableStyle.css"
- 
-
-
-function CustomTabPanel(props) {
-    const { children, value, index, ...other } = props;
-  
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-      </div>
-    );
-  }
-
-CustomTabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-  };
-  
-  function a11yProps(index) {
-    return {
-      id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
-    };
-  }
 
 
 export default function Batches() {
@@ -82,11 +37,6 @@ export default function Batches() {
     const [courseList, setCourseList] = useState([]);
     const [courselistAllObj, setCourseListAllObj] = useState([]);
     const [courselistAll, setCourseListAll] = useState([]);
-    
-
-    const {batchselect,setBatchselect}=useContext(Datacontext);
-
-   
 
 
     // for the page validatin userType
@@ -183,45 +133,6 @@ export default function Batches() {
         handleMetorData()
     }, [])
 
-    // const [assistantMentorObj,setAssistantMentorObj]=useState('');
-    const [mentorAssistantList,setMentorAssistantList]=useState([]);
-    function handleAssistantMetorData() {
-        console.log('submit click');
-        // axios.post(`${api}/student/getStudentList`, { course: coursedata, status: status })
-        axios.post(`${api2}/mentor/getAssistantMentorBasicList`, {})
-            .then((Response) => {
-                console.log(" data : ", Response.data);
-                setMentorAssistant(Response.data.result);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    }
-    useEffect(()=>{
-        handleAssistantMetorData()
-    },[])
-
-    
-
-    const [mentorAssistant,setMentorAssistant]=useState([
-        // {id:1,name:'Sumit Singh',email:'sumit@gmail.com'},
-        // {id:2,name:'Sonali Roy',email:'sonali@gmail.com'},
-        // {id:2,name:'Raju Rawat',email:'Raju@gmail.com'},
-        
-    ])
-
-    const handleMentorAssistantChange = (event) => {
-        const selectedNames = event.target.value;
-        const selectedMentors = selectedNames.map(name => {
-            const mentor = mentorAssistant.find(mentor => mentor.name === name);
-            if (mentor) {
-                return { id: mentor.id, name: mentor.name };
-            }
-            return null;
-        }).filter(mentor => mentor !== null);
-        setMentorAssistantList(selectedMentors);
-    };
-
     const [addBatchDetails, setAddBatchDetails] = useState({
         batchName: '',
         activeFlag: '',
@@ -282,8 +193,7 @@ export default function Batches() {
                 courseName: courseList,
                 mentorName: mentorList,
                 startDate: addBatchDetails.startDate,
-                endDate: addBatchDetails.endDate,
-                assistant_mentor: mentorAssistantList
+                endDate: addBatchDetails.endDate
             });
 
             // Handle the response
@@ -314,7 +224,6 @@ export default function Batches() {
 
     //  View BatchList 
     const [BatchDetails, setBatchDetails] = useState([]);
-
 
 
     const handleAllBatchList = (e) => {
@@ -360,7 +269,6 @@ export default function Batches() {
             batchName: editBatchDetails.batchName,
             courseName: editCourse,
             mentorName: mentorList,
-            assistant_mentor:mentorAssistantList,
             activeFlag: editBatchDetails.activeFlag,
             id: id
 
@@ -410,68 +318,6 @@ export default function Batches() {
         }
     };
 
-    const [clickedRow, setClickedRow] = useState(null); // State to track the clicked row
-
-  const handleRowClick = (rowId) => {
-    setClickedRow(rowId);
-    console.log(`Row with ID ${rowId} clicked`);
-  };
-
-  const [batchCountData,setBatchCountData]=useState();
-     
-     const handlebatchcountsData = () => {
-      console.log('assignment score called')
-      axios.post(`${api2}/batch/getBatchStudentMentorData`, {})
-         .then((response) => {
-            // console.log(response.data[0])
-            setBatchCountData(response.data);
-         })
-         .catch((error) => {
-            console.log(error);
-         });
-   };
-     useEffect(() => {
-      handlebatchcountsData()
-    }, []);
-
-
-//   Batch Details modal 
-const [showBatchDetails, setShowBatchDetails] = useState(false);
-const handleBatchDetailsClose = () => setShowBatchDetails(false);
-const handleBatchDetailsShow = () => setShowBatchDetails(true);
-
-
-
-
-  
-  const [value, setValue] =useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-
-  const [batchData,setBatchData]=useState();
-  const [batchStudentDetails,setBatchStudentDetails]=useState()
-  const [batchMentorDetails,setBatchMentorDetails]=useState()
-     
-     const handlebatchData = (id) => {
-      console.log('assignment score called')
-      axios.post(`${api2}/batch/getBatchAllStudentDataList`, {id:id})
-         .then((response) => {
-            // console.log(response.data[0])
-            setBatchStudentDetails(response.data.students);
-            setBatchMentorDetails(response.data.mentors);
-         })
-         .catch((error) => {
-            console.log(error);
-         });
-   };
-     useEffect(() => {
-      handlebatchcountsData()
-    }, []);
-
-
 
     // for the page validatin userType
 
@@ -500,87 +346,6 @@ const handleBatchDetailsShow = () => setShowBatchDetails(true);
                         </div>
                     </div>
                 </div> */}
-                <div className='col-md-12 col-lg-12 col-sm-12 mb-3'>
-                        <div className='row' >
-                        <div className='col-md-4' >
-                            <div style={{height:'150px',background:'white'}}>
-                            <p
-                                style={{
-                                    background: 'radial-gradient(circle at 10% 20%, rgb(0, 107, 141) 0%, rgb(0, 69, 91) 90%)',
-                                    width: "100%",
-                                    display: "flex",
-                                    justifyContent:'left',
-                                    padding: "10px 10px",
-                                    borderRadius: '10px 10px 0 0',
-                                    fontWeight: "bold",
-                                    fontSize:'16px',
-                                    color:"white"
-                                }}
-                                className="roboto-medium"
-                            >
-                                Total Batches
-                            </p>
-                            <p
-                                style={{
-                                    fontSize: '30px',
-                                    fontWeight: 'bold',
-                                    position: "absolute",
-                                    bottom: "25%",
-                                    left: "30px",
-                                    display: "block"
-                                }}
-                            >
-                                <div>
-
-                                </div>
-                            
-                            
-                                {batchCountData?.totalBatchCount}
-                            </p>
-                            </div>
-                        </div>
-                        <div className='col-md-4' >
-                            <div style={{height:'150px',background:'white'}}>
-                            <p
-                                style={{
-                                    background: 'radial-gradient(circle at 10% 20%, rgb(0, 107, 141) 0%, rgb(0, 69, 91) 90%)',
-                                    width: "100%",
-                                    display: "flex",
-                                    justifyContent:'left',
-                                    padding: "10px 10px",
-                                    borderRadius: '10px 10px 0 0',
-                                    fontWeight: "bold",
-                                    fontSize:'16px',
-                                    color:"white"
-                                }}
-                                className="roboto-medium"
-                            >
-                                Active Batches
-                            </p>
-                            <p
-                                style={{
-                                    fontSize: '30px',
-                                    fontWeight: 'bold',
-                                    position: "absolute",
-                                    bottom: "25%",
-                                    left: "30px",
-                                    display: "block"
-                                }}
-                            >
-                                <div>
-
-                                </div>
-                            
-                            
-                                {batchCountData?.totalActiveBatchCount}
-                            </p>
-                            </div>
-                        </div>
-                        
-                       
-                        </div>
-                        
-                    </div>
                 <div className="row" style={{ marginTop: '20px' }}>
                     <div className="row">
                         <div className="col-md-6">
@@ -606,100 +371,8 @@ const handleBatchDetailsShow = () => setShowBatchDetails(true);
                             </Stack>
                         </div>
                     </div>
-                    {/* <div className='col-md-12 col-lg-12 col-sm-12 mb-3'>
-                        <div className='row' >
-                        <div className='col-md-4' >
-                            <div style={{height:'150px',background:'white'}}>
-                            <p
-                                style={{
-                                    background: 'radial-gradient(circle at 10% 20%, rgb(0, 107, 141) 0%, rgb(0, 69, 91) 90%)',
-                                    width: "100%",
-                                    display: "flex",
-                                    justifyContent:'left',
-                                    padding: "10px 10px",
-                                    borderRadius: '10px 10px 0 0',
-                                    fontWeight: "bold",
-                                    fontSize:'16px',
-                                    color:"white"
-                                }}
-                                className="roboto-medium"
-                            >
-                                Overall Performance
-                            </p>
-                            <p
-                                style={{
-                                    fontSize: '30px',
-                                    fontWeight: 'bold',
-                                    position: "absolute",
-                                    bottom: "25%",
-                                    left: "30px",
-                                    display: "block"
-                                }}
-                            >
-                                <div>
 
-                                </div>
-                            
-                            
-                                98%
-                            </p>
-                            </div>
-                        </div>
-                        <div className='col-md-4' >
-                            <div style={{height:'150px',background:'white'}}>
-                            <p
-                                style={{
-                                    background: 'radial-gradient(circle at 10% 20%, rgb(0, 107, 141) 0%, rgb(0, 69, 91) 90%)',
-                                    width: "100%",
-                                    display: "flex",
-                                    justifyContent:'left',
-                                    padding: "10px 10px",
-                                    borderRadius: '10px 10px 0 0',
-                                    fontWeight: "bold",
-                                    fontSize:'16px',
-                                    color:"white"
-                                }}
-                                className="roboto-medium"
-                            >
-                                Overall Performance
-                            </p>
-                            <p
-                                style={{
-                                    fontSize: '30px',
-                                    fontWeight: 'bold',
-                                    position: "absolute",
-                                    bottom: "25%",
-                                    left: "30px",
-                                    display: "block"
-                                }}
-                            >
-                                <div>
-
-                                </div>
-                            
-                            
-                                98%
-                            </p>
-                            </div>
-                        </div>
-                        
-                       
-                        </div>
-                        
-                    </div> */}
-                    
                     <div className="col-md-12 col-lg-12 col-sm-12">
-                       
-                            <div className="row" style={{ height: '90vh', overflowY: 'auto' }}>
-                                {BatchDetails.map((Batch, index) => (
-                                <div className="col-md-4" key={index}>
-                                    <InstructorCard {...Batch} handleEditBatchesShow={handleEditBatchesShow} setEditBatchDetails={setEditBatchDetails} setMentorList={setMentorList} setEditCourse={setEditCourse} handleDeleteBatch={handleDeleteBatch} handleBatchDetailsShow={handleBatchDetailsShow} handlebatchData={handlebatchData} setBatchselect={setBatchselect} setMentorAssistantList={setMentorAssistantList}/>
-                                </div>
-                                ))}
-                            </div>
-                      
-                    </div>
-                    {/* <div className="col-md-12 col-lg-12 col-sm-12">
                         <div className="table-container" style={{ height: '90vh', overflowY: 'auto', zIndex: "1" }}>
                             <table className="table table-bordered pt-1" >
                                 <thead style={{ position: 'sticky', top: -2, zIndex: 3 }}>
@@ -707,7 +380,6 @@ const handleBatchDetailsShow = () => setShowBatchDetails(true);
                                         <th>Batches</th>
                                         <th>Courses</th>
                                         <th >Mentors</th>
-                                        <th>Assistant Mentor</th>
                                         <th>Total students</th>
                                         <th >Updated On</th>
                                         <th >Status</th>
@@ -721,35 +393,34 @@ const handleBatchDetailsShow = () => setShowBatchDetails(true);
                                     {BatchDetails?.map(BatchDetails => {
                                         return (
                                             <>{console.log(BatchDetails)}
-                                                <tr  onClick={() => handleRowClick(BatchDetails.id)} // Handle row click
-                                                        style={{ cursor: 'pointer' }}>
+                                                <tr>
                                                     <td>{BatchDetails?.batchName}</td>
                                                     <td>{BatchDetails?.courseType}</td>
                                                     <td>{BatchDetails?.mentorName?.join(',')}</td>
-                                                    <td></td>
                                                     <td class="text-center align-middle">{BatchDetails?.NoOfStudent}</td>
                                                     <td>{BatchDetails?.updatedOn}</td>
                                                     <td>{
                                                         BatchDetails?.activeFlag == '1' ? 'Active' : 'De-Active'
-                                                        
+                                                        // BatchDetails?.activeFlag == 0 ? <p>De-Active</p> :
+                                                        // BatchDetails?.activeFlag == 1 ? <p>Active</p> : <p>Pending</p>
 
                                                     }</td>
-                                                   
+                                                    {/* <td>{BatchDetails?.contentStatus}</td> */}
                                                     <td><button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Edit'><i class="fa fa-edit custom-icon" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }} onClick={() => {
-                                                        
+                                                        // handleEditCourseData(courseList?.id)
                                                         handleEditBatchesShow()
                                                         setEditBatchDetails({
                                                             batchName: BatchDetails?.batchName,
                                                             courseName: BatchDetails?.courseType,
                                                             mentorName: BatchDetails?.mentorName,
-                                                            
+                                                            // content: courseList?.description,
                                                             activeFlag: BatchDetails?.activeFlag,
                                                             id: BatchDetails?.id,
 
                                                         })
                                                         setMentorList(BatchDetails?.mentorDetails)
                                                         setEditCourse(BatchDetails?.courseType)
-                                                        
+                                                        // setMentorList(BatchDetails?.mentorName)
                                                     }}></i></button>
                                                         <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Delete'><i class="fa fa-trash custom-icon" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }} onClick={() => {
                                                             handleDeleteBatch(
@@ -761,13 +432,33 @@ const handleBatchDetailsShow = () => setShowBatchDetails(true);
                                             </>
                                         )
                                     })}
-                                    
+                                    {/* <tr>
+                                        <td>Silver</td>
+                                        <td>BIM Ready Plus1</td>
+                                        <td>BIM1</td>
+                                        <td>01/02/2024</td>
+                                        <td>Active</td>
+                                        <td><button style={{ background: 'transparent', border: 'none' }}><i class="fa fa-edit" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }} onClick={handleEditBatchesShow}></i></button>
+                                        <button style={{ background: 'transparent', border: 'none' }}><i class="fa fa-trash" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }}></i></button>
+                                        </td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td>Iron</td>
+                                        <td>BIM Ready</td>
+                                        <td>BIM1</td>
+                                        <td>01/02/2024</td>
+                                        <td>Active</td>
+                                        <td><button style={{ background: 'transparent', border: 'none' }}><i class="fa fa-edit" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }} onClick={handleEditBatchesShow}></i></button>
+                                        <button style={{ background: 'transparent', border: 'none' }}><i class="fa fa-trash" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }}></i></button>
+                                        </td>
+                                    </tr> */}
 
 
                                 </tbody>
                             </table>
                         </div>
-                    </div> */}
+                    </div>
                 </div>
             </div>
 
@@ -844,34 +535,6 @@ const handleBatchDetailsShow = () => setShowBatchDetails(true);
                                                 {mentorlistAll.map((mentor) => (
                                                     <MenuItem key={mentor.id} value={mentor.name}>
                                                         <Checkbox checked={mentorList.some(selectedMentor => selectedMentor.name === mentor.name)} />
-                                                        <ListItemText primary={mentor.name} />
-                                                    </MenuItem>
-                                                ))}
-                                            </Select>
-                                        </FormControl>
-                                        {errors?.mentorList && <div className="error">{errors.mentorList}</div>}
-                                    </div>
-                                </div>
-
-                                <div className='col-md-6'>
-                                    <div>
-                                        Mentors Assistant
-                                    </div>
-                                    <div>
-                                        <FormControl sx={{ width: 350 }}>
-                                            <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
-                                            <Select
-                                                labelId="demo-multiple-checkbox-label"
-                                                id="demo-multiple-checkbox"
-                                                multiple
-                                                value={mentorAssistantList?.map(mentor => mentor.name)}  // Display only names
-                                                onChange={handleMentorAssistantChange}
-                                                input={<OutlinedInput label="Tag" />}
-                                                renderValue={(selected) => selected.join(', ')}
-                                            >
-                                                {mentorAssistant?.map((mentor) => (
-                                                    <MenuItem key={mentor.id} value={mentor.name}>
-                                                        <Checkbox checked={mentorAssistantList.some(selectedMentor => selectedMentor.name === mentor.name)} />
                                                         <ListItemText primary={mentor.name} />
                                                     </MenuItem>
                                                 ))}
@@ -1033,35 +696,6 @@ const handleBatchDetailsShow = () => setShowBatchDetails(true);
 
                                 <div className='col-md-6'>
                                     <div>
-                                        Assistant Mentors
-                                    </div>
-                                    <div>
-                                    <FormControl sx={{ width: 350 }}>
-                                            <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
-                                            <Select
-                                                labelId="demo-multiple-checkbox-label"
-                                                id="demo-multiple-checkbox"
-                                                multiple
-                                                value={mentorAssistantList.map(mentor => mentor.name)}  // Display only names
-                                                onChange={handleMentorAssistantChange}
-                                                input={<OutlinedInput label="Tag" />}
-                                                renderValue={(selected) => selected.join(', ')}
-                                            >
-                                                {mentorAssistant.map((mentor) => (
-                                                    <MenuItem key={mentor.id} value={mentor.name}>
-                                                        <Checkbox checked={mentorAssistantList.some(selectedMentor => selectedMentor.name === mentor.name)} />
-                                                        <ListItemText primary={mentor.name} />
-                                                    </MenuItem>
-                                                ))}
-                                            </Select>
-                                        </FormControl>
-                                    </div>
-                                </div>
-                                </div>
-                                <div className='row mt-4'>
-
-                                <div className='col-md-6'>
-                                    <div>
                                         Status
                                     </div>
                                     <div>
@@ -1097,66 +731,6 @@ const handleBatchDetailsShow = () => setShowBatchDetails(true);
                     </Button> */}
                         <Button variant="secondary"
                             onClick={() => { handleEditBatchesClose() }}
-                        >
-                            Close
-                        </Button>
-                    </Stack>
-                </Modal.Footer>
-            </Modal>
-
-            {/* Batch Details  */}
-            <Modal show={showBatchDetails} onHide={handleBatchDetailsClose} backdrop="static"
-                keyboard={false}
-                size='xl'>
-                {/* <Modal.Header closeButton>
-                    <Modal.Title>Modal Heading</Modal.Title>
-                </Modal.Header> */}
-                <Modal.Body>
-
-                    <div className='container-fluid'>
-                        <div className='row'>
-                            <div className=' col-md-12 headLineBox mb-3' >
-                                <h4>Batch Details</h4>
-                            </div>
-                            <div className=' col-md-12  mb-3' >
-                                <Box sx={{ width: '100%' }}>
-                                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                                    <Tab label="Student Details" {...a11yProps(0)} />
-                                    <Tab label="Mentor/Asst. Mentor" {...a11yProps(1)} />
-                                    <Tab label="Course Module" {...a11yProps(3)} />
-                                    </Tabs>
-                                </Box>
-                                <CustomTabPanel value={value} index={0}>
-                                   <BatchStudentDetails batchStudentDetails={batchStudentDetails}/>
-                                </CustomTabPanel>
-                                <CustomTabPanel value={value} index={1}>
-                                    <BatchMentorDetails batchMentorDetails={batchMentorDetails}/>
-                                </CustomTabPanel>
-                                <CustomTabPanel value={value} index={2}>
-                                    <Student_courses />
-                                </CustomTabPanel>
-                                {/* <CustomTabPanel value={value} index={2}>
-                                    Item Three
-                                </CustomTabPanel> */}
-                                </Box>
-                            </div>
-                        </div>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                   
-                    <Stack spacing={2} direction="row" >
-                        {/* <Button variant="contained" onClick={() => {
-                            
-                        }}>Update</Button> */}
-                        
-                   
-                        <Button variant="secondary"
-                            onClick={() => { 
-                                setBatchMentorDetails([])
-                                setBatchStudentDetails([])
-                                handleBatchDetailsClose() }}
                         >
                             Close
                         </Button>

@@ -548,6 +548,7 @@ export default function Mentors() {
         pinNo: Yup.string().required("PIN code is required"),
         IdType: Yup.string().required("ID Type is required"),
         idNo: Yup.string().required("ID Number is required"),
+        role: Yup.string().required("Role is required"),
     });
 
 
@@ -941,7 +942,7 @@ export default function Mentors() {
                                     <tr>
                                         <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Mentor Id</th>
                                         <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Name</th>
-
+                                        <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Role</th>
                                         <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Phone No</th>
                                         <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Total Students</th>
                                         <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Total Batches</th>
@@ -958,7 +959,7 @@ export default function Mentors() {
                                             <tr>
                                                 <td>{mentorDetails?.id}</td>
                                                 <td>{mentorDetails && mentorDetails?.name}</td>
-
+                                                <td>{mentorDetails?.role}</td>
                                                 <td>{mentorDetails?.phoneNumber}</td>
                                                 <td class="text-center align-middle">{mentorDetails?.NoOfStudents}</td>
                                                 {/* <td style={{ display:"flex",justifyContent:"center",alignItems:"center"}}>{mentorDetails?.NoOfBatches}</td> */}
@@ -1928,6 +1929,26 @@ export default function Mentors() {
                                             />
                                         </div>
                                         {errors?.idNo && <div className="error">{errors?.idNo}</div>}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='row mt-4'>
+                                 <div className='col-md-6'>
+                                    <div>
+                                        Role
+                                    </div>
+                                    <div>
+                                        <div class="input-group ">
+                                            <select name='role'
+                                            value={addMentorBasicInfo?.role}
+                                            onChange={handleAddMentorBasicInfo}
+                                            class="form-control" id="exampleFormControlSelect1">
+                                            <option value=''>---select---</option>
+                                            <option value={'Mentor'}>Mentor</option>
+                                            <option value={'Mentor_Assistant'}>Assistant Mentor</option>
+                                            </select>
+                                        </div>
+                                        {errors?.role && <div className="error">{errors?.role}</div>}
                                     </div>
                                 </div>
                             </div>

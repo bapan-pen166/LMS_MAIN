@@ -51,7 +51,7 @@ const Student_Sidebar = () => {
                 </NavLink>
             </li> */}
             <li >
-                <span onClick={toggleDropdown} className="nav-link " style={{ paddingLeft: "5%",display:"flex",justifyContent:"space-between" }}> <div>Evaluation</div>  <div style={{cursor:"pointer"}}> {dropdownOpen ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/> }</div> </span>
+                <span onClick={toggleDropdown} className="nav-link " style={{ fontSize: '12pt', paddingLeft: "5%",display:"flex",justifyContent:"space-between" }}> <div>Evaluation</div>  <div style={{cursor:"pointer"}}> {dropdownOpen ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/> }</div> </span>
                 {dropdownOpen && (
                     <ul className="dropdown-menu-item" >
                         <li>

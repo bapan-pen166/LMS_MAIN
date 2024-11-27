@@ -81,69 +81,65 @@ function Overview() {
                 </div> */}
                 <div className='container-fluid'>
                     <div className='row '>
-                        <div className='col-sm-12 col-md-4 col-lg-4 mt-2'>
+                        {/* <div className='col-sm-12 col-md-4 col-lg-4 mt-2'>
                             <div className="content-box max-height-300">
-                                {/* <h6 class="box-heading">Urgent Reminder</h6> */}
+                                
                                 <div className="d-flex flex-wrap justify-content-between m-2">
                                     <div className="flex-grow-1">
                                         <h6 className="box-heading text-left"><b>Urgent Reminder</b></h6>
                                     </div>
-                                    {/* <div>
-                                        <Link to={'test'}>
-                                            <button type="button" className="btn btn-warning background_color"><b>View</b></button>
-                                        </Link>
-                                    </div> */}
+                                   
                                 </div>
 
                                 <table className="table table-bordered " >
                                     <thead>
                                         <tr>
                                             <th>Status</th>
-                                            {/* <th>Lastname</th> */}
+                                           
                                             <th>Reminder</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td>Urgent</td>
-                                            {/* <td>Doe</td> */}
+                                            
                                             <td>Fees are not recieved from 200 students</td>
                                         </tr>
                                         <tr>
                                             <td>Medium</td>
-                                            {/* <td>Moe</td> */}
+                                           
                                             <td>25 support request are pending from last 25 days</td>
                                         </tr>
                                         <tr>
                                             <td>Low</td>
-                                            {/* <td>Dooley</td> */}
+                                           
                                             <td>Mentor leave request pending from past 3 days</td>
                                         </tr>
                                         <tr>
                                             <td>Low</td>
-                                            {/* <td>Dooley</td> */}
+                                            
                                             <td>Mentor leave request pending from past 3 days</td>
                                         </tr>
                                         <tr>
                                             <td>Low</td>
-                                            {/* <td>Dooley</td> */}
+                                           
                                             <td>Mentor leave request pending from past 3 days</td>
                                         </tr>
                                         <tr>
                                             <td>Low</td>
-                                            {/* <td>Dooley</td> */}
+                                            
                                             <td>Mentor leave request pending from past 3 days</td>
                                         </tr>
                                         <tr>
                                             <td>Low</td>
-                                            {/* <td>Dooley</td> */}
+                                            
                                             <td>Mentor leave request pending from past 3 days</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                        <div className=' col-md-8 col-lg-8 col-sm-12 mt-2'>
+                        </div> */}
+                        <div className=' col-md-12 col-lg-12 col-sm-12 mt-2'>
                             {/* <div className="row ">
                                 <div className="col-md-8 mt-2 mb-2">
                                     <h6 class="box-heading" style={{textAlign:'left'}}><b>Stulents Onboard</b> </h6>
@@ -325,14 +321,15 @@ function Overview() {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-md-8 mt-2 ms-5 col-sm-12">
+                        {/* support request  */}
+                        {/* <div className="col-md-8 mt-2 ms-5 col-sm-12">
                             <div className="content-box max-height-300">
                                 <div className="d-flex justify-content-between align-items-center m-2">
                                     <div className="flex-grow-1">
                                         <h6 className="box-heading text-left"><b>Support Request</b></h6>
                                     </div>
                                     <div>
-                                        {/* <button type="button" className="btn btn-warning background_color"><b>View</b></button> */}
+                                      
                                     </div>
                                 </div>
                                 <table className="table table-striped">
@@ -366,7 +363,7 @@ function Overview() {
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
 
                     {/* <Students_onboarded/> */}

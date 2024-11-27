@@ -74,6 +74,11 @@ function Login() {
                         localStorage.setItem('firstName',Response.data.userDetails.firstName)
                         localStorage.setItem('lastName',Response.data.userDetails.lastName)
                     }
+                    else if(Response.data.userDetails.userType == 'Mentor_Assistant'){
+                        localStorage.setItem('mentorAssistantEmail',Response.data.userDetails.email)
+                        localStorage.setItem('firstName',Response.data.userDetails.firstName)
+                        localStorage.setItem('lastName',Response.data.userDetails.lastName)
+                    }
                     else{
                         localStorage.setItem('placementEmail',Response.data.userDetails.email)
                         localStorage.setItem('firstName',Response.data.userDetails.firstName)

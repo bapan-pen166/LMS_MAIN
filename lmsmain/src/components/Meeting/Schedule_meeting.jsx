@@ -17,7 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const localizer = momentLocalizer(moment);
 
-function Schedule_meeting({ meeting, setMeeting, holidaylist,setRecallGetcall,handleMeetingListView, userEmail }) {
+function Schedule_meeting({ meeting, setMeeting, holidaylist,setRecallGetcall,handleMeetingListView,userEmail }) {
     const [showJoinMeet, setShowJoinMeet] = useState(false);
     const handleCloseJoinMeet = () => setShowJoinMeet(false);
     const handleShowJoinMeet = () => setShowJoinMeet(true);
@@ -63,8 +63,9 @@ function Schedule_meeting({ meeting, setMeeting, holidaylist,setRecallGetcall,ha
     );
 
     const handleEventSelection = (e,event) => {
-        e.stopPropagation();
         console.log(e, "Event data");
+        e.stopPropagation();
+
     };
 
     const events = meeting;
@@ -82,29 +83,27 @@ function Schedule_meeting({ meeting, setMeeting, holidaylist,setRecallGetcall,ha
         console.log(event);
         setSelectedEvent(event);
         if(view === 'month')
-
             {
-
                 setContextMenuPosition({ x: e.clientX, y: e.clientY });
-
             }
+        
     };
 
     // For deleting meetings
 
-    const handleDelete = () => {
-        if (selectedEvent) {
+    const handleDelete = (event) => {
+        // if (selectedEvent) {
             // cancelMeeting(selectedEvent.title);
-            console.log("selected meetings id :  ",selectedEvent?.id)
-            console.log("selected meetings id :  ",selectedEvent?.meetingId)
-            console.log("selected meetings:",selectedEvent)
+            console.log("event:  ",event)
+            // console.log("selected meetings id :  ",selectedEvent?.meetingId)
+            // console.log("selected meetings:",selectedEvent)
 
-            axios.post(`${api}/video-call/deleteMeeting`,{meetingId:selectedEvent?.meetingId,id:selectedEvent?.id})
+            axios.post(`${api}/video-call/deleteMeeting`,{meetingId:event?.meetingId,id:event?.id})
             .then((Response)=>{
                 if(Response?.data?.succuss){
-                    toast.success("Meeting deleted Successfully!",{
-                        position: "top-center",
-                    });
+                    // toast.success("Meeting deleted Successfully!",{
+                    //     position: "top-center",
+                    // });
                     setRecallGetcall(true);
                     handleMeetingListView()
                 }
@@ -115,7 +114,7 @@ function Schedule_meeting({ meeting, setMeeting, holidaylist,setRecallGetcall,ha
             })
             setSelectedEvent(null);
             setContextMenuPosition({ x: 0, y: 0 });
-        }
+        // }
     };
 
     const handleCloseMenu = () => {
@@ -147,6 +146,8 @@ function Schedule_meeting({ meeting, setMeeting, holidaylist,setRecallGetcall,ha
         // Check if the event is running late
         const isRunningLate = currentTime.isAfter(eventEndTime);
 
+        setSelectedEvent(event);
+
         if (!event.isHoliday) {
             return (
                 <>
@@ -160,6 +161,25 @@ function Schedule_meeting({ meeting, setMeeting, holidaylist,setRecallGetcall,ha
                             setmeetinfo({ meetlink: event.meetingLink, id: event.id, firstName: firstName,lastName: lastName,userID:userID})
                         }}>Join</button>
                         <Join_meeting showJoinMeet={showJoinMeet} handleCloseJoinMeet={handleCloseJoinMeet} meetinfo={meetinfo} />
+                        {console.log('event.meetCreater',event.meetCreater)
+                       }
+                       { console.log('userEmail',userEmail)}
+                        {   
+                             event.meetCreater === userEmail && (
+                                <button
+                                    type="button"
+                                    className="btn btn-danger"
+                                    style={{marginLeft:'5px'}}
+                                    onClick={() => {
+                                        handleDelete(event);
+                                        handleCloseMenu();
+                                    }}
+                                >
+                                    Delete
+                                </button>
+                            )
+                        }
+                        {/* <button type='button' className='btn btn-danger' onClick={()=>{handleDelete(); handleCloseMenu(); }}>Delete</button> */}
                     </div>
                 </>
             )
@@ -196,7 +216,7 @@ function Schedule_meeting({ meeting, setMeeting, holidaylist,setRecallGetcall,ha
             view === 'month'
                 ? event.isHoliday
                     ? 'lightcoral' // Holiday color in month view
-                    : getColorCode(event.start, event.end)//'rgb(125, 11, 148)' // Regular event color in month view
+                    : getColorCode(event.start, event.end) // Regular event color in month view  'rgb(125, 11, 148)'
                 : ''; // Default color for other views
 
         return {
@@ -207,34 +227,21 @@ function Schedule_meeting({ meeting, setMeeting, holidaylist,setRecallGetcall,ha
     };
 
     function getColorCode(startDateTime, endDateTime) {
-
         // Convert the input strings to Date objects
-
         const start = new Date(startDateTime);
-
         const end = new Date(endDateTime);
-
         const now = new Date(); // Current date and time
-
       
-
         // Check if the current time is before the start time, within the range, or after the end time
-
         if (now < start) {
-
           return 'blue'; // Upcoming
-
         } else if (now >= start && now <= end) {
-
           return 'green'; // Running
-
         } else {
-
           return 'gray'; // Over
-
         }
-
       }
+
     // Updated filteredEvents to exclude holidays in agenda view
     const filteredEvents = (events, view) => {
         if (view === 'month') {
@@ -278,14 +285,12 @@ function Schedule_meeting({ meeting, setMeeting, holidaylist,setRecallGetcall,ha
 
                 <Custom_Dlt_Menu
                     contextMenuPosition={contextMenuPosition}
-                    //handleDelete={handleDelete}
+                    // handleDelete={handleDelete}
                     handleCloseMenu={handleCloseMenu}
+
                     selectedEvent={selectedEvent}
-
                     firstName={firstName} 
-
                     lastName={lastName}
-
                     userID={userID}
                 />
 

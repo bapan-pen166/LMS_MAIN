@@ -8,8 +8,9 @@ const Context=({children})=>{console.log('context reloded')
     const[userid,setuserId]=useState();
     const [log,setLog]=useState(false);
     const [hamburger,sethamburger] = useState(true);
+    const [batchselect,setBatchselect]=useState('')
    
-    return <Datacontext.Provider value={{logedin, setLogedin , log,setLog,setuserId,hamburger,sethamburger,Usertype,setUsertype}}>{children}</Datacontext.Provider>
+    return <Datacontext.Provider value={{logedin, setLogedin , log,setLog,setuserId,hamburger,sethamburger,Usertype,setUsertype,batchselect,setBatchselect}}>{children}</Datacontext.Provider>
 };
 
 export default Context;

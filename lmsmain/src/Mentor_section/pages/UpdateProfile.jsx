@@ -98,11 +98,12 @@ const UpdateProfile = () => {
 
     // country list
     const handleCountrylist = (e) => {
-      
+        //     console.log('submit click');
+        //    console.log(email);
         axios.post(`${api}/reg/getCountryList`, { countryPhrase: "" })
             .then((Response) => {
                 console.log("country list ", Response.data.countryList);
-                
+                //    setInfo(Response.data.basicDetails);
                 setCountrylist(Response.data.countryList);
             })
             .catch((error) => {
@@ -116,7 +117,7 @@ const UpdateProfile = () => {
         axios.post(`${api}/reg/getStateList`, { country: [countryy] })
             .then((Response) => {
                 console.log(Response.data);
-              
+                //    setInfo(Response.data.basicDetails);
                 setStatelist(Response.data.stateList);
                 console.log(Response.data.stateList)
             })
@@ -287,9 +288,9 @@ const UpdateProfile = () => {
     };
 
     return (
-        <div>
+        <div style={{ marginTop: '58px' }}>
             <div className='container-fluid'>
-                <div className='col-md-12 col-lg-12  d-flex justify-content-start'>
+                <div className='col-md-12 col-lg-12 headLineBox d-flex justify-content-start'>
                     <h4>Profile details</h4>
                 </div>
                 <div className='mt-4'>

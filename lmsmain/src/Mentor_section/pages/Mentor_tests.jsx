@@ -49,10 +49,20 @@ const Mentor_tests = () => {
 
   // for getting mail from local storage
   const [mentorEmail,setMentorEmail] = useState();
+  const [userType,setUserType]=useState();
 
   useEffect(()=>{
-    setMentorEmail(localStorage.getItem('mentorEmail')) 
+    // setMentorEmail(localStorage.getItem('mentorEmail')) 
+    setUserType(localStorage.getItem('userType')) 
   },[])
+  useEffect(()=>{
+    if(userType=="Mentor")
+    {setMentorEmail(localStorage.getItem('mentorEmail'))}
+    else if(userType=="Mentor_Assistant")
+      {
+        setMentorEmail(localStorage.getItem('mentorAssistantEmail'))
+      }
+  },[userType])
 
 
 
@@ -291,7 +301,15 @@ const Mentor_tests = () => {
     });
 
     // Append mentorEmail
-    formDataToSend.append('mentorEmail', mentorEmail);
+    if(userType=="Mentor" || userType=="Mentor_Assistant"){
+      formDataToSend.append('mentorEmail', mentorEmail);
+      formDataToSend.append('adminUploadFlag', 0);
+    }
+    else if(userType=="Admin"){
+      formDataToSend.append('adminUploadFlag', 1);
+    }
+
+    // formDataToSend.append('mentorEmail', mentorEmail);
   
     try {
       const response = await axios.post(`${api}/student/insertTest`, formDataToSend, {
@@ -398,14 +416,14 @@ const Mentor_tests = () => {
 
 
   return (
-    <div style={{ }}>
+    <div style={{ marginTop: "58px" }}>
       <div className="row">
         <div className="container-fluid">
-          <div className='col-md-12 col-lg-12 d-flex justify-content-start mb-3'>
+          <div className='col-md-12 col-lg-12 headLineBox d-flex justify-content-start'>
             <h4>Create Test</h4>
           </div>
 
-          <div style={{ marginTop: "52px", margin: "auto", width: "100%",boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)",padding:"20px",marginBottom:"20px" }}>
+          <div style={{ marginTop: "52px", margin: "auto", width: "90%" }}>
             <Form onSubmit={handleSubmit}>
               <div className='row' style={{ marginTop: "10px" }}>
                 <div className="col-md-6">

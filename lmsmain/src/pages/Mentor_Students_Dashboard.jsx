@@ -59,6 +59,7 @@ const Mentor_Students_Dashboard = () => {
     const [ongoingStudentCount, setOngoingStudentCount] = useState();
     const [yetToBeStarted, setYetToBeStarted] = useState();
     const [dropoutstd, setDropoutstd] = useState();
+    const [batchchangeStudCount,setBatchChangeStudCount]=useState();
 
 
     const [courseList, setCourseList] = useState([]);
@@ -227,17 +228,7 @@ const Mentor_Students_Dashboard = () => {
             })
     }
 
-    const getDropOutStudentDetails = () => {
-        axios.get(`${api}/dashboard/dropoutStudentDetails`)
-            .then((Response) => {
-                console.log("dropoutStudentDetails :::::", Response?.data);
-                // setGraduateStudentCount(Response?.data?.graduated_count)
-                setDropoutstd(Response?.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
+   
 
     const initialtopBottomDataAll = ()=>{
         axios.post(`${api}/dashboard/getTopBottomFiveStudentsAmongAllBatches`)
@@ -252,6 +243,30 @@ const Mentor_Students_Dashboard = () => {
 
     }
 
+    const getDropOutStudentDetails = () => {
+        axios.get(`${api}/dashboard/getDropoutStudentCount`)
+            .then((Response) => {
+                console.log("getDropoutStudentCount :::::", Response?.data);
+                // setGraduateStudentCount(Response?.data?.graduated_count)
+                setDropoutstd(Response?.data?.result);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
+    const getBatchChangeDetails = () => {
+        axios.get(`${api}/dashboard/getBatchChangedStudentCount`)
+            .then((Response) => {
+                console.log("getDropoutStudentCount :::::", Response?.data);
+                // setGraduateStudentCount(Response?.data?.graduated_count)
+                setBatchChangeStudCount(Response?.data?.result);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
 
 
 
@@ -260,6 +275,7 @@ const Mentor_Students_Dashboard = () => {
         onGoingBatchStdCount();
         getYetToBeStartedBatchCount();
         getDropOutStudentDetails()
+        getBatchChangeDetails()
         initialtopBottomDataAll()
     }, [])
 
@@ -356,7 +372,7 @@ const Mentor_Students_Dashboard = () => {
                                     <h3>Dropped out</h3>
                                     <hr />
                                     {/* <p>{overallStudent}</p> */}
-                                    <p>N/A</p>
+                                    <p>{dropoutstd}</p>
 
                                 </div>
 
@@ -410,7 +426,7 @@ const Mentor_Students_Dashboard = () => {
                                 <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
                                     <h3>Batch change students</h3>
                                     <hr />
-                                    <p>N/A</p>
+                                    <p>{batchchangeStudCount}</p>
 
                                 </div>
 

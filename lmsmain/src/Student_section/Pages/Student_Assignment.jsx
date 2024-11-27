@@ -10,32 +10,16 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "../../assets/css/TableStyle/TableStyle.css";
 import "../../assets/css/Utility/utilityColor.css";
-import {
-    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, TablePagination,
-    TextField, IconButton,
-} from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import DownloadForOfflineOutlinedIcon from '@mui/icons-material/DownloadForOfflineOutlined';
-import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
-import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import { visuallyHidden } from '@mui/utils';
 
 export default function Student_Assignment() {
 
     const [assignmentAll, setAssignmentAll] = useState([]);
-    // const [assignmentFile, setAssignmentFile] = useState('');
+    const [assignmentFile, setAssignmentFile] = useState('');
     const [studentEmail, setStudentEmail] = useState('')
     const [flag, setFlag] = useState(false);
-    // const [assignmentFileNames, setAssignmentFileNames] = useState(Array(assignmentAll.length).fill(''));
-    const [order, setOrder] = useState('asc');
-    const [orderBy, setOrderBy] = useState('name');
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [assignmentFileNames, setAssignmentFileNames] = useState([]);
-    // const [selectedRowIndex, setSelectedRowIndex] = useState(null);
-    const [assignmentFile, setAssignmentFile] = useState(null);
+    const [assignmentFileNames, setAssignmentFileNames] = useState(Array(assignmentAll.length).fill(''));
 
 
     const handleAssignmentAll = (email) => {
@@ -165,66 +149,30 @@ export default function Student_Assignment() {
             setAssignmentFileNames(updatedFileNames);
         }
     };
-
-
-    const handleRequestSort = (event, property) => {
-        const isAsc = orderBy === property && order === 'asc';
-        setOrder(isAsc ? 'desc' : 'asc');
-        setOrderBy(property);
-    };
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
-
-    const handleSearchChange = (event) => {
-        setSearchQuery(event.target.value);
-    };
-
-
-    const filteredAssignments = assignmentAll.filter((assignment) =>
-        assignment.assignmentName.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    const sortedAssignments = filteredAssignments.sort((a, b) => {
-        if (orderBy === 'name') {
-            return order === 'asc'
-                ? a.assignmentName.localeCompare(b.assignmentName)
-                : b.assignmentName.localeCompare(a.assignmentName);
-        }
-        return 0;
-    });
-
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, filteredAssignments.length - page * rowsPerPage);
     return (
         <>
-            <div>
+            <div style={{ marginTop: '58px', backgroundColor: "#f2edf3" }}>
                 <div className="container-fluid">
                     <div className="row">
                         {/* <div className="col-md-12 col-lg-12 col-sm-12 headLineBox">
                             <h4>Assignments</h4>
                         </div> */}
 
-                        <div className="col-md-12">
-                            <div className="custom-table-container" >
-                                <table className=" table-bordered pt-1 d-none">
-                                    <thead className="bg-theme-green" style={{ position: 'sticky', top: -2, zIndex: 3 }}>
+                        <div className="col-md-12 mt-4">
+                            <div className="custom-table-container" style={{ minHeight: '90vh', overflow: 'scroll' }}>
+                                <table className="custom-table table-bordered pt-1">
+                                    <thead className="custom-thead" style={{ position: 'sticky', top: -2, zIndex: 3 }}>
                                         <tr>
-                                            <th className="p-2">No</th>
-                                            <th className="p-2">Name</th>
-                                            <th className="p-2">Start Date</th>
-                                            <th className="p-2">End Date</th>
-                                            <th className="p-2">Assignment</th>
-                                            <th className="p-2">Upload</th>
-                                            <th className="p-2">Total Marks</th>
-                                            <th className="p-2">Marks Obtained</th>
-                                            <th className="p-2">Status</th>
-                                            <th className="p-2">Action</th>
+                                            <th>No</th>
+                                            <th>Name</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Assignment</th>
+                                            <th>Upload</th>
+                                            <th>Total Marks</th>
+                                            <th>Marks Obtained</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody className="custom-tbody" >
@@ -273,10 +221,7 @@ export default function Student_Assignment() {
 
                                                 <td>{assignment?.totalMarks}</td>
                                                 <td>{assignment?.marks ? assignment?.marks : 'Evaluation Pending'}</td>
-                                                <td className={assignment?.uploadStatus === 1 ? 'status-submitted' : 'status-pending'}>
-                                                    {assignment?.uploadStatus === 1 ?
-                                                        <span className='badge-success'>Submitted</span> : <span className='custom-badge-warning'>Pending</span>}
-                                                </td>
+                                                <td className={assignment?.uploadStatus == 1 ? 'status-submitted' : 'status-pending'}>{assignment?.uploadStatus == 1 ? 'Submitted' : 'Pending'}</td>
                                                 <td>
                                                     <button
                                                         className="custom-button"
@@ -309,130 +254,6 @@ export default function Student_Assignment() {
                                         ))}
                                     </tbody>
                                 </table>
-
-                                <TextField
-                                    label="Search"
-                                    variant="outlined"
-                                    value={searchQuery}
-                                    onChange={handleSearchChange}
-                                    style={{ marginBottom: '16px' }}
-                                    InputLabelProps={{
-                                        style: {top: '-5px' } 
-                                    }}
-                                />
-                                <TableContainer>
-                                    <Table>
-                                        <TableHead className='bg-theme-green text-white p-0'>
-                                            <TableRow>
-                                                {['No', 'Name', 'Start Date', 'End Date', 'Upload', 'Total Marks', 'Marks Obtained', 'Status', 'Action'].map((headCell) => (
-                                                    <TableCell
-                                                        key={headCell}
-                                                        sortDirection={orderBy === headCell ? order : false}
-                                                        className='p-2'
-                                                    >
-                                                        <TableSortLabel
-                                                            className='p-0 text-white'
-                                                            active={orderBy === headCell}
-                                                            direction={orderBy === headCell ? order : 'asc'}
-                                                            onClick={(event) => handleRequestSort(event, headCell)}
-                                                        >
-                                                            {headCell}
-                                                            {orderBy === headCell ? (
-                                                                <span style={visuallyHidden}>
-                                                                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                                                </span>
-                                                            ) : null}
-                                                        </TableSortLabel>
-                                                    </TableCell>
-                                                ))}
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            {sortedAssignments.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((assignment, index) => (
-                                                <TableRow hover key={index}>
-                                                    <TableCell className="p-2">{index + 1}</TableCell>
-                                                    <TableCell className="p-2">{assignment.assignmentName}</TableCell>
-                                                    <TableCell className="p-2">{assignment.startDate}</TableCell>
-                                                    <TableCell className="p-2">{assignment.endDate}</TableCell>
-                                                    {/* <TableCell className="p-2">
-                                                        <Button
-                                                            variant="contained"
-                                                            onClick={() => {
-                                                                handleDownloadXLS(assignment.filePath);
-                                                                handleAssignmentDownload(assignment.id, assignment.assignmentName, assignment.endDate);
-                                                            }}
-                                                        >
-                                                            Download <DownloadForOfflineOutlinedIcon />
-                                                        </Button>
-                                                    </TableCell> */}
-                                                    <TableCell className="p-2">
-                                                        <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                                                            <FileUploadOutlinedIcon
-                                                                style={{ fontSize: '24px', color: '#1f8ef1' }}
-                                                                onClick={() => document.getElementById(`file-input-${index}`).click()}
-                                                            />
-                                                            <input
-                                                                type="file"
-                                                                id={`file-input-${index}`}
-                                                                style={{ display: 'none' }}
-                                                                onChange={(e) => handleFileChange(index, e)}
-                                                            />
-                                                            <span style={{ marginLeft: '8px' }}>
-                                                                {assignmentFileNames[index] || 'File not chosen'}
-                                                            </span>
-                                                        </div>
-                                                    </TableCell>
-                                                    <TableCell className="p-2">{assignment.totalMarks}</TableCell>
-                                                    <TableCell className="p-2">{assignment.marks ? assignment.marks : 'Evaluation Pending'}</TableCell>
-                                                    <TableCell className="p-2">
-                                                        {assignment.uploadStatus === 1 ? (
-                                                            <span className="badge-success">Submitted</span>
-                                                        ) : (
-                                                            <span className="custom-badge-warning">Pending</span>
-                                                        )}
-                                                    </TableCell>
-                                                    <TableCell className="p-2">
-                                                        <span>
-                                                            <button
-                                                                style={{
-                                                                    background: 'transparent',
-                                                                    border: 'none',
-                                                                    cursor: assignmentFile && selectedRowIndex === index ? 'pointer' : 'not-allowed',
-                                                                    color: assignmentFile && selectedRowIndex === index ? 'rgb(212, 139, 2)' : 'gray',
-                                                                }}
-                                                                onClick={() => handleAssignmentSave(assignment.id, assignment.assignmentName, assignment.endDate)}
-                                                                disabled={!assignmentFile || selectedRowIndex !== index}
-                                                            >
-                                                                <SaveOutlinedIcon />
-                                                            </button>
-                                                        </span>
-                                                        <span style={{cursor: 'pointer'}} className='ml-3' title="download">
-                                                            <DownloadForOfflineOutlinedIcon onClick={() => {
-                                                                handleDownloadXLS(assignment.filePath);
-                                                                handleAssignmentDownload(assignment.id, assignment.assignmentName, assignment.endDate);
-                                                            }} />
-                                                        </span>
-                                                        
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))}
-                                            {emptyRows > 0 && (
-                                                <TableRow style={{ height: 53 * emptyRows }}>
-                                                    <TableCell className="p-2" colSpan={10} />
-                                                </TableRow>
-                                            )}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                                <TablePagination
-                                    rowsPerPageOptions={[5, 10, 25]}
-                                    component="div"
-                                    count={filteredAssignments.length}
-                                    rowsPerPage={rowsPerPage}
-                                    page={page}
-                                    onPageChange={handleChangePage}
-                                    onRowsPerPageChange={handleChangeRowsPerPage}
-                                />
                             </div>
                         </div>
                     </div>

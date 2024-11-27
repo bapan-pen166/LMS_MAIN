@@ -48,9 +48,14 @@ const Mntor_Sidebar = () => {
             </li>
 
 
-
-            <li style={{marginBottom:"10px"}}>
+            
+            {/* <li style={{marginBottom:"10px"}}>
                 <NavLink className="nav-link " style={{ paddingLeft: "10%" }} to="mentor-courses">
+                   <IoBookOutline/> Courses
+                </NavLink>
+            </li> */}
+            <li style={{marginBottom:"10px"}}>
+                <NavLink className="nav-link " style={{ paddingLeft: "10%" }} to="student-courses">
                    <IoBookOutline/> Courses
                 </NavLink>
             </li>

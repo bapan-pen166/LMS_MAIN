@@ -155,7 +155,23 @@ export const SubmoduleDetails = (subModule) => {
               
             ) : openPdf ? (
                 // PDF Viewer
-                <div style={{ height: '88vh' }}>
+                // <div style={{ height: '88vh' }}>
+                //     <Worker>
+                //         <Viewer
+                //             fileUrl={pdfUrl}
+                //             plugins={[fullScreenPluginInstance, defaultLayoutPluginInstance]}
+                //             style={{
+                //                 height: isFullScreen ? '100vh' : '50vh',
+                //                 width: '100%',
+                //             }}
+                //         />
+                //     </Worker>
+                //     <button style={{ margin: '10px', border: "1px solid #D3D3D3", padding: "6px", position: "absolute", top: "70px", zIndex: "4", right: "12px" }} className='bb' onClick={handleClosePdf}>
+                //         <CloseIcon style={{ color: "red" }} />
+                //         Close PDF
+                //     </button>
+                // </div>
+                <div style={{ height: '80vh', position: 'relative' }}>
                     <Worker>
                         <Viewer
                             fileUrl={pdfUrl}
@@ -166,11 +182,23 @@ export const SubmoduleDetails = (subModule) => {
                             }}
                         />
                     </Worker>
-                    <button style={{ margin: '10px', border: "1px solid #D3D3D3", padding: "6px", position: "absolute", top: "70px", zIndex: "4", right: "12px" }} className='bb' onClick={handleClosePdf}>
-                        <CloseIcon style={{ color: "red" }} />
+                    <button
+                        style={{
+                            margin: '0px',
+                            border: '1px solid #D3D3D3',
+                            padding: '6px',
+                            position: 'absolute',
+                            top: '2px',
+                            right: '1px',
+                            zIndex: '4',
+                        }}
+                        onClick={handleClosePdf}
+                    >
+                        <CloseIcon style={{ color: 'red' }} />
                         Close PDF
                     </button>
                 </div>
+
             ) : (
                 // Video Viewer
                 <div style={{ height: '88vh' }}>

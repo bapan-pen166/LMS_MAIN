@@ -41,7 +41,6 @@ function Navber() {
   };
   const handleClose = () => {
     setAnchorEl(null);
-    setSupportReq(false)
   };
   // for the logout
   const handleLogout = () => {
@@ -60,9 +59,6 @@ function Navber() {
     else if(userType == 'Student'){
       localStorage.removeItem('studentEmail')
     }
-    else if(userType == 'Mentor_Assistant'){
-      localStorage.removeItem('mentorAssistantEmail')
-    }
     else{
       localStorage.removeItem('placementEmail')
     }
@@ -74,11 +70,6 @@ function Navber() {
     sethamburger(!hamburger)
     // console.log("I am from burger   for checking    ",hamburger);
   }
-
-  const [SupportRqst,setSupportReq]=useState(false);
-  const openInNewTab = (url) => {
-    window.open(url, '_blank', 'noopener,noreferrer');
-  };
 
   useEffect(() => {
     setUserType(localStorage.getItem('userType'))
@@ -144,21 +135,6 @@ function Navber() {
             <hr />
             {userType === 'Mentor' && <MenuItem> <Link onClick={handleClose} style={{textDecoration:"none",color:"black"}} to={"member-profile"}>Update Profile</Link> </MenuItem>}
             {userType === 'Student' && <MenuItem> <Link onClick={handleClose} style={{textDecoration:"none",color:"black"}} to={"student-update-profile"}>Update Profile</Link> </MenuItem>}
-            {/* {userType === 'Student' && <MenuItem> <Link onClick={handleClose} style={{textDecoration:"none",color:"black"}} to={"student-update-profile"}>Update Profile</Link> </MenuItem>} */}
-            {userType === 'Student' && <MenuItem> <p onClick={()=>{
-              console.log('click')
-              setSupportReq(!SupportRqst)}} style={{textDecoration:"none",color:"black"}} >Support Request</p> </MenuItem>}
-            {userType === 'Student' && SupportRqst && <MenuItem> <Link onClick={
-              ()=>{openInNewTab('https://www.youtube.com')
-                setSupportReq(!SupportRqst)
-                handleClose()}}
-                 style={{textDecoration:"none",color:"black",paddingLeft:'20px'}} >IT Support</Link> </MenuItem>} 
-            {userType === 'Student' && SupportRqst && <MenuItem> <Link onClick={
-              ()=>{
-                openInNewTab('https://www.google.com')
-                setSupportReq(!SupportRqst)
-                handleClose()}
-            } style={{textDecoration:"none",color:"black",paddingLeft:'20px'}} >Class Support</Link> </MenuItem>} 
             {userType === 'Admin' && <MenuItem> <Link onClick={handleClose} style={{textDecoration:"none",color:"black"}} to={"admin-change-password"}>Change Password</Link> </MenuItem>}
             {/* {userType === 'Mentor' && <MenuItem> <Link onClick={handleClose} style={{textDecoration:"none",color:"black"}} to={"change-password"}>Change Password</Link> </MenuItem>} */}
             <MenuItem onClick={handleLogout}><Logout fontSize="small" /> Logout</MenuItem>

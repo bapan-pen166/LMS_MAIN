@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import { Sidenav, Nav } from 'rsuite'; // Correct import
 import 'rsuite/dist/rsuite.min.css'; // Ensure styles are applied
 import HomeIcon from '@rsuite/icons/legacy/Home'; // Correct icon import
@@ -12,6 +12,13 @@ import '../../assets/css/TableStyle/TableStyle.css';
 import { SubmoduleDetails } from '../Components/ForTheCoursePart/SubmoduleDetails';
 import Tooltip from '@mui/material/Tooltip';
 
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { Datacontext } from '../../Context';
+
 
 const Student_courses = () => {
   const [expand, setExpand] = useState(true);
@@ -19,9 +26,12 @@ const Student_courses = () => {
   const [selectedSubModule, setSelectedSubModule] = useState(null);
   const [courseData, setCourseData] = useState()
   const [ID, setID] = useState();
+  const [userType,setUserType]=useState()
+  const {batchselect}=useContext(Datacontext);
 
   useEffect(() => {
     setID(localStorage.getItem('id'))
+    setUserType(localStorage.getItem('userType'))
 
   }, [])
 
@@ -38,10 +48,65 @@ const Student_courses = () => {
   }
 
   useEffect(() => {
-    if (ID) {
+    if (userType=="Student") {
       getData();
     }
-  }, [ID])
+    else if(userType=="Mentor"||userType=="Mentor_Assistant"){
+      handleBatchlist()
+    }
+    else if(userType=="Admin"){
+      getAdminSyllabusData()
+    }
+  }, [ID,userType])
+
+  const [selectedBatch, setSelectedBatch] = useState('');
+  const [batchList,setBatchList]=useState('');
+
+  const handleChange = (event) => {
+    setSelectedBatch(event.target.value);
+  };
+
+  async function handleBatchlist() {
+
+    try {
+        const batch_all = await axios.get(
+            `${api}/reg/getBatchList`
+        );
+        console.log(batch_all.data.batchList);
+        setBatchList(batch_all.data.batchList);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+useEffect(()=>{
+  getMentorSyllabusData()
+},[selectedBatch])
+
+
+const getMentorSyllabusData = () => {
+  axios.post(`${api}/student/getBatchModulesForMentor`, { batchName: selectedBatch })
+    .then((Response) => {
+      console.log("ress", Response?.data);
+      setCourseData(Response?.data?.result)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+}
+
+const getAdminSyllabusData = () => {
+  axios.post(`${api}/student/getBatchModulesForMentor`, { batchName: batchselect })
+    .then((Response) => {
+      console.log("ress", Response?.data);
+      setCourseData(Response?.data?.result)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+}
+
+
 
 
 
@@ -196,10 +261,84 @@ const Student_courses = () => {
 
   // Function to render content based on the active key
   const renderContent = () => {
-    if (selectedSubModule) {
-      return <SubmoduleDetails subModule={selectedSubModule} />
-    }
-    return <div style={{fontWeight:"bold",fontSize:"20px",display:"flex",justifyContent:"center",alignItems:"center",marginTop:"10%"}}>Please select the content !</div>;
+    // if (selectedSubModule) {
+    //   return <SubmoduleDetails subModule={selectedSubModule} />
+    // }
+    // return (<>
+    // <div className='row'>
+    //         <div className='col-md-12'>
+    //          {userType=="Mentor" && batchList && <Box sx={{ minWidth: 120 }}>
+    //             <FormControl fullWidth>
+    //               <InputLabel id="batch-select-label">Batch</InputLabel>
+    //               <Select
+    //                 labelId="batch-select-label"
+    //                 id="batch-select"
+    //                 value={selectedBatch}
+    //                 label="Batch"
+    //                 onChange={handleChange}
+    //               >
+    //                 {batchList?.map((batch) => (
+    //                   <MenuItem key={batch.id} value={batch.batchName}>
+    //                     {batch.batchName}
+    //                   </MenuItem>
+    //                 ))}
+    //               </Select>
+    //             </FormControl>
+    //           </Box>}
+    //         </div>
+    //     </div>
+    // <div style={{fontWeight:"bold",fontSize:"20px",display:"flex",justifyContent:"center",alignItems:"center",marginTop:"10%"}}>Please select the content !</div></>);
+
+    return(
+      <>
+     {(userType === "Mentor" || userType=="Mentor_Assistant") && batchList && (
+  <div className="row">
+    <div className="col-md-6 offset-md-6 pb-5 d-flex justify-content-end">
+      <Box sx={{ width: '100%' }}>
+        <FormControl fullWidth>
+          <InputLabel id="batch-select-label" sx={{ fontSize: '0.9rem', color: '#555' }}>Please Select Batch</InputLabel>
+          <Select
+            labelId="batch-select-label"
+            id="batch-select"
+            value={selectedBatch}
+            label="Please Select Batch"
+            onChange={handleChange}
+          >
+            {batchList?.map((batch) => (
+              <MenuItem key={batch.id} value={batch.batchName}>
+                {batch.batchName}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+    </div>
+  </div>
+)}
+
+
+{selectedSubModule ? (
+  <SubmoduleDetails subModule={selectedSubModule} />
+) : (
+  (userType === "Admin"|| userType === "Student" || (userType === "Mentor" && courseData)) && (
+    <div
+      style={{
+        fontWeight: "bold",
+        fontSize: "20px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: "10%",
+      }}
+    >
+      {/* {console.log('batchList',batchList)} */}
+      Please select the content!
+    </div>
+  )
+)}
+
+      </>
+    )
   };
 
 
@@ -208,6 +347,9 @@ const Student_courses = () => {
     <div style={{ marginTop: '0px', backgroundColor: '#f2edf3', display: 'flex', height: '100vh' }}>
       {/* Sidebar Section */}
       <div style={{ width: 240, height: '100vh', overflow: 'auto' }}>
+
+        
+
         <Sidenav expanded={expand} defaultOpenKeys={['1', '4']}>
           <Sidenav.Toggle expanded={expand} onToggle={(expanded) => setExpand(expanded)} />
           <Sidenav.Body>
