@@ -11,7 +11,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { faUser, faSignOut, faUserEdit} from '@fortawesome/free-solid-svg-icons';
+import { faUser, faSignOut, faUserEdit, faCog, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 // for the material ui dropdown
 import Button from '@mui/material/Button';
@@ -26,9 +26,9 @@ function Navber() {
   const [loadedComponent, setLoadedComponent] = useState(null);
   const { sethamburger, hamburger, setLogedin } = useContext(Datacontext);
   const [userType, setUserType] = useState('');
-  const [fisrtName,setFisrtName] = useState();
-  const [lastName,setLastName] = useState();
-  const [emailID,setEmailID] = useState();
+  const [fisrtName, setFisrtName] = useState();
+  const [lastName, setLastName] = useState();
+  const [emailID, setEmailID] = useState();
 
   const load_main_arch = () => { <><Main_arch /></> };
 
@@ -57,19 +57,19 @@ function Navber() {
     localStorage.removeItem('id');
     localStorage.removeItem('firstName');
     localStorage.removeItem('lastName');
-    if(userType == 'Admin'){
+    if (userType == 'Admin') {
       localStorage.removeItem('adminEmail');
     }
-    else if(userType == 'Mentor'){
+    else if (userType == 'Mentor') {
       localStorage.removeItem('mentorEmail');
     }
-    else if(userType == 'Student'){
+    else if (userType == 'Student') {
       localStorage.removeItem('studentEmail')
     }
-    else if(userType == 'Mentor_Assistant'){
+    else if (userType == 'Mentor_Assistant') {
       localStorage.removeItem('mentorAssistantEmail')
     }
-    else{
+    else {
       localStorage.removeItem('placementEmail')
     }
     navigate('/')
@@ -81,7 +81,7 @@ function Navber() {
     // console.log("I am from burger   for checking    ",hamburger);
   }
 
-  const [SupportRqst,setSupportReq]=useState(false);
+  const [SupportRqst, setSupportReq] = useState(false);
   const openInNewTab = (url) => {
     window.open(url, '_blank', 'noopener,noreferrer');
   };
@@ -95,14 +95,14 @@ function Navber() {
 
   return (
     <>
-      <div className={`main-nav ${hamburger ? 'navbar' : 'navbar-for-full-screen'} `} style={{backgroundColor:"#f2edf3"}}>
+      <div className={`main-nav ${hamburger ? 'navbar' : 'navbar-for-full-screen'} `} style={{ backgroundColor: "#f2edf3" }}>
         <div className='nav-left' style={{ display: 'flex', alignItems: 'center' }}>
-         {!hamburger && <button onClick={hamburgerToggle} className="bar_icon mr-3" style={{ backgroundColor: 'transparent', border: 'none' }} >
+          {!hamburger && <button onClick={hamburgerToggle} className="bar_icon mr-3" style={{ backgroundColor: 'transparent', border: 'none' }} >
             {/* <i className="fa fa-bars" style={{ color: '#0c5273', fontSize: '25pt' }} aria-hidden="true"></i> */}
-            <ArrowForwardIosIcon/>
+            <ArrowForwardIosIcon />
           </button>}
           {/* <Link to={"/"}><img style={{ width: "50px", height: "35px" }} src={company_logo} alt="company_logo" /></Link> */}
-          <Link to={"/"}><img style={{ width: "140px", height: "40px", marginTop:"-10px" }} src={company_logo} alt="company_logo" /></Link>
+          <Link to={"/"}><img style={{ width: "140px", height: "40px", marginTop: "-10px" }} src={company_logo} alt="company_logo" /></Link>
         </div>
         {/*{userType === "Admin" ? (*/}
         {/*  <div className='nav-wel-back'>Welcome Back , {fisrtName} {lastName}</div>*/}
@@ -147,28 +147,57 @@ function Navber() {
             }}
             disableScrollLock  // Prevent the body from locking the scroll
           >
-            <h5 style={{textAlign:"center"}}>{userType}</h5>
-            <hr />
-            {userType === 'Mentor' && <MenuItem> <Link onClick={handleClose} style={{textDecoration:"none",color:"black"}} to={"member-profile"}>Update Profile</Link> </MenuItem>}
-            {userType === 'Student' && <MenuItem> <Link onClick={handleClose} style={{textDecoration:"none",color:"black"}} to={"student-update-profile"}>Update Profile</Link> </MenuItem>}
-            {/* {userType === 'Student' && <MenuItem> <Link onClick={handleClose} style={{textDecoration:"none",color:"black"}} to={"student-update-profile"}>Update Profile</Link> </MenuItem>} */}
+            <div className="d-flex align-items-center px-2">
+
+
+
+              <div className="avatar mr-2">
+
+                <img className="avatar-img rounded-circle shadow" src={user_icon} alt="avatar" style={{ width: '35px', height: '35px' }} />
+
+              </div>
+
+              <div>
+
+                <p className="h6" ><span>{fisrtName ? fisrtName : ''}</span> <span>{lastName ? lastName : ''}</span></p>
+
+                <p className="small m-0">{emailID ? emailID : ''}</p>
+
+              </div>
+
+            </div>
+
+            <h6 className='my-2 ml-3' ><FontAwesomeIcon className='mr-15 ' style={{color: "#747579"}} icon={faUser} /><span style={{ fontWeight: '200', color: "#747579" }}>Logged in as: </span><span className='text-black'>{userType}</span></h6>
+
+            <hr className='m-0' />
+
+            {userType === 'Mentor' && <MenuItem> <Link onClick={handleClose} style={{ textDecoration: "none", color: "#747579" }} to={"member-profile"}>Update Profile</Link> </MenuItem>}
+
+            {userType === 'Student' && <MenuItem> <Link onClick={handleClose} style={{ textDecoration: "none", color: "#747579" }} to={"student-update-profile"}><FontAwesomeIcon className='mr-8 ' icon={faUserEdit} />Update Profile</Link> </MenuItem>}
+
+            {userType === 'Admin' && <MenuItem> <Link onClick={handleClose} style={{ textDecoration: "none", color: "#747579" }} to={"admin-change-password"}>Change Password</Link> </MenuItem>}
+
+            {/* {userType === 'Mentor' && <MenuItem> <Link onClick={handleClose} style={{textDecoration:"none",color:"black"}} to={"change-password"}>Change Password</Link> </MenuItem>} */}
             {userType === 'Student' && <MenuItem> <p onClick={()=>{
               console.log('click')
-              setSupportReq(!SupportRqst)}} style={{textDecoration:"none",color:"black"}} >Support Request</p> </MenuItem>}
+              setSupportReq(!SupportRqst)}} style={{textDecoration:"none",color:"#747579"}} ><FontAwesomeIcon className='mr-12 ' icon={faCog} />Support Request</p> <FontAwesomeIcon className='ml-2 ' style={{color: "#747579"}} icon={faArrowDown} /></MenuItem>}
             {userType === 'Student' && SupportRqst && <MenuItem> <Link onClick={
               ()=>{openInNewTab('https://www.youtube.com')
                 setSupportReq(!SupportRqst)
                 handleClose()}}
-                 style={{textDecoration:"none",color:"black",paddingLeft:'20px'}} >IT Support</Link> </MenuItem>}
+                 style={{textDecoration:"none",color:"black",paddingLeft:'20px', color: "#747579"}} >IT Support</Link> </MenuItem>}
             {userType === 'Student' && SupportRqst && <MenuItem> <Link onClick={
               ()=>{
                 openInNewTab('https://www.google.com')
                 setSupportReq(!SupportRqst)
                 handleClose()}
-            } style={{textDecoration:"none",color:"black",paddingLeft:'20px'}} >Class Support</Link> </MenuItem>}
-            {userType === 'Admin' && <MenuItem> <Link onClick={handleClose} style={{textDecoration:"none",color:"black"}} to={"admin-change-password"}>Change Password</Link> </MenuItem>}
+            } style={{textDecoration:"none",color:"black",paddingLeft:'20px', color: "#747579"}} >Class Support</Link> </MenuItem>}
+
+            <hr className='m-0' />
+
+            <MenuItem onClick={handleLogout} style={{ color: '#747579' }}><FontAwesomeIcon className='mr-12 ' icon={faSignOut} />Logout</MenuItem>
+            {userType === 'Admin' && <MenuItem> <Link onClick={handleClose} style={{ textDecoration: "none", color: "black" }} to={"admin-change-password"}>Change Password</Link> </MenuItem>}
             {/* {userType === 'Mentor' && <MenuItem> <Link onClick={handleClose} style={{textDecoration:"none",color:"black"}} to={"change-password"}>Change Password</Link> </MenuItem>} */}
-            <MenuItem onClick={handleLogout}><Logout fontSize="small" /> Logout</MenuItem>
           </Menu>
         </div>
       </div>

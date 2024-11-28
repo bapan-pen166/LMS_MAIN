@@ -88,8 +88,8 @@ const Student_Overview_new = () => {
     const getBatchNM = () => {
         axios.post(`${api}/dashboard/getStudentBatchName`, { studentEmail: studentMail })
             .then((Response) => {
-                console.log("BatchName", Response?.data?.batch);
-                setGetBatchName(Response?.data?.batch)
+                console.log("BatchName", Response?.data?.batchName);
+                setGetBatchName(Response?.data?.batchName)
             })
     }
 
@@ -916,7 +916,7 @@ const Student_Overview_new = () => {
                         <div className='rounded' style={{ borderRadius: "10px", backgroundColor: "white" }}>
                             <p className="text-center p-2" style={{ fontSize: "20px" }}>Today's Classes</p>
                             <div style={{ backgroundColor: "white" }} >
-                                {paginatedTodaysMeetings?.length > 0 ? (
+                                {(paginatedTodaysMeetings?.length > 0 &&  paginatedTodaysMeetings[0].message != "No meetings found for today") ? (
                                     paginatedTodaysMeetings.map((meeting, index) => (
                                         <div key={index} className="list-group-item mb-10 card text-gray" style={{
                                             display: 'flex',
@@ -969,7 +969,7 @@ const Student_Overview_new = () => {
                         <div className='' style={{ borderRadius: "10px", backgroundColor: "white" }}>
                             <p className="text-center p-2" style={{ fontSize: "20px" }}>Upcoming Classes</p>
                             <div style={{ backgroundColor: "white" }}>
-                                {paginatedUpcomingMeetings?.length > 0 ? (
+                                {(paginatedUpcomingMeetings?.length > 0 && paginatedUpcomingMeetings[0].message != "No upcoming meetings found")? (
                                     paginatedUpcomingMeetings.map((meeting, index) => (
                                         <div key={index} className="list-group-item mb-10 card text-gray" style={{
                                             

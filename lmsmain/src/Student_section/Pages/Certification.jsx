@@ -130,10 +130,10 @@ export default function  Certification(){
 
     return(
         <>
-       <div className='row ' style={{height:"93vh" ,marginTop: '58px', backgroundColor: "#f2edf3" }} >
+       <div className='row ' >
                 <div className='row '>
                     <div className='container-fluid'>
-                        <div className=' col-md-12 col-lg-12 col-sm-12 headLineBox d-flex justify-content-start'  >
+                        <div className=' col-md-12 col-lg-12 col-sm-12 bg-theme-green rounded text-white d-flex justify-content-start'  >
                             <h4>Certificatation</h4>
                         </div>
                     </div>

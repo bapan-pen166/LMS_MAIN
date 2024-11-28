@@ -7,7 +7,7 @@ import { Datacontext } from '../Context';
 import section_bg from "../assets/img/student_overview/section_bg.png";
 import Sidebar_new from './Sidebar_new';
 import student_profile from "../assets/img/student_overview/nav-avatar.jpg";
-
+import profile_photo from "../assets/img/profile_photo/profile_photo.png";
 import headerbg from "../assets/img/student_overview/headerbg.jpg";
 
 import '../assets/css/Navbar/Navbar.css';
@@ -70,6 +70,8 @@ function Master_Layout() {
 
     const [courseProgress, setCourseProgress] = useState();
 
+    const [profileImagePreview, setProfileImagePreview] = useState(null);
+
     const toggleSidebar = () => {
 
         setSidebarVisible(!isSidebarVisible);
@@ -116,9 +118,9 @@ function Master_Layout() {
 
             .then((Response) => {
 
-                console.log("BatchName", Response?.data?.batch);
+                console.log("BatchName", Response?.data?.batchName);
 
-                setGetBatchName(Response?.data?.batch);
+                setGetBatchName(Response?.data?.batchName);
 
                 setGetCourseName(Response?.data?.courseName);
 
@@ -189,6 +191,20 @@ function Master_Layout() {
         console.log("Course progress updated: ", courseProgress);
 
     }, [courseProgress]);
+    useEffect(()=>{
+        if(studentMail){
+            axios.post(`${api}/student/getProfilePic`,{studentEmail:studentMail})
+            .then((Response)=>{
+                const profilePicPath = Response?.data?.profilePicPath;
+                if (profilePicPath) {
+                    setProfileImagePreview(`${api}/static/${profilePicPath}`); 
+                }
+            })
+            .catch((error)=>{
+               console.log(error);
+            })
+        }
+    },[studentMail])
     return (
         <>
             <div className='full-page'>
@@ -204,7 +220,14 @@ function Master_Layout() {
                             <div class="row">
                                 <div class="col-md-2">
                                     <div class="avatar avatar-xxl position-relative mt-n3">
-                                        <img class="avatar-img rounded-circle " src={student_profile} alt="" />
+                                    {profileImagePreview ? (
+                                            
+                                                <img className='avatar-img rounded-circle' src={profileImagePreview} alt="Profile Preview" />
+                                            
+                                        ) : (
+                                                <img className='avatar-img rounded-circle' src={profile_photo} alt="profile_photo" />
+                                            
+                                        )}
 
                                     </div>
                                 </div>
