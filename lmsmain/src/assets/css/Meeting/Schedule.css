@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: center;
     height: 23px !important;
-    background:#17405d ;
+    background:#08555c ;
 }
 .rbc-allday-cell{
     display:none;
@@ -21,9 +21,9 @@
     background-color: #eff4f7;
 }
 
-/* .rbc-event, .rbc-day-slot .rbc-background-event{
-    background: rgb(125, 11, 148) !important;
-} */
+.rbc-event, .rbc-day-slot .rbc-background-event{
+    background: rgb(8 85 92 / 24%) !important;
+}
 .rbc-event-overlap {
     /* Add custom styles for overlapping events */
     /* For example, you can change the background color */
@@ -34,16 +34,17 @@
 .rbc-event,
 .rbc-background-event {
     z-index: 2;
-    padding: 0px !important;
+    padding: 5px !important;
     border:none !important;
+    color: #085560;
 }
 
 .rbc-event-label{
     display:none !important;
 }
-.rbc-events-container{
+/* .rbc-events-container{
     width: 100% !important;
-}
+} */
 
 
 /* Timeslot style  */
@@ -64,13 +65,14 @@
   .rbc-event {
     border-radius: 5px;
     padding: 5px;
-    border: 2px solid white !important;
+    border: 1px solid white !important;
   }
   
   .rbc-event-content {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 11px !important;
   }
   .rbc-toolbar-label{
     font-weight: bold;
@@ -126,4 +128,8 @@
     background-color: lightblue; /* Example background color */
     color: black; /* Example text color */
     
+  }
+  .rbc-month-row{
+    flex: 0 0 0 !important;
+    min-height: 100px !important;
   }

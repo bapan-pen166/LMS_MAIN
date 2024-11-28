@@ -113,11 +113,11 @@ function Student_Meetings() {
 
 
   // for getting mail id and name from the local storage
-  const [mailIDFromLoacalStorage,setMailIDFromLoacalStorage] = useState();
-  const [firstNameFromLoacalStorage,setFirstNameFromLoacalStorage] = useState();
-  const [lastNameFromLoacalStorage,setlastNameFromLoacalStorage] = useState();
+  const [mailIDFromLoacalStorage, setMailIDFromLoacalStorage] = useState();
+  const [firstNameFromLoacalStorage, setFirstNameFromLoacalStorage] = useState();
+  const [lastNameFromLoacalStorage, setlastNameFromLoacalStorage] = useState();
 
-  const [getStudentMailFromLocalStorage,setGetStudentMailFromLocalStorage] = useState();
+  const [getStudentMailFromLocalStorage, setGetStudentMailFromLocalStorage] = useState();
 
   // page validation for userType
   const [userType, setUserType] = useState('');
@@ -179,7 +179,7 @@ function Student_Meetings() {
   useEffect(() => {
     const updatedTargetDayNo = selectedWeekDays.map(data => data.DayNo);
     setTargetDayNo(updatedTargetDayNo)
-   
+
   }, [selectedWeekDays])
 
 
@@ -229,14 +229,14 @@ function Student_Meetings() {
   const [reScheduleMeeting, setReScheduleMeeting] = useState({})
 
 
-  const [applyLeave,setApplyLeave] = useState({
-       startDate :"",
-       endDate :"",
-       leaveType :"",
-       reasonForLeave :"",
-       mail : mailIDFromLoacalStorage,
-       firstName : firstNameFromLoacalStorage,
-       lastName : lastNameFromLoacalStorage
+  const [applyLeave, setApplyLeave] = useState({
+    startDate: "",
+    endDate: "",
+    leaveType: "",
+    reasonForLeave: "",
+    mail: mailIDFromLoacalStorage,
+    firstName: firstNameFromLoacalStorage,
+    lastName: lastNameFromLoacalStorage
   })
 
 
@@ -254,8 +254,6 @@ function Student_Meetings() {
       start_time: timefromnew,
       end_time: timeTonew,
       subject: meet_nm,
-      userType:userType,
-      userEmail:userEmail
 
 
     })
@@ -442,7 +440,7 @@ function Student_Meetings() {
     return generated;
   };
 
-  
+
 
   function filterCustomWeekdays(start, end, targetWeekdays) {
     // Initialize an array to store valid weekdays
@@ -613,7 +611,7 @@ function Student_Meetings() {
       console.log(ToDateTime.time);
       meetDateEndRef.current.value = DateTimeToString(ToDateTime.date)
       setRescheduleTimeTo(ToDateTime.time);
-      
+
     }
   }, [selectmeeting])
 
@@ -660,7 +658,7 @@ function Student_Meetings() {
 
   const handleHolidayChange = () => {
     const newHoliday = holidayRef.current.value;
-  
+
     setholidayStr([...holidayStr, newHoliday]) //1st chng
     setholidayStr([...holidayStr, { title: holidaynm.current.value, Date: newHoliday }])
     holidaynm.current.value = '';
@@ -713,21 +711,21 @@ function Student_Meetings() {
   const open = Boolean(anchorEl);
   const id = open ? 'three-dots-menu' : undefined;
 
-  const handleApplyLeave = (e)=>{
-       const {value,name} = e.target;
+  const handleApplyLeave = (e) => {
+    const { value, name } = e.target;
 
-       setApplyLeave((prev)=>({
-           ...prev,
-           [name] : value
-       }))
+    setApplyLeave((prev) => ({
+      ...prev,
+      [name]: value
+    }))
 
   }
 
-  const handlApplyLeave = ()=>{
+  const handlApplyLeave = () => {
     console.log(applyLeave)
     // axios.post('')
     // .then((response)=>{
-           
+
     // })
     // .catch((rej)=>{
     //   console.log(rej);
@@ -735,7 +733,7 @@ function Student_Meetings() {
   }
 
 
-  useEffect(()=>{
+  useEffect(() => {
     const mail = localStorage.getItem('studentEmail');
     const firstName = localStorage.getItem('firstName');
     const lastName = localStorage.getItem('lastName');
@@ -747,33 +745,33 @@ function Student_Meetings() {
 
     //
     setApplyLeave(prevState => ({
-        ...prevState,
-        mail: mail || "",  
-        firstName: firstName || "",
-        lastName: lastName || ""
+      ...prevState,
+      mail: mail || "",
+      firstName: firstName || "",
+      lastName: lastName || ""
     }));
-  },[])
+  }, [])
 
 
 
   ////////////////////////////////////////////////
-  function handleMeetingListView(){
-    axios.post(`${api}/video-call/get_meetings_for_stud`,{email:mailIDFromLoacalStorage})
-    .then((Response) => {
-        console.log(" data for students: ",Response.data.data);
-        const meet=Response.data.data;
-       
+  function handleMeetingListView() {
+    axios.post(`${api}/video-call/get_meetings_for_stud`, { email: mailIDFromLoacalStorage })
+      .then((Response) => {
+        console.log(" data for students: ", Response.data.data);
+        const meet = Response.data.data;
+
         const transformedMeetings = meet.map(meet => {
           // Assuming date strings are in the format "MM-DD-YY"
           const startDateParts = meet.startDate.split('-'); // ['10', '4', '24']
           const endDateParts = meet.endDate.split('-');     // ['5', '6', '24']
-          const timefromnew= convertTo24Hour(meet.startTime);
-          const timeTonew= convertTo24Hour(meet.endTime);
+          const timefromnew = convertTo24Hour(meet.startTime);
+          const timeTonew = convertTo24Hour(meet.endTime);
 
-          const newStartDate=new Date(parseInt(startDateParts[0]),parseInt(startDateParts[1])-1,parseInt(startDateParts[2]) ,timefromnew[0],timefromnew[1])
-          const newEndDate =new Date(parseInt(endDateParts[0]),parseInt(endDateParts[1])-1,parseInt(endDateParts[2]) ,timeTonew[0],timeTonew[1])
-          
-        
+          const newStartDate = new Date(parseInt(startDateParts[0]), parseInt(startDateParts[1]) - 1, parseInt(startDateParts[2]), timefromnew[0], timefromnew[1])
+          const newEndDate = new Date(parseInt(endDateParts[0]), parseInt(endDateParts[1]) - 1, parseInt(endDateParts[2]), timeTonew[0], timeTonew[1])
+
+
           return {
             title: meet.topic,
             start: newStartDate,
@@ -783,43 +781,41 @@ function Student_Meetings() {
             password: meet.password
           };
         });
-        console.log(transformedMeetings)
+        console.log(transformedMeetings, transformedMeetings)
         setMeeting(transformedMeetings)
-    })
-    .catch((error) => {
+      })
+      .catch((error) => {
         console.error('Error:', error);
-    });
-   }
+      });
+  }
 
-   useEffect(()=>{
+  useEffect(() => {
     handleMeetingListView()
-   },[mailIDFromLoacalStorage])
+  }, [mailIDFromLoacalStorage])
 
 
 
   return (
     <>
-      <div className="row content-body container-fluid main-meeting">
+      <div className="container-fluid main-meeting">
         <div className="row ">
           <div className="container-fluid">
             <div className="row">
-              <div className=" col-md-12 col-lg-12 col-sm-12 headLineBox">
+              {/* <div className=" col-md-12 col-lg-12 col-sm-12 headLineBox">
                 <h4>Classes</h4>
-              </div>
+              </div> */}
               {/* <div className="col-md-4 col-lg-4 col-sm-4 d-flex justify-content-end headLineBox">
                 <button onClick={handleClick} style={{ border: 'none', background: 'transparent' }}
-                ><i class="fa fa-ellipsis-v" style={{ fontSize: '20px', fontWeight: 'bold', color: 'white' }}></i></button>
+                ><i className="fa fa-ellipsis-v" style={{ fontSize: '20px', fontWeight: 'bold', color: 'white' }}></i></button>
               </div> */}
             </div>
           </div>
         </div>
         <div className="container-fluid " style={{ minHeight: "100vh" }}>
-          <div className="row pt-3">
+          <div className="row">
 
-            <div className="col-md-12 p-2 bg-white m-2">
-              <Schedule_meeting meeting={meeting} setMeeting={setMeeting} holidaylist={holidaylist} setRecallGetcall={setRecallGetcall} handleMeetingListView={handleMeetingListView} userEmail={userEmail}/>
-            </div>
-          </div>
+              <Student_Schedule_meeting meeting={meeting} setMeeting={setMeeting} holidaylist={holidaylist} setRecallGetcall={setRecallGetcall} handleMeetingListView={handleMeetingListView} userEmail={userEmail}/>
+         </div>
 
         </div>
       </div>
@@ -961,7 +957,7 @@ function Student_Meetings() {
 
               </div>
               <div className="col-md-1 d-flex  align-items-center justify-content-start">
-                {meetparticipate && <i class="fa fa-plus" onClick={() => { setMeetparticipate2show(true) }} ></i>}
+                {meetparticipate && <i className="fa fa-plus" onClick={() => { setMeetparticipate2show(true) }} ></i>}
               </div>
 
               {/* dropdown2  */}
@@ -1078,7 +1074,7 @@ function Student_Meetings() {
 
               {meetparticipate2 &&
                 <div className="col-md-1 d-flex  align-items-center justify-content-start">
-                  <i class="fa fa-plus" onClick={() => { setMeetparticipate3show(true) }}></i>
+                  <i className="fa fa-plus" onClick={() => { setMeetparticipate3show(true) }}></i>
                 </div>
               }
 
@@ -1197,12 +1193,12 @@ function Student_Meetings() {
 
               {meetparticipate3 &&
                 <div className="col-md-1 d-flex  align-items-center justify-content-start">
-                  {/* <i class="fa fa-plus"></i> */}
+                  {/* <i className="fa fa-plus"></i> */}
                 </div>
               }
 
               <div className="offset-md-2 col-md-5 align-self-center " style={{ paddingLeft: '8px' }}>
-                <div class="input-group ">
+                <div className="input-group ">
                   <input type="date" id="dob"
 
 
@@ -1212,7 +1208,7 @@ function Student_Meetings() {
                 {(() => {
                   if (schedule == 1) {
                     return (
-                      <div class="input-group" style={{ paddingTop: '10px' }}>
+                      <div className="input-group" style={{ paddingTop: '10px' }}>
                         <input type="date" id="dob"
                           className="form-control" ref={meetDateEndRef} />
                       </div>
@@ -1252,8 +1248,8 @@ function Student_Meetings() {
                 <span style={{ fontSize: '14px' }}>Attach Class Schedule</span>
               </div>
               <div className="col-md-10 p-2">
-                <div class="form-group">
-                  <input type="file" class="form-control-file" id="exampleFormControlFile1" />
+                <div className="form-group">
+                  <input type="file" className="form-control-file" id="exampleFormControlFile1" />
                 </div>
               </div>
               <div className="col-md-2 p-2">
@@ -1364,14 +1360,14 @@ function Student_Meetings() {
               <div className="col-md-6 p-2">
                 <label htmlFor="">Start Date</label>
                 <input type="date" id="dob"
-                  className="form-control " name="startDate" value={applyLeave.startDate} onChange={handleApplyLeave}/>
+                  className="form-control " name="startDate" value={applyLeave.startDate} onChange={handleApplyLeave} />
               </div>
 
 
               <div className="col-md-6 p-2">
                 <label htmlFor="">End Date</label>
                 <input type="date" id="dob"
-                  className="form-control" name="endDate" value={applyLeave.endDate} onChange={handleApplyLeave}/>
+                  className="form-control" name="endDate" value={applyLeave.endDate} onChange={handleApplyLeave} />
               </div>
 
               <div className='col-md-10'>
@@ -1403,7 +1399,7 @@ function Student_Meetings() {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={()=>setShowApplyLeave(false)}>
+          <Button variant="secondary" onClick={() => setShowApplyLeave(false)}>
             Close
           </Button>
           <button className="btn btn-success" onClick={handlApplyLeave} >Apply Leave</button>
@@ -1415,7 +1411,7 @@ function Student_Meetings() {
 
 
 
-      
+
       {/* monthly day schedule modal */}
       <Mentor_Monthlymeetschedule openmonthly={openmonthly} handleCloseMonthly={handleCloseMonthly} selectedNumber={selectedNumber} setSelectedNumber={setSelectedNumber} selectedFrequency={selectedFrequency} setSelectedFrequency={setSelectedFrequency} handleNumberChange={handleNumberChange} handleFrequencyChange={handleFrequencyChange} />
       {/* weekly custom day modal  */}

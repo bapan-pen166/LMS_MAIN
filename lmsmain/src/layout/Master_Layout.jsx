@@ -116,9 +116,9 @@ function Master_Layout() {
 
             .then((Response) => {
 
-                console.log("BatchName", Response?.data?.batchName);
+                console.log("BatchName", Response?.data?.batch);
 
-                setGetBatchName(Response?.data?.batchName);
+                setGetBatchName(Response?.data?.batch);
 
                 setGetCourseName(Response?.data?.courseName);
 

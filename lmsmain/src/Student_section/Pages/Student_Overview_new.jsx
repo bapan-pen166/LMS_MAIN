@@ -88,8 +88,8 @@ const Student_Overview_new = () => {
     const getBatchNM = () => {
         axios.post(`${api}/dashboard/getStudentBatchName`, { studentEmail: studentMail })
             .then((Response) => {
-                console.log("BatchName", Response?.data?.batchName);
-                setGetBatchName(Response?.data?.batchName)
+                console.log("BatchName", Response?.data?.batch);
+                setGetBatchName(Response?.data?.batch)
             })
     }
 
