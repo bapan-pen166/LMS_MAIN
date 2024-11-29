@@ -102,7 +102,7 @@ function Navber() {
   };
   return (
     <>
-      <div className={`main-nav ${hamburger ? 'navbar' : 'navbar-for-full-screen'} `} style={{ backgroundColor: "#f2edf3" }}>
+      <div className={`main-nav ${hamburger ? 'navbar' : 'navbar-for-full-screen'} `} >
         <div className='nav-left' style={{ display: 'flex', alignItems: 'center' }}>
           {!hamburger && <button onClick={hamburgerToggle} className="bar_icon mr-3" style={{ backgroundColor: 'transparent', border: 'none' }} >
             {/* <i className="fa fa-bars" style={{ color: '#0c5273', fontSize: '25pt' }} aria-hidden="true"></i> */}

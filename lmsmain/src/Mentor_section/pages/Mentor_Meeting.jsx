@@ -1144,7 +1144,7 @@ function Mentor_Meeting() {
             </div>
           </div>
         </div>
-        <div className="container-fluid ">
+        <div className="container-fluid " style={{height: "100vh"}}>
           <div className="row pt-3">
             {/* <div className="col-md-12 col-lg-12 d-flex">
               <div className="col-md-6 d-flex  justify-content-start">

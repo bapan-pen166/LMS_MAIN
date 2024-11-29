@@ -200,7 +200,7 @@ function Schedule_meeting({ meeting, setMeeting, holidaylist }) {
                     onView={handleViewChange}
                     startAccessor="start"
                     endAccessor="end"
-                    style={{ height: '80vw' }}
+                    // style={{ height: '80vw' }}
                     step={10}
                     timeslots={6}
                     components={customComponents}
