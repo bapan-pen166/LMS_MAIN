@@ -18,7 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
-
+import Button from '@mui/material/Button';
 
 
 // Time 
@@ -30,7 +30,7 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import '../../assets/css/Meeting/Meeting.css'
 
 // modal 
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 // meterial ui 
@@ -121,10 +121,6 @@ function Mentor_Meeting() {
 
   // page validation for userType
   const [userType, setUserType] = useState('');
-  const [userEmail,setUserEmail]=useState('');
-
-  const [recallGetcall,setRecallGetcall] = useState(false);
-
   // for getting mail id and name from the local storage
   const [mailIDFromLoacalStorage, setMailIDFromLoacalStorage] = useState();
   const [firstNameFromLoacalStorage, setFirstNameFromLoacalStorage] = useState();
@@ -265,9 +261,7 @@ function Mentor_Meeting() {
           endDate: end_datetime,
           startTime: timefromnew,
           endTime: timeTonew,
-          title: meet_nm,
-          userType:userType,
-          userEmail:userEmail
+          title: meet_nm
         }],
 
         batchList: selectedBatch,
@@ -352,7 +346,7 @@ function Mentor_Meeting() {
   }
 
   function handleMeetingListView() {
-    axios.post(`${api}/video-call/getMeetingForMentor`, { mentorEmail: localStorage.getItem('mentorEmail')??localStorage.getItem('mentorAssistantEmail') })
+    axios.post(`${api}/video-call/getMeetingForMentor`, { mentorEmail: localStorage.getItem('mentorEmail') })
       .then((Response) => {
         console.log(" data : ", Response.data);
         const meet = Response.data;
@@ -384,11 +378,8 @@ function Mentor_Meeting() {
             start: newStartDate,
             end: newEndDate,
             meetingLink: meet.meetingLink,
-            meetingId: meet.meetingID,
-            id:meet.id,
-            password: meet.password,
-            meetCreater:meet.meetCreater,
-            meetCreaterType:meet.meetCreaterType
+            id: meet.meetingID,
+            password: meet.password
           };
         });
         console.log(transformedMeetings)
@@ -1021,30 +1012,9 @@ function Mentor_Meeting() {
 
   // For the validation of the page userType
 
-  // useEffect(() => {
-  //   const type = localStorage.getItem('userType');
-  //   setUserType(type);
-  // }, []);
-
   useEffect(() => {
     const type = localStorage.getItem('userType');
-    const adminEmail=localStorage.getItem('adminEmail');
-    const mentorEmail=localStorage.getItem('mentorEmail');
-    const studentEmail=localStorage.getItem('studentEmail');
-    const assistantMentor=localStorage.getItem('Mentor_Assistant');
-    // let email
-    if(adminEmail)
-      {setUserEmail(adminEmail);}
-    else if (mentorEmail)
-      {setUserEmail(mentorEmail);}
-    else if(studentEmail)
-      {setUserEmail(studentEmail);}
-    else if(assistantMentor)
-      {setUserEmail(assistantMentor);}
-    
-    // setIsLoading(false);
     setUserType(type);
-    
   }, []);
 
 
@@ -1145,25 +1115,36 @@ function Mentor_Meeting() {
 
 
 
-  if (userType == 'Mentor' || userType=='Mentor_Assistant') {
-    
+  if (userType !== 'Mentor') {
+    return <PageNotFound />
+  }
+
   return (
     <>
-      <div className="row content-body container-fluid main-meeting">
+      <div className="row  container-fluid main-meeting">
         <div className="row ">
           <div className="container-fluid">
-            <div className="row">
-              <div className=" col-md-8 col-lg-8 col-sm-8 headLineBox">
-                <h4>Classes</h4>
+            <div className="row ml-3">
+              <div className=" col-md-2 col-lg-2 col-sm-2 ">
+                {/* <h4>Calender</h4> */}
               </div>
-              <div className="col-md-4 col-lg-4 col-sm-4 d-flex justify-content-end headLineBox">
-                <button onClick={handleClick} style={{ border: 'none', background: 'transparent' }}
-                ><i class="fa fa-ellipsis-v" style={{ fontSize: '20px', fontWeight: 'bold', color: 'white' }}></i></button>
+              <div className="col-md-10 col-lg-10 col-sm-10 d-flex justify-content-end " style={{color:"white",gap:"4px"}}>
+                {/* <button onClick={handleClick} style={{ border: 'none',color:"white" }}
+                ><i class="fa fa-ellipsis-v" style={{ fontSize: '20px', fontWeight: 'bold', color: 'green' }}></i></button> */}
+                <div className="flex" style={{gap:"4px"}}>
+                     <Button style={{backgroundColor:"#206d32"}} variant="contained" className="mr-2" onClick={() => {
+              handleShowMeeting()
+              setSchedule('')
+            }}>Create Classes</Button>
+                     <Button style={{backgroundColor:"#206d32"}} variant="contained"   onClick={() => { handleShowMeetingReschedule() }}>Re-schedule classes</Button>
+
+                     {/* <Button style={{backgroundColor:"#206d32"}} variant="contained"   onClick={() => { handleShowApplyLeave() }}>Apply leave</Button> */}
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="container-fluid " style={{ minHeight: "100vh" }}>
+        <div className="container-fluid ">
           <div className="row pt-3">
             {/* <div className="col-md-12 col-lg-12 d-flex">
               <div className="col-md-6 d-flex  justify-content-start">
@@ -1280,7 +1261,7 @@ function Mentor_Meeting() {
                 <button className="btn btn-success" >Create Meeting</button>
             </div> */}
             <div className="col-md-12 p-2 bg-white m-2">
-              <Schedule_meeting setRecallGetcall={setRecallGetcall} handleMeetingListView={handleMeetingListView} meeting={meeting} setMeeting={setMeeting} holidaylist={holidaylist} userEmail={userEmail}/>
+              <Schedule_meeting meeting={meeting} setMeeting={setMeeting} holidaylist={holidaylist} />
             </div>
           </div>
 
@@ -2477,7 +2458,7 @@ function Mentor_Meeting() {
                     <MenuItem value="">
                       <em>None</em>
                     </MenuItem>
-                    {classbatchList.map(data => (
+                    {classbatchList && Array.isArray(classbatchList) && classbatchList?.map(data => (
                       <MenuItem key={data.id} value={data}>
                         {data.batch}
                       </MenuItem>
@@ -2826,8 +2807,6 @@ function Mentor_Meeting() {
       <ToastContainer />
     </>
   );
-  }
-  return <PageNotFound />
 }
 
 export default Mentor_Meeting;

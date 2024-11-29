@@ -216,6 +216,7 @@ function Master_Layout() {
                             <div class="card header-bg h-130px rounded-0" style={{ backgroundImage: `url(${headerbg})`, backgroundSize: 'cover' }}>
                             </div>
                         </div>
+                        
                         <div class="container-fluid mt-n4 px-5">
                             <div class="row">
                                 <div class="col-md-2">
@@ -225,7 +226,7 @@ function Master_Layout() {
                                                 <img className='avatar-img rounded-circle' src={profileImagePreview} alt="Profile Preview" />
                                             
                                         ) : (
-                                                <img className='avatar-img rounded-circle' src={profile_photo} alt="profile_photo" />
+                                                <img className='avatar-img rounded-circle p-3' src={profile_photo} alt="profile_photo" />
                                             
                                         )}
 

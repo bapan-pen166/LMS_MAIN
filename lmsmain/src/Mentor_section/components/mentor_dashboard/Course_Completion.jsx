@@ -1,51 +1,87 @@
-import React from 'react';
-import '../../../assets/css/Mentor_dashboard/mentor_dashboard.css';
-import { useState,useEffect } from 'react';
-import axios from 'axios';
-import { api2 } from '../../../ApiUrl/ApiUrl';
-const Course_Completion = ({percentage}) => {
-    
+import React, { useRef, useEffect } from 'react';
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 
-
+const Course_Completion = ({ percentage }) => {
   // Clamp percentage between 0 and 100
   const clampedPercentage = Math.min(100, Math.max(0, percentage));
   
-  // Length of the arc (half circumference of the circle, radius = 40)
-  const arcLength = Math.PI * 40; // This is the total length of the 180-degree arc
-
-  // Calculate the filled part of the arc based on percentage
-  const filledArcLength = (clampedPercentage / 100) * arcLength;
+  // Setting up the gauge options to match the required design
+  const gaugeOptions = {
+    chart: {
+      type: 'solidgauge',
+      height: '160px',  // Set the height of the chart here
+      backgroundColor: 'transparent',
+    },
+    title: null,
+    credits: {
+      enabled: false,
+    },
+    tooltip: {
+      enabled: true,
+    },
+    pane: {
+      center: ['50%', '50%'],
+      size: '70px',
+      startAngle: 0,
+      endAngle: 180,  // Adjust the gauge arc to 180 degrees
+      background: {
+        backgroundColor: '#EEE',
+        innerRadius: '75%',
+        outerRadius: '100%',
+        borderWidth: 0,
+      },
+    },
+    yAxis: {
+      min: 0,
+      max: 100,
+      labels: {
+        enabled: false,
+      },
+      lineWidth: 0,
+      minorTickInterval: null,
+      tickPixelInterval: 400,
+      tickWidth: 0,
+    },
+    plotOptions: {
+      solidgauge: {
+        innerRadius: '75%',
+      },
+      linecap: 'round',
+      rounded: true,
+    },
+    series: [
+      {
+        name: 'Course Progress',
+        data: [clampedPercentage],  // Dynamic data based on the percentage prop
+        dataLabels: {
+          enabled: false,  // Disable data labels on the gauge itself
+        },
+      },
+    ],
+    subtitle: {
+      text: `${clampedPercentage}%`, // Show the percentage in the center of the gauge
+      style: {
+        fontSize: '20px',
+        fontWeight: 'bold',
+        color: 'black',
+      },
+      verticalAlign: 'middle',
+      y: 20,
+    },
+  };
 
   return (
-    <div className="gauge-container">
-      <svg
-        className="gauge"
-        viewBox="0 0 100 50"
-        width="100%"
-        height="100%"
-        preserveAspectRatio="none"
-      >
-        {/* Background arc - full 180 degrees */}
-        <path
-          d="M 10,50 A 40,40 0 0,1 90,50"
-          fill="none"
-          stroke="#fcbaba"
-          strokeWidth="10"
-        />
-        {/* Foreground arc - based on percentage */}
-        <path
-          d="M 10,50 A 40,40 0 0,1 90,50"
-          fill="none"
-          stroke="#34d399"
-          strokeWidth="10"
-          strokeDasharray={`${filledArcLength} ${arcLength - filledArcLength}`}
-        />
-      </svg>
-      <div className="gauge-percentage">
-        {clampedPercentage}%
-      </div>
+    <div className="pt-2 mt-n3 pl-5">
+      <HighchartsReact
+        highcharts={Highcharts}
+        options={gaugeOptions}
+        ref={useRef(null)}
+      />
     </div>
   );
 };
 
 export default Course_Completion;
+
+

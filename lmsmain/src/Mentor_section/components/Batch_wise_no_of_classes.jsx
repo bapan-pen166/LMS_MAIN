@@ -1,15 +1,283 @@
+// import React, { useState, useEffect } from 'react';
+// import Highcharts from 'highcharts';
+// import HighchartsReact from 'highcharts-react-official';
+// import axios from 'axios';
+// import { api } from '../../ApiUrl/ApiUrl';
+// // import 'bootstrap/dist/css/bootstrap.min.css';
+// import { Modal, Button } from 'react-bootstrap';
+// import Cert_Elegible_chart from './mentor_dashboard/Cert_Elegible_chart';
+// import Assignment_Summery from './mentor_dashboard/Assignment_Summery';
+// import { Feedback, Height } from '@mui/icons-material';
+// // import Course_Completion from './mentor_dashboard/Course_Completion';
+// import Course_Completion from './mentor_dashboard/Course_Completion';
+
+// const BatchWiseNoOfClasses = () => {
+//    const [classes, setClasses] = useState([]);
+//    const [mail, setMail] = useState('');
+
+//    const batchWiseApi = () => {
+//       axios.post(`${api}/mentor/getBatchWiseStudent`, { email: mail })
+//          .then((response) => {
+//             setClasses(response?.data?.result);
+//          })
+//          .catch((error) => {
+//             console.log(error);
+//          });
+//    };
+
+//    // assignment score count batchwise 
+//    const [batchName,setBatchName]=useState('')
+//    const [assignmentScore, setAssignmentScore] = useState('');
+
+//    const handlebatchAssignmentScore = (email) => {
+//       console.log('assignment score called')
+//       axios.post(`${api}/dashboard/getBatchWiseAssignmentData`, { mentorEmail: email })
+//          .then((response) => {
+//             console.log(response.data[0])
+//             setAssignmentScore(response?.data[0]?.totalAverageBatchAssignmentPerformance);
+//          })
+//          .catch((error) => {
+//             console.log(error);
+//          });
+//    };
+//    useEffect(()=>{console.log(assignmentScore)},[assignmentScore])
+
+//    useEffect(() => {
+//       setMail(localStorage.getItem('mentorEmail'));
+//    }, []);
+//    const [averagefeedback,setFeedback]=useState('');
+//    const [attendance,setAttendance]=useState('');
+
+//    // batch average feedback and attendance
+//    const handlebatchFeedAndAttendance = (email,batch) => {
+//       console.log('assignment score called')
+//       axios.post(`${api}/dashboard/getBatchWiseAttendanceData`, { mentorEmail: email, batch: batch })
+//          .then((response) => {
+//             console.log(response.data)
+//             setAttendance(response?.data.batchAverageAttendance);
+//             setFeedback(response?.data.batchAverageFeedback)
+            
+//          })
+//          .catch((error) => {
+//             console.log(error);
+//          });
+//    };
+//    // useEffect(()=>{console.log(assignmentScore)},[assignmentScore])
+   
+//    // test score
+//    const [testScore,setTestScore]=useState('') 
+//    const handlebatchAvgTestScore = (email,batch) => {
+//       // console.log('assignment score called')
+//       axios.post(`${api}/dashboard/getBatchWiseTestData`, { mentorEmail: email, batch: batch })
+//          .then((response) => {
+//             console.log(response.data)
+//             setTestScore(response?.data.totalAverageBatchTestPerformance);
+           
+            
+//          })
+//          .catch((error) => {
+//             console.log(error);
+//          });
+//    };
+   
+//    // overall performance 
+
+//    const [overallperformance,setOverallPerformance]=useState('') 
+//    const handleperformance = (email,batch) => {
+//       // console.log('assignment score called')
+//       axios.post(`${api}/dashboard/getBatchOverallPerformance`, { mentorEmail: email, batch: batch })
+//          .then((response) => {
+//             console.log(response.data)
+//             setOverallPerformance(response?.data.overallPerformance);
+           
+            
+//          })
+//          .catch((error) => {
+//             console.log(error);
+//          });
+//    };
+
+//    // Top and Bottom student list 
+
+//    const [TopStudentsPerformance,setTopStudentsPerformance]=useState([])
+//    const [BottomStudentsPerformance,setBottomStudentsPerformance]=useState([])
+//    const handleStudentAsperformance = (email,batch) => {
+//       // console.log('assignment score called')
+//       axios.post(`${api}/dashboard/getStudentsRatingPerformances`, { mentorEmail: email, batch: batch })
+//          .then((response) => {
+//             console.log(response.data)
+//             setTopStudentsPerformance(response?.data.top_3_students.sort((a,b)=>b.overallScore-a.overallScore));
+//             setBottomStudentsPerformance(response?.data.bottom_3_students.sort((a,b)=>a.overallScore-b.overallScore));
+           
+            
+//          })
+//          .catch((error) => {
+//             console.log(error);
+//          });
+//    };
+//    // useEffect(()=>{console.log(TopStudentsPerformance)},[TopStudentsPerformance])
+//    // useEffect(()=>{console.log(BottomStudentsPerformance)},[BottomStudentsPerformance])
+
+//    // Certificate eligible chart data 
+//    const [certElgData,setChartElgData]=useState({});
+//    const batchWiseCertElgCount = (email,batch) => {
+//       axios.post(`${api}/dashboard/getCertificateEligiblityData`, { mentorEmail: email, batch: batch})
+//          .then((response) => {
+//             setChartElgData(response?.data);
+//          })
+//          .catch((error) => {
+//             console.log(error);
+//          });
+//    };
+//    useEffect(()=>{console.log(certElgData)},[certElgData])
+
+
+//    // Assignment pass and fail percentage 
+//    const [assignmentPass,setAssignmentPass]=useState(100);
+//    const [assignmentFail,setAssignmentFail]=useState(30);
+//    const batchWiseAssignmentPassFail = (email,batch) => {
+//       axios.post(`${api}/dashboard/getBatchAssignmentReport`, { mentorEmail: email, batch: batch})
+//          .then((response) => {
+//             setAssignmentPass(response?.data?.percentage_pass);
+//             setAssignmentFail(response?.data?.percentage_fail);
+//          })
+//          .catch((error) => {
+//             console.log(error);
+//          });
+//    };
+//    useEffect(()=>{console.log(certElgData)},[certElgData])
+
+//    const[percentage,setpercentage]=useState(85)
+//     const handlebatchWiseCourseCompletion = (email,batch) => {
+//         axios.post(`${api}/dashboard/getCourseCompletion`, { mentorEmail: email, batch: batch })
+//            .then((response) => {
+//             setpercentage(response?.data?.completion_percentage);
+//            })
+//            .catch((error) => {
+//               console.log(error);
+//            });
+//      };
+//    //   useEffect(() => {
+//    //      handlebatchWiseCourseCompletion(localStorage.getItem('mentorEmail'));
+//    //  }, []);
+
+
+//    useEffect(() => {
+//       if (mail) {
+//          batchWiseApi();
+//       }
+//    }, [mail]);
+//    const [showModal, setShowModal] = useState(false);
+//    const modalClose=()=>setShowModal(false);
+//    const modalShow=()=>setShowModal(true);
+//    const [batchId,setBatchId]=useState('');
+
+//    const generateChartData = () => {
+
+//     const data = classes.map(batch => ({
+//         name: batch.name,
+//         y: batch.y,
+//         events: {
+//          click: () => {modalShow()
+//             setBatchId(batch.id)
+//             setBatchName(batch.name)
+//             handlebatchAssignmentScore(mail)
+//             handlebatchFeedAndAttendance(mail,batch.name)
+//             handlebatchAvgTestScore(mail,batch.name)
+//             handleperformance(mail,batch.name)
+//             handleStudentAsperformance(mail,batch.name)
+//             batchWiseCertElgCount(mail,batch.name)
+//             batchWiseAssignmentPassFail(mail,batch.name)
+//             handlebatchWiseCourseCompletion(mail,batch.name)
+//          }, // Trigger modal with batch id
+//        },
+//      }));
+
+//    //  const overall = data.reduce((sum, batch) => sum + batch.y, 0);
+      
+//    //    data.push({
+//    //       name: 'Overall',
+//    //       y: overall
+//    //    });
+
+//       return data;
+//    };
+
+//    const options = {
+//       chart: {
+//          type: 'column'
+//       },
+//       title: {
+//          text: null
+//       },
+//       accessibility: {
+//          announceNewData: {
+//             enabled: true
+//          }
+//       },
+//       xAxis: {
+//          type: 'category',
+//          gridLineWidth: 0, 
+//       },
+//       yAxis: {
+//          title: {
+//             text: null
+//          },
+//          min: 0,
+//          gridLineWidth: 0, 
+//          // gridLineColor: '#e0e0e0',
+//          // gridLineDashStyle: 'Solid', 
+//       },
+//       legend: {
+//          enabled: false
+//       },
+//       plotOptions: {
+//          series: {
+//             borderWidth: 0,
+//             dataLabels: {
+//                enabled: true,
+//                format: '{point.y}'
+//             }
+//          }
+//       },
+//       tooltip: {
+//          headerFormat: '<span style="font-size:11px">{point.name}</span><br>',
+//       },
+//       series: [
+//          {
+//             name: 'Activity',
+//             colorByPoint: true,
+//             data: generateChartData()
+//          }
+//       ],
+//       credits: {
+//          enabled: false
+//       }
+//    };
+
 import React, { useState, useEffect } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import axios from 'axios';
 import { api } from '../../ApiUrl/ApiUrl';
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button } from 'react-bootstrap';
 import Cert_Elegible_chart from './mentor_dashboard/Cert_Elegible_chart';
 import Assignment_Summery from './mentor_dashboard/Assignment_Summery';
 import { Feedback, Height } from '@mui/icons-material';
-// import Course_Completion from './mentor_dashboard/Course_Completion';
 import Course_Completion from './mentor_dashboard/Course_Completion';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSliders, faCalendar, faStar,faCrown } from '@fortawesome/free-solid-svg-icons';
+import profile_photo from "../../assets/img/mentor_overview/profile_photo.png";
+
+
+
+
+// Import the Highcharts Treemap module
+import HighchartsTreemap from 'highcharts/modules/treemap';
+
+// Initialize the treemap module
+HighchartsTreemap(Highcharts);
+
 
 const BatchWiseNoOfClasses = () => {
    const [classes, setClasses] = useState([]);
@@ -26,80 +294,64 @@ const BatchWiseNoOfClasses = () => {
    };
 
    // assignment score count batchwise 
-   const [batchName,setBatchName]=useState('')
+   const [batchName, setBatchName] = useState('');
    const [assignmentScore, setAssignmentScore] = useState('');
 
    const handlebatchAssignmentScore = (email) => {
-      console.log('assignment score called')
+      console.log('assignment score called');
       axios.post(`${api}/dashboard/getBatchWiseAssignmentData`, { mentorEmail: email })
          .then((response) => {
-            console.log(response.data[0])
+            console.log(response.data[0]);
             setAssignmentScore(response?.data[0]?.totalAverageBatchAssignmentPerformance);
          })
          .catch((error) => {
             console.log(error);
          });
    };
-   useEffect(()=>{console.log(assignmentScore)},[assignmentScore])
+
+   useEffect(() => { console.log(assignmentScore) }, [assignmentScore]);
 
    useEffect(() => {
-      // setMail(localStorage.getItem('mentorEmail'));
-      const type = localStorage.getItem('userType');
-      //   setUserType(type);
-        if(type=="Mentor")
-            {
-               setMail(localStorage.getItem('mentorEmail'))
-            }
-        else if(type=="Mentor_Assistant"){
-         setMail(localStorage.getItem('mentorAssistantEmail'))
-        } 
+      setMail(localStorage.getItem('mentorEmail'));
    }, []);
-   const [averagefeedback,setFeedback]=useState('');
-   const [attendance,setAttendance]=useState('');
+
+   const [averagefeedback, setFeedback] = useState('');
+   const [attendance, setAttendance] = useState('');
 
    // batch average feedback and attendance
-   const handlebatchFeedAndAttendance = (email,batch) => {
-      console.log('assignment score called')
+   const handlebatchFeedAndAttendance = (email, batch) => {
+      console.log('assignment score called');
       axios.post(`${api}/dashboard/getBatchWiseAttendanceData`, { mentorEmail: email, batch: batch })
          .then((response) => {
-            console.log(response.data)
+            console.log(response.data);
             setAttendance(response?.data.batchAverageAttendance);
-            setFeedback(response?.data.batchAverageFeedback)
-            
+            setFeedback(response?.data.batchAverageFeedback);
          })
          .catch((error) => {
             console.log(error);
          });
    };
-   // useEffect(()=>{console.log(assignmentScore)},[assignmentScore])
-   
+
    // test score
-   const [testScore,setTestScore]=useState('') 
-   const handlebatchAvgTestScore = (email,batch) => {
-      // console.log('assignment score called')
+   const [testScore, setTestScore] = useState('');
+   const handlebatchAvgTestScore = (email, batch) => {
       axios.post(`${api}/dashboard/getBatchWiseTestData`, { mentorEmail: email, batch: batch })
          .then((response) => {
-            console.log(response.data)
+            console.log(response.data);
             setTestScore(response?.data.totalAverageBatchTestPerformance);
-           
-            
          })
          .catch((error) => {
             console.log(error);
          });
    };
-   
-   // overall performance 
 
-   const [overallperformance,setOverallPerformance]=useState('') 
-   const handleperformance = (email,batch) => {
-      // console.log('assignment score called')
+   // overall performance
+   const [overallperformance, setOverallPerformance] = useState('');
+   const handleperformance = (email, batch) => {
       axios.post(`${api}/dashboard/getBatchOverallPerformance`, { mentorEmail: email, batch: batch })
          .then((response) => {
-            console.log(response.data)
+            console.log(response.data);
             setOverallPerformance(response?.data.overallPerformance);
-           
-            
          })
          .catch((error) => {
             console.log(error);
@@ -107,30 +359,24 @@ const BatchWiseNoOfClasses = () => {
    };
 
    // Top and Bottom student list 
-
-   const [TopStudentsPerformance,setTopStudentsPerformance]=useState([])
-   const [BottomStudentsPerformance,setBottomStudentsPerformance]=useState([])
-   const handleStudentAsperformance = (email,batch) => {
-      // console.log('assignment score called')
+   const [TopStudentsPerformance, setTopStudentsPerformance] = useState([]);
+   const [BottomStudentsPerformance, setBottomStudentsPerformance] = useState([]);
+   const handleStudentAsperformance = (email, batch) => {
       axios.post(`${api}/dashboard/getStudentsRatingPerformances`, { mentorEmail: email, batch: batch })
          .then((response) => {
-            console.log(response.data)
-            setTopStudentsPerformance(response?.data.top_3_students.sort((a,b)=>b.overallScore-a.overallScore));
-            setBottomStudentsPerformance(response?.data.bottom_3_students.sort((a,b)=>a.overallScore-b.overallScore));
-           
-            
+            console.log(response.data);
+            setTopStudentsPerformance(response?.data.top_3_students.sort((a, b) => b.overallScore - a.overallScore));
+            setBottomStudentsPerformance(response?.data.bottom_3_students.sort((a, b) => a.overallScore - b.overallScore));
          })
          .catch((error) => {
             console.log(error);
          });
    };
-   // useEffect(()=>{console.log(TopStudentsPerformance)},[TopStudentsPerformance])
-   // useEffect(()=>{console.log(BottomStudentsPerformance)},[BottomStudentsPerformance])
 
    // Certificate eligible chart data 
-   const [certElgData,setChartElgData]=useState({});
-   const batchWiseCertElgCount = (email,batch) => {
-      axios.post(`${api}/dashboard/getCertificateEligiblityData`, { mentorEmail: email, batch: batch})
+   const [certElgData, setChartElgData] = useState({});
+   const batchWiseCertElgCount = (email, batch) => {
+      axios.post(`${api}/dashboard/getCertificateEligiblityData`, { mentorEmail: email, batch: batch })
          .then((response) => {
             setChartElgData(response?.data);
          })
@@ -138,14 +384,14 @@ const BatchWiseNoOfClasses = () => {
             console.log(error);
          });
    };
-   useEffect(()=>{console.log(certElgData)},[certElgData])
 
+   useEffect(() => { console.log(certElgData) }, [certElgData]);
 
    // Assignment pass and fail percentage 
-   const [assignmentPass,setAssignmentPass]=useState(100);
-   const [assignmentFail,setAssignmentFail]=useState(30);
-   const batchWiseAssignmentPassFail = (email,batch) => {
-      axios.post(`${api}/dashboard/getBatchAssignmentReport`, { mentorEmail: email, batch: batch})
+   const [assignmentPass, setAssignmentPass] = useState(100);
+   const [assignmentFail, setAssignmentFail] = useState(30);
+   const batchWiseAssignmentPassFail = (email, batch) => {
+      axios.post(`${api}/dashboard/getBatchAssignmentReport`, { mentorEmail: email, batch: batch })
          .then((response) => {
             setAssignmentPass(response?.data?.percentage_pass);
             setAssignmentFail(response?.data?.percentage_fail);
@@ -154,119 +400,89 @@ const BatchWiseNoOfClasses = () => {
             console.log(error);
          });
    };
-   useEffect(()=>{console.log(certElgData)},[certElgData])
 
-   const[percentage,setpercentage]=useState(85)
-    const handlebatchWiseCourseCompletion = (email,batch) => {
-        axios.post(`${api}/dashboard/getCourseCompletion`, { mentorEmail: email, batch: batch })
-           .then((response) => {
+   const [percentage, setpercentage] = useState(85);
+   const handlebatchWiseCourseCompletion = (email, batch) => {
+      axios.post(`${api}/dashboard/getCourseCompletion`, { mentorEmail: email, batch: batch })
+         .then((response) => {
             setpercentage(response?.data?.completion_percentage);
-           })
-           .catch((error) => {
-              console.log(error);
-           });
-     };
-   //   useEffect(() => {
-   //      handlebatchWiseCourseCompletion(localStorage.getItem('mentorEmail'));
-   //  }, []);
-
+         })
+         .catch((error) => {
+            console.log(error);
+         });
+   };
 
    useEffect(() => {
       if (mail) {
          batchWiseApi();
       }
    }, [mail]);
+
    const [showModal, setShowModal] = useState(false);
-   const modalClose=()=>setShowModal(false);
-   const modalShow=()=>setShowModal(true);
-   const [batchId,setBatchId]=useState('');
+   const modalClose = () => setShowModal(false);
+   const modalShow = () => setShowModal(true);
+   const [batchId, setBatchId] = useState('');
 
    const generateChartData = () => {
-
-    const data = classes?.map(batch => ({
-        name: batch.name,
-        y: batch.y,
-        events: {
-         click: () => {modalShow()
-            setBatchId(batch.id)
-            setBatchName(batch.name)
-            handlebatchAssignmentScore(mail)
-            handlebatchFeedAndAttendance(mail,batch.name)
-            handlebatchAvgTestScore(mail,batch.name)
-            handleperformance(mail,batch.name)
-            handleStudentAsperformance(mail,batch.name)
-            batchWiseCertElgCount(mail,batch.name)
-            batchWiseAssignmentPassFail(mail,batch.name)
-            handlebatchWiseCourseCompletion(mail,batch.name)
-         }, // Trigger modal with batch id
-       },
-     }));
-
-   //  const overall = data.reduce((sum, batch) => sum + batch.y, 0);
-      
-   //    data.push({
-   //       name: 'Overall',
-   //       y: overall
-   //    });
-
-      return data;
+      return classes.map(batch => ({
+         id: batch.id,
+         parent: 'root',  
+         name: batch.name,
+         value: batch.y,
+         color: batch.y > 1 ? '#28a7453d' : batch.y > 5 ? '#7CC1D7' : '#4BAAC8',
+         events: {
+            click: () => {
+               modalShow();
+               setBatchId(batch.id);
+               setBatchName(batch.name);
+               handlebatchAssignmentScore(mail);
+               handlebatchFeedAndAttendance(mail, batch.name);
+               handlebatchAvgTestScore(mail, batch.name);
+               handleperformance(mail, batch.name);
+               handleStudentAsperformance(mail, batch.name);
+               batchWiseCertElgCount(mail, batch.name);
+               batchWiseAssignmentPassFail(mail, batch.name);
+               handlebatchWiseCourseCompletion(mail, batch.name);
+            }
+         }
+      }));
    };
 
    const options = {
       chart: {
-         type: 'column'
+         type: 'treemap',
+         height: null,
       },
       title: {
-         text: null
+         text: ''
       },
-      accessibility: {
-         announceNewData: {
-            enabled: true
+      series: [{
+         type: 'treemap',
+         data: generateChartData(),
+         layoutAlgorithm: 'stripes',  
+         dataLabels: {
+            enabled: true,
+            format: '{point.name}: {point.value}'
          }
-      },
-      xAxis: {
-         type: 'category',
-         gridLineWidth: 0
-      },
-      yAxis: {
-         title: {
-            text: null
-         },
-         min: 0,
-         gridLineWidth: 0
-      },
-      legend: {
-         enabled: false
-      },
-      plotOptions: {
-         series: {
-            borderWidth: 0,
-            dataLabels: {
-               enabled: true,
-               format: '{point.y}'
-            }
-         }
-      },
-      tooltip: {
-         headerFormat: '<span style="font-size:11px">{point.name}</span><br>',
-      },
-      series: [
-         {
-            name: 'Activity',
-            colorByPoint: true,
-            data: generateChartData()
-         }
-      ],
+      }],
       credits: {
          enabled: false
       }
    };
 
+
+   const chartContainerStyle = {
+      height: '25vw', // Set the container height to 25vw
+    };
+
+
+
    return (
-      <div>
+      <div style={chartContainerStyle}>
          <HighchartsReact
             highcharts={Highcharts}
             options={options}
+            containerProps={{ style: { height: '90%', width: '100%' } }}
          />
          <Modal show={showModal} onHide={modalClose} backdrop="static"
         keyboard={false}
@@ -274,94 +490,171 @@ const BatchWiseNoOfClasses = () => {
         <Modal.Body>
           <div className='container-fluid'>
             <div className='row'>
-               <div className='col-md-2 p-2'>
-                <p style={{fontSize:'24px',fontWeight:'bold',paddingLeft:'10px',paddingTop:'15px',display:'flex',justifyContent:'center',alignItems:'center',height:'100%'}}>{batchName}</p>  
+               <div className='col-md-6 p-2'>
+
+                <p  style={{fontSize:'24px',fontWeight:'100px',paddingLeft:'10px',display:'flex',justifyContent:'center',marginTop:"15px",borderBottom:"1px solid black",flexDirection:"column",gap:"10px"}}> <span>Batch Name : {batchName}</span> 
+                                     <ul class="list-inline mb-0">
+                                          <li className="list-inline-item h6 fw-light me-3 mb-1 mb-sm-0 d-flex align-items-center" style={{gap:"4px"}}>
+                                              <FontAwesomeIcon style={{fontSize:"60px"}} className="fas fa-star text-warning me-2" icon={faStar} />
+                                                   <span>{averagefeedback}/5.0</span>
+                                          </li>
+
+                                     </ul>             
+                </p>
+
                </div>
-               <div className='col-md-4' style={{textAlign:'center',paddingTop:'25px'}}>
+               <div className='col-md-6' style={{textAlign:'center',paddingTop:'25px'}}>
                <p style={{fontSize:'18px',fontWeight:'bold'}}>Course Progress</p>
                   <Course_Completion percentage={percentage}/>
                   
                </div>
+
+               
                <div className='offset-md-6'>
 
                </div>
-               <div className='col-md-12 p-2 d-flex justify-content-around'>
-                  <div style={{minHeight:'150px', minWidth:'150px',background:'#bbf7d0',borderRadius:'20px',textAlign:'center'}}>
-                     <div style={{paddingTop:'10px'}}>
-                     <span style={{fontSize:'13px',fontWeight:'bold'}}>Batch Attendance</span>
-                     <p style={{fontSize:'40px',fontWeight:'bold'}}>{attendance}%</p>
-                     </div>
-                  </div>
-                  <div style={{minHeight:'150px', minWidth:'150px',background:'#e0f2fe',borderRadius:'20px',textAlign:'center'}}>
-                     <div style={{paddingTop:'10px'}}>
-                     <span style={{fontSize:'13px',fontWeight:'bold'}}>Rating</span>
-                     <p style={{fontSize:'40px',fontWeight:'bold'}}>{averagefeedback}</p>
-                     </div>
-                  </div>
-                  <div style={{minHeight:'150px', minWidth:'150px',background:'#fef9c3',borderRadius:'20px',textAlign:'center'}}>
-                     <div style={{paddingTop:'10px'}}>
-                     <span style={{fontSize:'13px',fontWeight:'bold'}}>Overall Performance</span>
-                     <p style={{fontSize:'40px',fontWeight:'bold'}}>{overallperformance}%</p>
-                     </div>
-                  </div>
-                  <div style={{minHeight:'150px', minWidth:'150px',background:'#fee2e2',borderRadius:'20px',textAlign:'center'}}>
-                     <div style={{paddingTop:'10px'}}>
-                     <span style={{fontSize:'13px',fontWeight:'bold'}}>Assignment Score</span>
-                     <p style={{fontSize:'40px',fontWeight:'bold'}}>{assignmentScore}%</p>
-                     </div>
-                  </div>
-                  <div style={{minHeight:'150px', minWidth:'150px',background:'#ccfbf1',borderRadius:'20px',textAlign:'center'}}>
-                     <div style={{paddingTop:'10px'}}>
-                     <span style={{fontSize:'13px',fontWeight:'bold'}}>Test Score</span>
-                     <p style={{fontSize:'40px',fontWeight:'bold'}}>{testScore}%</p>
-                     </div>
-                  </div>
-               </div>
+               <div className="row px-5 pt-4 mt-2">
+                  
+
+    <div className="row">
+        <div className="col-md-4">
+        <div className="col-md-12 mb-3">
+        <span style={{ fontSize: '13px', fontWeight: 'bold' }}>Batch Attendance</span>
+        <div className="w-100">
+            <div className="progress progress-sm mb-0">
+                <div
+                    className="progress-bar progress-bar-striped progress-bar-animated"
+                    role="progressbar"
+                    style={{ width: `${attendance}%` }}
+                    aria-valuenow={attendance}
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                ></div>
+            </div>
+        </div>
+        <div className="text-end">
+            <span style={{ fontWeight: 'bold' }}>{attendance}%</span>
+        </div>
+    </div>
+
+    <div className="col-md-12 mb-3">
+        <span style={{ fontSize: '13px', fontWeight: 'bold' }}>Overall Performance</span>
+        <div className="w-100">
+            <div className="progress progress-sm mb-0">
+                <div
+                    className="progress-bar progress-bar-striped progress-bar-animated"
+                    role="progressbar"
+                    style={{ width: `${overallperformance}%` }}
+                    aria-valuenow={overallperformance}
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                ></div>
+            </div>
+        </div>
+        <div className="text-end">
+            <span style={{ fontWeight: 'bold' }}>{overallperformance}%</span>
+        </div>
+    </div>
+
+    <div className="col-md-12 mb-3">
+        <span style={{ fontSize: '13px', fontWeight: 'bold' }}>Assignment Score</span>
+        <div className="w-100">
+            <div className="progress progress-sm mb-0">
+                <div
+                    className="progress-bar progress-bar-striped progress-bar-animated"
+                    role="progressbar"
+                    style={{ width: `${assignmentScore}%` }}
+                    aria-valuenow={assignmentScore}
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                ></div>
+            </div>
+        </div>
+        <div className="text-end">
+            <span style={{ fontWeight: 'bold' }}>{assignmentScore}%</span>
+        </div>
+    </div>
+
+    <div className="col-md-12 mb-3">
+        <span style={{ fontSize: '13px', fontWeight: 'bold' }}>Test Score</span>
+        <div className="w-100">
+            <div className="progress progress-sm mb-0">
+                <div
+                    className="progress-bar progress-bar-striped progress-bar-animated"
+                    role="progressbar"
+                    style={{ width: `${testScore}%` }}
+                    aria-valuenow={testScore}
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                ></div>
+            </div>
+        </div>
+        <div className="text-end">
+            <span style={{ fontWeight: 'bold' }}>{testScore}%</span>
+        </div>
+    </div>
+
+        </div>
+        <div className="col-md-4">
+        <div className="col-lg-12 pb-2 border-bottom rounded-lg  mb-2 text-center" style={{marginTop:"-30px"}}>
+        <p style={{ fontFamily: "Roboto", fontWeight: "80px", fontSize: "30px" }}>Students</p>
+      </div>
+         <div className='d-flex ' style={{gap:"10px",marginTop:"40px"}}>
+              <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",gap:"10px",transform: "translateY(10px)"}}>
+                    <p >2</p>
+                    <img style={{width:"100px",borderRadius:"50%"}} src={profile_photo} alt={profile_photo} />
+                    <p>Bapan Ghosh</p>
+              </div>
+              <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",gap:"10px",transform: "translateY(-40px)"}}>
+                    <FontAwesomeIcon icon={faCrown} size="4x" style={{color:"gold"}} />
+                    <img style={{width:"100px",borderRadius:"50%"}} src={profile_photo} alt={profile_photo} />
+                    <p>Chitradip Dey</p>
+              </div>
+              <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",gap:"10px",transform: "translateY(10px)"}}>
+                    <p >3</p>
+                    <img style={{width:"100px",borderRadius:"50%"}} src={profile_photo} alt={profile_photo} />
+                    <p>Suman Pal</p>
+              </div>
+         </div>
+
+        </div>
+
+        <div className="col-md-4">
+        {/* <div className="col-lg-12 pb-2 border-bottom rounded-lg  mb-2 text-center" style={{marginTop:"-30px"}}>
+             <p style={{ fontFamily: "Roboto", fontWeight: "80px", fontSize: "30px" }}>Below 3 Students</p>
+        </div> */}
+        <div className="col-md-12 col-lg-12 col-sm-12 pt-3">
+                        
+                       <div style={{display:"flex" ,flexDirection:"column",gap:"8px"}}>
+                        <div style={{display:"flex",width:"100%",backgroundColor:"10px",borderRadius:"30px",backgroundColor: "#fd7e1436",height:"70px",padding:"10px",justifyContent:"space-between",alignItems:"center",color:'black'}}>
+                             <p>48</p>
+                             <img style={{width:"50px",borderRadius:"50%"}} src={profile_photo} alt={profile_photo} />
+                             <p>Arpan Das</p>
+                        </div>
+
+                        <div style={{display:"flex",width:"100%",backgroundColor:"10px",borderRadius:"30px",backgroundColor: "#6f42c14a",height:"70px",padding:"10px",justifyContent:"space-between",alignItems:"center",color:'black'}}>
+                             <p>49</p>
+                             <img style={{width:"50px",borderRadius:"50%"}} src={profile_photo} alt={profile_photo} />
+                             <p>Arpan Das</p>
+                        </div>
+
+                        <div style={{display:"flex",width:"100%",backgroundColor:"10px",borderRadius:"30px",backgroundColor: "#28a7453d",height:"70px",padding:"10px",justifyContent:"space-between",alignItems:"center",color:'black'}}>
+                             <p>50</p>
+                             <img style={{width:"50px",borderRadius:"50%"}} src={profile_photo} alt={profile_photo} />
+                             <p>Arpan Das</p>
+                        </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+</div>
+
+
+               
                <div className='col-md-4 p-2'>
                <Cert_Elegible_chart certElgData={certElgData}/>
                </div>
-               <div className='col-md-4  d-flex justify-content-between' style={{paddingLeft:'0px',paddingRight:'0px'}}>
-                  <div className='col-md-6 ' style={{paddingLeft:'0px',paddingRight:'0px'}}>
-                    <p style={{fontSize:'18px',fontWeight:"bold",paddingTop:'15px',paddingBottom:'40px',paddingLeft:'20px'}}>Top Students</p>
-                    {TopStudentsPerformance?.map(students=>{
-                        return(
-                        <div className='d-flex justify-content-center pt-3'>
-                        <div className='col-md-4' style={{paddingLeft:'2px'}}>
-                           <i class="fa fa-graduation-cap" style={{height:'50px',width:'50px',fontSize:'30px',borderRadius:'50%', border: '2px solid black',display: 'inline-block',textAlign: 'center',lineHeight: '50px' }}></i>
-                        </div>
-                        <div className='col-md-8' style={{paddingLeft:'0px',paddingRight:'0px'}}>
-                        <p style={{fontWeight:'bold',fontSize:'14px',marginBottom:'0',wordWrap:'break-word'}}>{students?.userName}</p>
-                        <span style={{paddingLeft:'5px',fontSize:'12px'}}>{students?.overallScore}%</span> 
-                        </div>
-                        </div>
-                        )
-                     })} 
-                 
-                     
-                  </div>
-                  <div className='col-md-6'>
-                     <p style={{fontSize:'18px',fontWeight:"bold",paddingTop:'15px',paddingBottom:'40px',paddingLeft:'13px'}}>Below Students</p> 
-                   
-                      {BottomStudentsPerformance?.map(students=>{
-                        return(
-                        <div className='d-flex justify-content-center pt-3'>
-                        <div className='col-md-4' style={{paddingLeft:'2px'}}>
-                        <i className="fa fa-exclamation-triangle" style={{height:'50px',width:'50px',fontSize:'30px',borderRadius:'50%', border: '2px solid black',display: 'inline-block',textAlign: 'center',lineHeight: '50px' }}></i>
-                        </div>
-                        <div className='col-md-8' style={{paddingLeft:'5px',paddingRight:'0px'}}>
-                        <p style={{fontWeight:'bold',fontSize:'14px',marginBottom:'0',wordWrap:'break-word'}}>{students?.userName}</p>
-                        <span style={{paddingLeft:'5px',fontSize:'12px'}}>{students?.overallScore}%</span> 
-                        </div>
-                        </div>
-                        )
-                     })} 
-                     
-                    
-                  </div>
-                  
-                  
-                  
-               </div>
+               
                <div className='col-md-4 p-2'>
                <Assignment_Summery assignmentPass={assignmentPass} assignmentFail={assignmentFail}/>
                </div>

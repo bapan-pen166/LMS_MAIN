@@ -49,20 +49,10 @@ const Mentor_tests = () => {
 
   // for getting mail from local storage
   const [mentorEmail,setMentorEmail] = useState();
-  const [userType,setUserType]=useState();
 
   useEffect(()=>{
-    // setMentorEmail(localStorage.getItem('mentorEmail')) 
-    setUserType(localStorage.getItem('userType')) 
+    setMentorEmail(localStorage.getItem('mentorEmail')) 
   },[])
-  useEffect(()=>{
-    if(userType=="Mentor")
-    {setMentorEmail(localStorage.getItem('mentorEmail'))}
-    else if(userType=="Mentor_Assistant")
-      {
-        setMentorEmail(localStorage.getItem('mentorAssistantEmail'))
-      }
-  },[userType])
 
 
 
@@ -301,15 +291,7 @@ const Mentor_tests = () => {
     });
 
     // Append mentorEmail
-    if(userType=="Mentor" || userType=="Mentor_Assistant"){
-      formDataToSend.append('mentorEmail', mentorEmail);
-      formDataToSend.append('adminUploadFlag', 0);
-    }
-    else if(userType=="Admin"){
-      formDataToSend.append('adminUploadFlag', 1);
-    }
-
-    // formDataToSend.append('mentorEmail', mentorEmail);
+    formDataToSend.append('mentorEmail', mentorEmail);
   
     try {
       const response = await axios.post(`${api}/student/insertTest`, formDataToSend, {
@@ -416,14 +398,14 @@ const Mentor_tests = () => {
 
 
   return (
-    <div style={{ marginTop: "58px" }}>
+    <div style={{ }}>
       <div className="row">
         <div className="container-fluid">
-          <div className='col-md-12 col-lg-12 headLineBox d-flex justify-content-start'>
+          <div className='col-md-12 col-lg-12 d-flex justify-content-start mb-3'>
             <h4>Create Test</h4>
           </div>
 
-          <div style={{ marginTop: "52px", margin: "auto", width: "90%" }}>
+          <div style={{ marginTop: "52px", margin: "auto", width: "100%",boxShadow: "0px 0px 5px 1px rgba(128, 128, 128, 0.2)",padding:"20px",marginBottom:"20px" }}>
             <Form onSubmit={handleSubmit}>
               <div className='row' style={{ marginTop: "10px" }}>
                 <div className="col-md-6">
@@ -635,13 +617,14 @@ const Mentor_tests = () => {
 
               {/* <div> */}
               <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "10px" }}>
-                <Button onClick={toggleSetQuestionPaperPart} style={{ padding: "8px 30px" }} variant="contained">{changeButtonName}</Button>
+                <Button  onClick={toggleSetQuestionPaperPart} style={{ padding: "8px 30px",backgroundColor:"#206d32" }} variant="contained">{changeButtonName}</Button>
               </div>
               {/* </div> */}
               {/* --------------------------------------------------- */}
               {showNotShowQuestionPaperPart && <div>
-                <div className='col-md-12 col-lg-12 headLineBox d-flex justify-content-start mb-2'>
+                <div className='col-md-12 col-lg-12  d-flex justify-content-start mb-2'>
                   <h4>Set Test Question Paper</h4>
+                  
                 </div>
                 <div>
                   <div style={{ display: "flex", justifyContent: "center" }}>
@@ -750,7 +733,7 @@ const Mentor_tests = () => {
                     <div style={{ marginBottom: "5px", display: "flex", justifyContent: "center", gap: "10px" }}>
                       <hr />
                       <div>
-                        <Button onClick={downloadSample} variant="contained">Download questions format <IoMdDownload size={25} /></Button>
+                        <Button onClick={downloadSample} style={{backgroundColor:"#206d32"}} variant="contained">Download questions format <IoMdDownload size={25} /></Button>
                       </div>
                       <div>
                         <div >
@@ -967,6 +950,7 @@ const Mentor_tests = () => {
                               <Button
                                 variant="contained"
                                 color="success"
+                                style={{backgroundColor:"#206d32"}}
                                 onClick={handleAddQuestion}
                               // onClick={handleAddGroup}
                               // disabled={isAddButtonDisabled}
@@ -1014,6 +998,7 @@ const Mentor_tests = () => {
                               <Button
                                 variant="contained"
                                 color="success"
+                                style={{backgroundColor:"#206d32"}}
                                 onClick={handleAddGroup}
                                 disabled={isAddButtonDisabled}
                               >
@@ -1025,6 +1010,7 @@ const Mentor_tests = () => {
                               {formGroups.length > 1 && (<Button
                                 variant="contained"
                                 color="success"
+                                style={{backgroundColor:"red"}}
                                 onClick={() => handleRemoveGroup(index)}
                                 disabled={isAddButtonDisabled}
                               >
@@ -1045,7 +1031,7 @@ const Mentor_tests = () => {
               {/*  -------------------------------------------*/}
 
               {showNotShowQuestionPaperPart && <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "10px" }}>
-                <Button type='submit' style={{ padding: "8px 30px" }} variant="contained">Save</Button>
+                <Button type='submit' style={{ padding: "8px 30px",backgroundColor:"#206d32" }} variant="contained">Save</Button>
               </div>}
             </Form>
 
@@ -1054,7 +1040,7 @@ const Mentor_tests = () => {
           {/* last table portion */}
           {showNotShowQuestionPaperPart && <div>
             <div>
-              <div className='col-md-12 col-lg-12 headLineBox d-flex justify-content-start mt-4'>
+              <div className='col-md-12 col-lg-12 d-flex justify-content-start mt-4'>
                 <h4>Added Questions</h4>
               </div>
             </div>
@@ -1063,10 +1049,11 @@ const Mentor_tests = () => {
                 {questionType === "mcq" ? (
                   <>
                     <div className='container-fluid pr-2 pl-2' >
-                      <div className='row'>
-                        <div className='col-md-12 col-lg-12 scroll' style={{ paddingRight: '0px', paddingLeft: '0px' }}>
-                          <table className="table table-bordered" style={{ height: '40vh', marginTop: "10px" }}>
-                            <thead style={{ textAlign: "center", zIndex: '3', position: "sticky", top: "0px" }}>
+                      <div >
+                      {/* <div className="col-md-12 col-lg-12 col-sm-12"> */}
+                        <div className="p-0 custom-table-container" style={{ paddingTop: "0px", height: '400px', overflowY: 'auto' }}>
+                          <table className="table-bordered custom-table" >
+                            <thead className="custom-thead " style={{ position: 'sticky', top: 0, zIndex: 3 }}>
                               <tr>
                                 <th>Question No.</th>
                                 <th>Question type</th>
@@ -1080,7 +1067,7 @@ const Mentor_tests = () => {
                                 <th>Answer</th> */}
                               </tr>
                             </thead>
-                            <tbody style={{ textAlign: "center", zIndex: '1' }}>
+                            <tbody style={{ zIndex: 1 }} className="custom-tbody">
                               {console.log("questions :", questions)}
                               {questions && questions.map((value, index) => {
                                 return (
@@ -1104,7 +1091,8 @@ const Mentor_tests = () => {
                             </tbody>
                           </table>
                         </div>
-                      </div>
+                      </div>  
+                      {/* </div> */}
                     </div>
                   </>
                 ) : questionType === "descriptive" && (

@@ -10,12 +10,10 @@ const MentorViewQuestions = () => {
     const [forPDF,setForPDF] = useState();
     const { id } = useParams();
     const [email,setEmail] = useState();
-    const [userType,setUserType]=useState();
 
 
     useEffect(()=>{
          setEmail(localStorage.getItem('mentorEmail'))
-         setUserType(localStorage.getItem('userType'))
     },[])
 
     const getQuestions =()=>{
@@ -36,12 +34,11 @@ const MentorViewQuestions = () => {
 
     
     useEffect(()=>{
-        if(userType=='Admin' || userType=='Mentor'){
+        if(email){
 
             getQuestions();
         }
-     },[userType])
-     useEffect(()=>{console.log(questions)},[questions])
+     },[email])
 
 
      const downloadSample = async (uploadFileDes) => {
@@ -69,10 +66,10 @@ const MentorViewQuestions = () => {
 
 
     return (
-        <div style={{ marginTop: "58px" }}>
+        <div >
             <div className="row">
                 <div className="container-fluid">
-                    <div className='col-md-12 col-lg-12 headLineBox d-flex justify-content-start'>
+                    <div className='col-md-12 col-lg-12 d-flex justify-content-start'>
                         <h4>View Questions</h4>
                     </div>
                     {forPDF ? <div style={{display:"flex", justifyContent:"center",alignItems:"center",marginTop:"20px"}}>

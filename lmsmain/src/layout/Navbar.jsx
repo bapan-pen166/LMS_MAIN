@@ -8,7 +8,7 @@ import user_icon from "../assets/img/Navbar_img/user.png";
 
 import company_logo from "../assets/img/Navbar_img/logo1.png";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-
+import ApplyLeaveNew from '../Mentor_section/pages/ApplyLeaveNew';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { faUser, faSignOut, faUserEdit, faCog, faArrowDown } from '@fortawesome/free-solid-svg-icons';
@@ -30,6 +30,8 @@ function Navber() {
   const [lastName, setLastName] = useState();
   const [emailID, setEmailID] = useState();
 
+  // For the apply leave for the mentor
+  const [showApplyLeave, setShowApplyLeave] = useState(false);
   const load_main_arch = () => { <><Main_arch /></> };
 
   const loadComponent = async () => {
@@ -93,6 +95,11 @@ function Navber() {
     console.log(userType);
   }, [])
 
+  // Mentor "Apply Leave" handler
+  const handleCloseApplyLeave = () => {
+    setAnchorEl(null);
+    setShowApplyLeave(true);
+  };
   return (
     <>
       <div className={`main-nav ${hamburger ? 'navbar' : 'navbar-for-full-screen'} `} style={{ backgroundColor: "#f2edf3" }}>
@@ -171,7 +178,17 @@ function Navber() {
 
             <hr className='m-0' />
 
-            {userType === 'Mentor' && <MenuItem> <Link onClick={handleClose} style={{ textDecoration: "none", color: "#747579" }} to={"member-profile"}>Update Profile</Link> </MenuItem>}
+            {userType === 'Mentor' && 
+            
+                  <>
+                    <MenuItem> <Link onClick={handleClose} style={{ textDecoration: "none", color: "#747579" }} to={"member-profile"}>Update Profile</Link> 
+                    </MenuItem>
+              
+                    <MenuItem>
+                      <Link style={{ textDecoration: "none", color: "#747579" }} to={"#"} onClick={handleCloseApplyLeave}>Apply Leave</Link>
+                    </MenuItem>
+                  </>
+                }
 
             {userType === 'Student' && <MenuItem> <Link onClick={handleClose} style={{ textDecoration: "none", color: "#747579" }} to={"student-update-profile"}><FontAwesomeIcon className='mr-8 ' icon={faUserEdit} />Update Profile</Link> </MenuItem>}
 
@@ -201,6 +218,9 @@ function Navber() {
           </Menu>
         </div>
       </div>
+
+      {/* Apply Leave Modal */}
+      {showApplyLeave && <ApplyLeaveNew showApplyLeave={showApplyLeave} setShowApplyLeave={setShowApplyLeave} />}
     </>
   );
 }

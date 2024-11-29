@@ -13,19 +13,19 @@ const Mentor_courses = () => {
     const [mail, setMail] = useState();
     const [addFile, setAddFile] = useState();
     const [id, setId] = useState();
-    const [modalCoursename,setModalCoursename] = useState();
+    const [modalCoursename, setModalCoursename] = useState();
 
     const [show, setShow] = useState(false);
-    const [modalData,setModalData] = useState()
-    const [modaldescription,setModaldescription] = useState()
+    const [modalData, setModalData] = useState()
+    const [modaldescription, setModaldescription] = useState()
 
     const handleClose = () => setShow(false);
-    const handleShow = () =>{
+    const handleShow = () => {
         setShow(true);
-    } 
+    }
 
 
-  
+
 
 
     // for the form edit
@@ -80,10 +80,10 @@ const Mentor_courses = () => {
         setUserType(type);
         setMail(localStorage.getItem('mentorEmail'))
         const storedId = localStorage.getItem('id');
-    if (storedId) {
-      const intId = parseInt(storedId, 10);
-      setId(intId);
-    }
+        if (storedId) {
+            const intId = parseInt(storedId, 10);
+            setId(intId);
+        }
     }, []);
 
 
@@ -99,7 +99,7 @@ const Mentor_courses = () => {
     useEffect(() => {
         if (id) {
             // axios.post(`${api2}/mentor/mentorWiseCourse`, { id })
-            axios.post(`${api2}/mentor/getCoursesForMentor`,{id : id})
+            axios.post(`${api2}/mentor/getCoursesForMentor`, { id: id })
                 .then((Response) => {
                     console.log("data", Response.data.result);
                     setCourseslist(Response.data.result)
@@ -110,7 +110,7 @@ const Mentor_courses = () => {
         }
     }, [id])
 
-   
+
 
     if (userType !== 'Mentor') {
         return (<>
@@ -123,10 +123,10 @@ const Mentor_courses = () => {
         // const fileExtension = foldername.split('.').pop().toLowerCase();
 
         // if (supportedExtensions.includes(fileExtension)) {
-            window.open(`${api2}/static/courseDetails/${foldername}`);
+        window.open(`${api2}/static/courseDetails/${foldername}`);
         // } else {
-            // alert("File unsupported !");
-            // console.log('Unsupported file type');
+        // alert("File unsupported !");
+        // console.log('Unsupported file type');
         // }
     };
 
@@ -164,19 +164,19 @@ const Mentor_courses = () => {
 
 
     return (
-        <div style={{ marginTop: "58px" }}>
+        <div style={{}}>
             <div className='row'>
                 <div className='container-fluid'>
-                    <div className='col-md-12 col-lg-12 headLineBox d-flex justify-content-start'>
+                    <div className='col-md-12 col-lg-12 '>
                         <h4>Courses</h4>
                     </div>
 
                     <div className='container-fluid pr-2 pl-2' style={{ minHeight: '80vh', marginTop: "10px" }}>
 
-                        <div className='row'>
-                            <div className='col-md-12 col-lg-12 scroll' style={{ paddingRight: '0px', paddingLeft: '0px' }}>
-                                <table className="table table-bordered">
-                                    <thead style={{ textAlign: "center",zIndex:'3',position:"sticky",top:"0px" }}>
+                        {/* <div className='row'> */}
+                            <div className="p-0 custom-table-container" style={{paddingTop:"0px", height: '400px', overflowY: 'auto',fontSize:"16px" }}>
+                                <table className="table-bordered custom-table">
+                                    <thead className="custom-thead" style={{ position: 'sticky', top: -2, zIndex: 3,fontSize:"1vw" }}>
                                         <tr>
                                             <th>No.</th>
                                             {/* <th>Batch Name</th> */}
@@ -186,10 +186,10 @@ const Mentor_courses = () => {
                                             {/* <th></th> */}
                                         </tr>
                                     </thead>
-                                    <tbody style={{ textAlign: "center",zIndex:'1' }}>
+                                    <tbody style={{ zIndex: 1 }} className="custom-tbody ">
                                         {courseslist?.length > 0 && courseslist?.map((val, index) => {
                                             return (
-                                                <tr key={index} >
+                                                <tr key={index} style={{fontSize:"1vw"}}>
                                                     <td style={{ fontSize: '14px' }}>{index + 1}</td>
                                                     {/* <td style={{ fontSize: '14px' }}>{val?.batchName}</td> */}
                                                     <td style={{ fontSize: '14px' }}>{val?.courseName}</td>
@@ -198,18 +198,19 @@ const Mentor_courses = () => {
                                                         setModalData(val?.courseName)
                                                         setModaldescription(val?.description)
                                                     } }   style={{ cursor: "pointer" }} /></div></div></td> */}
-                                                    <td style={{ width: '20%', whiteSpace: 'nowrap' }}><Button onClick={()=>{handleShow()
+                                                    <td style={{ width: '20%', whiteSpace: 'nowrap' }}><Button onClick={() => {
+                                                        handleShow()
                                                         setModalData(val?.folderName)
                                                         // setModaldescription(val?.description)
                                                         setModalCoursename(val?.courseName)
-                                                    } } variant="outlined">View</Button></td>
+                                                    }} variant="outlined">View</Button></td>
                                                 </tr>
                                             )
                                         })}
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        {/* </div> */}
                     </div>
 
                     {/* modal for the edit */}
@@ -217,12 +218,12 @@ const Mentor_courses = () => {
                         <Modal show={show} onHide={handleClose} size="lg">
                             <Modal.Header >
                                 <div className='col-md-12 col-lg-12 headLineBox d-flex justify-content-between'>
-                                <h4>Course Materials</h4>
+                                    <h4>Course Materials</h4>
                                 </div>
                             </Modal.Header>
                             <Modal.Body>
-                                <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-                                    <h5 style={{textAlign:"center",padding:"10px"}} >Course Name : {modalCoursename}</h5>
+                                <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                    <h5 style={{ textAlign: "center", padding: "10px" }} >Course Name : {modalCoursename}</h5>
                                     <hr />
                                     {/* <p className='col-md-6'>Batch Name :</p> */}
                                 </div>
@@ -285,24 +286,24 @@ const Mentor_courses = () => {
                                 <div className='row'>
                                     <div className='col-md-12 col-lg-12 scroll' style={{ paddingRight: '0px', paddingLeft: '0px', maxHeight: '400px', overflowY: 'auto' }}>
                                         <table className="table table-bordered">
-                                            <thead style={{ textAlign: "center",position:"sticky",top:"0px",zIndex:'3' }}>
+                                            <thead style={{ textAlign: "center", position: "sticky", top: "0px", zIndex: '3',fontSize:"1vw" }}>
                                                 <tr>
                                                     {/* <th>No.</th> */}
                                                     {/* <th>Batch Name</th> */}
                                                     <th>Course content</th>
-                                                    <th style={{}}>Course Material</th>
+                                                    <th >Course Material</th>
                                                     {/* <th></th> */}
                                                 </tr>
                                             </thead>
                                             <tbody style={{ zIndex: '1' }} >
-                                                {console.log("modal data",modalData)}
+                                                {console.log("modal data", modalData)}
                                                 {modalData?.length > 0 && modalData?.map((val, index) => {
                                                     return (
-                                                        <tr key={index + 1} >
+                                                        <tr key={index + 1} style={{fontSize:"1vw"}}>
                                                             {/* <td style={{ fontSize: '14px' }}>{index}</td> */}
                                                             {/* <td style={{ fontSize: '14px' }}>{val?.batchName}</td> */}
-                                                            <td style={{ fontSize: '14px'}}>{val?.file}</td>
-                                                            <td onClick={()=>viewDoc(val?.path)} style={{ width: '20%', whiteSpace: 'nowrap' }}><Button variant="outlined">View</Button></td>
+                                                            <td >{val?.file}</td>
+                                                            <td onClick={() => viewDoc(val?.path)} style={{ width: '20%', whiteSpace: 'nowrap' }}><Button variant="outlined">View</Button></td>
 
                                                         </tr>
                                                     )

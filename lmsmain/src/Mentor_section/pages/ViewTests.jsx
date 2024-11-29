@@ -4,81 +4,63 @@ import { api, api2 } from '../../ApiUrl/ApiUrl';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import "../../assets/css/TableStyle/TableStyle.css"
+import DeleteIcon from '@mui/icons-material/Delete';
+import PreviewIcon from '@mui/icons-material/Preview';
+import Tooltip from '@mui/material/Tooltip';
 
 const ViewTests = () => {
     const [allTestData, setAllTestData] = useState();
     const [mentorEmail, setMentorEmail] = useState();
-    const [userType,setUserType]=useState();
 
     useEffect(() => {
-        // setMentorEmail(localStorage.getItem('mentorEmail'))
-        setUserType(localStorage.getItem('userType')) 
+        setMentorEmail(localStorage.getItem('mentorEmail'))
     }, [])
 
-    useEffect(()=>{
-        if(userType=="Mentor")
-            {setMentorEmail(localStorage.getItem('mentorEmail'))}
-            else if(userType=="Mentor_Assistant")
-              {
-                setMentorEmail(localStorage.getItem('mentorAssistantEmail'))
-              }
-    },[userType])
-
     const getAllTestData = () => {
-        // let data;
-    
-        // if (userType == "Mentor") {
-        //     data = { email: mentorEmail, adminUploadFlag: 2 };
-        // } else if (userType == "Admin") {
-        //     data = { adminUploadFlag: 1 };
-        // }
-        console.log('userType',userType)
-        // const data=userType=="Mentor"?{email:mentorEmail,adminUploadFlag:2}:{adminUploadFlag:1};
-        const data=userType=="Mentor"?{email:mentorEmail,adminUploadFlag:2}:userType=="Mentor_Assistant"?{email:mentorEmail,adminUploadFlag:2}:{adminUploadFlag:1};
-        axios.post(`${api}/student/getTests`, data) // Directly pass `data` here
+        axios.post(`${api}/student/getTests`, { email: mentorEmail })
             .then((response) => {
-                console.log("data:", response.data.data);
-                setAllTestData(response.data.data);
+                console.log("data,", response.data.data);
+                setAllTestData(response.data.data)
             })
             .catch((error) => {
-                console.error("Error fetching test data:", error);
-            });
-    };
-    
+                console.log(error);
+            })
+    }
+
     useEffect(() => {
         getAllTestData();
-    }, [userType,mentorEmail]);
-    
+    }, [mentorEmail])
 
 
-    const deleteTest = (id)=>{
-        axios.post(`${api2}/mentor/deleteTests`,{id:id})
-        .then((Response)=>{
-            console.log(Response?.data.status === 1);
-            if(Response?.data.status){
-                toast.success("Test has been deleted successfully.", {
-                    position: "top-center",
-                    style: { fontWeight: 'bold' },
-                });
-                getAllTestData();
-            }
-        })
-        .catch((error)=>{
-            console.log(error);
-        })
+    const deleteTest = (id) => {
+        axios.post(`${api2}/mentor/deleteTests`, { id: id })
+            .then((Response) => {
+                console.log(Response?.data.status === 1);
+                if (Response?.data.status) {
+                    toast.success("Test has been deleted successfully.", {
+                        position: "top-center",
+                        style: { fontWeight: 'bold' },
+                    });
+                    getAllTestData();
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
 
     return (
-        <div style={{ marginTop: "58px" }}>
+        <div>
             <div className="row">
                 <div className="container-fluid">
-                    <div className='col-md-12 col-lg-12 headLineBox d-flex justify-content-start'>
+                    <div className='col-md-12 col-lg-12 d-flex justify-content-start'>
                         <h4>View Tests</h4>
                     </div>
-                    <div className="col-md-12 col-lg-12 col-sm-12">
-                        <div className="table-container" style={{ height: '90vh', overflowY: 'auto' }}>
-                            <table className="table table-bordered pt-1" >
-                                <thead style={{ position: 'sticky', top: -2, zIndex: 3 }}>
+                    <div className="col-md-12 col-lg-12 col-sm-12" style={{fontSize:".8vw"}}>
+                        <div className="p-0 custom-table-container" style={{ paddingTop: "0px", height: '400px', overflowY: 'auto' }}>
+                            <table className="table-bordered custom-table"  >
+                                <thead className="custom-thead " style={{ position: 'sticky', top: 0, zIndex: 3,fontSize:"1vw" }}>
                                     <tr>
                                         <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Test Name</th>
                                         <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Batch Name</th>
@@ -89,28 +71,29 @@ const ViewTests = () => {
                                         <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>evaluator</th>
                                         <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>View questions</th>
                                         <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Action</th>
-
                                     </tr>
                                 </thead>
 
-                                <tbody style={{ zIndex: 1 }}>
+                                <tbody style={{ zIndex: 1 }} className="custom-tbody">
                                     {allTestData?.map(testDetails => {
-                                         const parsedBatchName = JSON.parse(testDetails?.batchName || "[]");
-                                         const batchNamesString = parsedBatchName.map(batch => batch?.batchName).join(", ");
+                                        const parsedBatchName = JSON.parse(testDetails?.batchName || "[]");
+                                        const batchNamesString = parsedBatchName.map(batch => batch?.batchName).join(", ");
                                         return (
-                                            <tr>
-                                                <td>{testDetails?.testName}</td>
-                                                <td>{batchNamesString}</td>
-                                                <td>{testDetails && testDetails?.startDate}</td>
-                                                <td>{testDetails && testDetails?.endDate}</td>
-                                                <td>{testDetails && testDetails?.startTime}</td>
-                                                <td>{testDetails && testDetails?.endTime}</td>
-                                                <td>{testDetails?.evaluator}</td>
+                                            <tr style={{fontSize:"1vw"}}>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{testDetails?.testName}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{batchNamesString}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{testDetails && testDetails?.startDate}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{testDetails && testDetails?.endDate}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{testDetails && testDetails?.startTime}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{testDetails && testDetails?.endTime}</td>
+                                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{testDetails?.evaluator}</td>
                                                 <td class="text-center align-middle"><p>
                                                     <Button variant="text"> <Link to={`/Mentor-view-questions/${testDetails?.id}`}>
-                                                        View Questions
+                                                        <Tooltip title="Click here to view question" arrow>
+                                                            <PreviewIcon style={{ color: "green" }} />
+                                                        </Tooltip>
                                                     </Link></Button></p> </td>
-                                                <td><button style={{ background: 'transparent', border: 'none' }} className="custom-button"><i class="fa fa-trash custom-icon" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }} onClick={()=>deleteTest(testDetails?.id)}></i></button></td>    
+                                                <td><button style={{ background: 'transparent', border: 'none' }} className="custom-button"><Tooltip title="Click here to delete question" arrow>  <DeleteIcon style={{ color: "red" }} onClick={() => deleteTest(testDetails?.id)} />  </Tooltip> </button></td>
                                             </tr>
                                         )
                                     })}
