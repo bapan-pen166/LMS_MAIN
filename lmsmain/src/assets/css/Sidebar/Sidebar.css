@@ -531,6 +531,7 @@
 }
 .list-group-item-action:focus, .list-group-item-action:hover{
     color: #282c33 !important;
+    background-color: #fff;
 }
 
 .list-group a{
@@ -554,7 +555,7 @@
 }
 .list-group a:hover{
   background-color: #fff;
-  color: #000;
+  color: #000!important;
   font-size: 15px;
   border-radius: 0.25rem
 }
