@@ -11,6 +11,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Admin_Placement_List = () => {
+
+
   // For the search 
   const [searchres, setSearchres] = useState([]);
   const [searchquery, setSearchquery] = useState('');
@@ -138,20 +140,21 @@ const Admin_Placement_List = () => {
   // input change for search
 
   const inputChange = (e) => {
-    // const query = e.target.value;
-    // setSearchquery(query);
+    const query = e.target.value;
+    setSearchquery(query);
 
-    // if (query === '') {
-    //   handleAllBatchList();
-    // } else {
-    //   const filterData = searchres.filter((f) => {
-    //     return (
-    //       (f.batchName && f.batchName.toLowerCase().includes(query.toLowerCase())) ||
-    //       (f.courseType && f.courseType.toLowerCase().includes(query.toLowerCase()))
-    //     );
-    //   });
-    //   setBatchDetails(filterData);
-    // }
+    if (query === '') {
+      getALLPLACEMENTdetails();
+    } else {
+      const filterData = searchres.filter((f) => {
+        return (
+          (f.batchName && f.batchName.toLowerCase().includes(query.toLowerCase())) ||
+          (f.companyName && f.companyName.toLowerCase().includes(query.toLowerCase())) ||
+          (f.studentName && f.studentName.toLowerCase().includes(query.toLowerCase()))
+        );
+      });
+      setAllPlacementDetails(filterData);
+    }
   }
 
 
@@ -194,6 +197,7 @@ const Admin_Placement_List = () => {
       .then((Response) => {
         const placementDetails = Response?.data?.data;
         setAllPlacementDetails(placementDetails);
+        setSearchres(placementDetails)
 
         // Initialize dropdown state with existing data
         const initialRounds = placementDetails.map(detail => ({
@@ -201,6 +205,7 @@ const Admin_Placement_List = () => {
         roundsClear: mapRoundsCleared(detail.roundsCleared)
         }));
         setPlacementInterviewRounds(initialRounds);
+        
       })
       .catch((error) => {
         console.log(error);

@@ -207,11 +207,10 @@ export default function Students_Placements() {
                                     <tbody className="custom-tbody">
                                         {console.log(placementDetails)}
                                         {
-                                            placementDetails?.map(placementDetail => {
+                                            placementDetails && placementDetails?.map(placementDetail => {
                                                 return (
                                                     <tr>
-                                                        <td>{placementDetail?.companyName}</td>
-                                                        {/* <th>{placementDetail?.course?.courseName}</th> */}
+                                                        <td>{placementDetail?.companyName && placementDetail?.companyName}</td>
                                                         <td>{placementDetail?.industryType}</td>
                                                         <td>{placementDetail?.employementType}</td>
                                                         <td>{placementDetail?.graduationYear}</td>
@@ -224,11 +223,8 @@ export default function Students_Placements() {
                                                         <td>{placementRoundClear?.[placementDetail?.companyName] ? placementRoundClear[placementDetail?.companyName] : 'Not Yet'}</td>
                                                         <td>{placementDetail?.placementCoOrdinator}</td>
                                                         <td>{placementstatus?.[placementDetail?.companyName] == 0 ? 'Applied' : placementstatus?.[placementDetail?.companyName] == 1 ? 'Rejected' : placementstatus?.[placementDetail?.companyName] == 2 ? 'Proceed' : placementstatus?.[placementDetail?.companyName] == 3 ? 'Hold' : placementstatus?.[placementDetail?.companyName] == 4 ? 'Placed' : 'Not Applied'}</td>
-
                                                         <td>{offerLetter?.[placementDetail?.companyName] != null ? <Button onClick={() => viewDoc(offerLetter?.[placementDetail?.companyName])} variant="outlined">View</Button> : 'Not Yet'}</td>
-
                                                         <td>
-                                                            {console.log('placementstatus?.companyName', placementstatus[placementDetail?.companyName])}
                                                             <button disabled={placementstatus?.[placementDetail?.companyName] ? true : false} style={{ background: 'transparent', border: 'none' }} className='custom-button'
                                                                 onClick={() => {
                                                                     handlePlacementModalShow()
