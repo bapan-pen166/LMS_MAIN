@@ -186,7 +186,7 @@ function Students_onboarded() {
                 </div>
             </div>
 
-            <div className="row scroll">
+            <div className="row">
                 <div className="col-md-3 col-sm-0">
                     {(() => {
                         if (parseInt(weekdata?.weekStudentsOnboarded) > 0) {

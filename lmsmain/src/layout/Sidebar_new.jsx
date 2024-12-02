@@ -37,7 +37,7 @@ const Sidebar_new = () => {
                     <button type="button" className="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasSidebar" aria-label="Close"></button>
                 </div>
                 <div className="offcanvas-body p-3 p-xl-0">
-                    <div className="bg-theme-green border rounded p-2 height-55vh overflow-auto">
+                    <div className={`bg-theme-green border rounded p-2 overflow-auto ${userType =="Admin" ? '' : 'height-55vh'}`} >
                         {/* Dashboard menu */}
                         <div className="list-group list-group-dark list-group-borderless collapse-list">
                             {userType === "Admin" ? (

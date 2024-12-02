@@ -271,6 +271,23 @@ function Master_Layout() {
                                             </ul>
 
                                         }
+                                        {userType === 'Admin' &&
+                                            <ul class="list-inline mb-0">
+                                                <li class="list-inline-item me-3 mb-1 mb-sm-0">
+                                                        <span class=" fw-light mr-1">Total Student</span>
+                                                        <span class="text-body h6 font-weight-bold mr-1">150</span>
+
+                                                </li>
+                                                <li class="list-inline-item me-3 mb-1 mb-sm-0">
+                                                        <span class=" fw-light mr-1">Total Teachers</span>
+                                                        <span class="text-body h6 font-weight-bold mr-1">50</span>
+
+                                                </li>
+
+
+                                            </ul>
+
+                                        }
 
                                     </div>
                                     {/* Button */}

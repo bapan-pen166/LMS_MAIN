@@ -61,12 +61,19 @@ function Top_course() {
             </tr> */}
                 </tbody>
             </table>
-
+            <table className="table scroll-y" >
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Course Name</th>
+                        <th>Total Student</th>
+                    </tr>
+                </thead>
+            </table>
             {coursedata.map((data) => {
                 return (
-                    <div>
-                        <div className="row align-items-center mb-30  justify-content-between hover-effect p-2 flex-wrap">
-                            <div className="col-lg-8 d-flex align-items-center">
+                        <div className="align-items-center mb-3 d-flex justify-content-between box-border-light hover-effect px-2 py-3 flex-wrap">
+                            <div className="col-lg-10 d-flex align-items-center">
                                 <span className="text-white mb-0" style={{
                                     width: "3vw",
                                     height: "3vw",
@@ -87,13 +94,12 @@ function Top_course() {
                                     {data.Course}
                                 </span>
                             </div>
-                            <div className='col-lg-4 align-items-center'>
-                                <h5 className="fw-600 mb-0 badge badge-pill badge-primary mt-4">
-                                    {data.studentCount}%
+                            <div className='col-lg-2 align-items-center'>
+                                <h5 className="fw-600 mb-0 badge badge-pill badge-primary">
+                                    {data.studentCount} <i class="fa fa-user"></i>
                                 </h5>
                             </div>
                         </div>
-                    </div>
                 )
             })}
 
