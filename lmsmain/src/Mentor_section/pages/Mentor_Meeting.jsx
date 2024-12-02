@@ -18,7 +18,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
-import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
+import Box from '@mui/material/Box';
+
 
 
 // Time 
@@ -30,7 +32,7 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import '../../assets/css/Meeting/Meeting.css'
 
 // modal 
-// import Button from 'react-bootstrap/Button';
+import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 // meterial ui 
@@ -121,6 +123,10 @@ function Mentor_Meeting() {
 
   // page validation for userType
   const [userType, setUserType] = useState('');
+  const [userEmail,setUserEmail]=useState('');
+
+  const [recallGetcall,setRecallGetcall] = useState(false);
+
   // for getting mail id and name from the local storage
   const [mailIDFromLoacalStorage, setMailIDFromLoacalStorage] = useState();
   const [firstNameFromLoacalStorage, setFirstNameFromLoacalStorage] = useState();
@@ -261,11 +267,14 @@ function Mentor_Meeting() {
           endDate: end_datetime,
           startTime: timefromnew,
           endTime: timeTonew,
-          title: meet_nm
+          title: meet_nm,
+          userType:userType,
+          userEmail:userEmail
         }],
 
         batchList: selectedBatch,
         mentorList: selectedmentor,
+        assistantMentor:selectedAssistantMentor,
         studentList: selectedStudent,
         individualEmailList: individualEm
       })
@@ -288,7 +297,8 @@ function Mentor_Meeting() {
         })
         .catch((error) => {
           console.error('Error:', error);
-          alert("If you are selecting batch then you should also need to select the teacher/mentor also");
+          // alert("If you are selecting batch then you should also need to select the teacher/mentor also");
+          console.error('Error:', error);
         });
     }
 
@@ -332,6 +342,7 @@ function Mentor_Meeting() {
         meetings: meeting,
         batchList: selectedBatch,
         mentorList: selectedmentor,
+        assistantMentor:selectedAssistantMentor,
         studentList: selectedStudent,
         individualEmailList: individualEm
       })
@@ -346,7 +357,7 @@ function Mentor_Meeting() {
   }
 
   function handleMeetingListView() {
-    axios.post(`${api}/video-call/getMeetingForMentor`, { mentorEmail: localStorage.getItem('mentorEmail') })
+    axios.post(`${api}/video-call/getMeetingForMentor`, { mentorEmail: localStorage.getItem('mentorEmail')??localStorage.getItem('mentorAssistantEmail') })
       .then((Response) => {
         console.log(" data : ", Response.data);
         const meet = Response.data;
@@ -378,8 +389,11 @@ function Mentor_Meeting() {
             start: newStartDate,
             end: newEndDate,
             meetingLink: meet.meetingLink,
-            id: meet.meetingID,
-            password: meet.password
+            meetingId: meet.meetingID,
+            id:meet.id,
+            password: meet.password,
+            meetCreater:meet.meetCreater,
+            meetCreaterType:meet.meetCreaterType
           };
         });
         console.log(transformedMeetings)
@@ -464,7 +478,9 @@ function Mentor_Meeting() {
           startDate: date,
           endDate: date,
           startTime: timeFrom,
-          endTime: timeTo
+          endTime: timeTo,
+          userType:userType,
+          userEmail:userEmail
         };
         console.log('newMeeting', newMeeting);
         newMeetings.push(newMeeting);
@@ -702,6 +718,21 @@ function Mentor_Meeting() {
         console.error('Error:', error);
       });
   }
+  const [assistantMentorList, setAssistantMentorList] = useState([]);
+  const [selectedAssistantMentor, setSelectedAssistantMentor] = useState([]);
+
+  function handleAssistantMetorData() {
+    console.log('submit click');
+    // axios.post(`${api}/student/getStudentList`, { course: coursedata, status: status })
+    axios.post(`${api}/mentor/getAssistantMentorBasicList`, {})
+      .then((Response) => {
+        console.log(" data : ", Response.data);
+        setAssistantMentorList(Response.data.result);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
 
   useEffect(() => {
     if (meetparticipate == 'Batch') {
@@ -712,6 +743,9 @@ function Mentor_Meeting() {
     }
     else if (meetparticipate == 'Teacher') {
       handleMetorData();
+    }
+    else if (meetparticipate == 'Assistant_Mentor') {
+      handleAssistantMetorData();
     }
   }, [meetparticipate])
 
@@ -725,6 +759,9 @@ function Mentor_Meeting() {
     else if (meetparticipate2 == 'Teacher') {
       handleMetorData();
     }
+    else if (meetparticipate2 == 'Assistant_Mentor') {
+      handleAssistantMetorData();
+    }
   }, [meetparticipate2])
 
   useEffect(() => {
@@ -737,6 +774,9 @@ function Mentor_Meeting() {
     else if (meetparticipate3 == 'Teacher') {
       handleMetorData();
     }
+    else if (meetparticipate3 == 'Assistant_Mentor') {
+      handleAssistantMetorData();
+    }
   }, [meetparticipate3])
 
   const handleBatchChange = (event) => {
@@ -745,7 +785,7 @@ function Mentor_Meeting() {
   const handleMentorChange = (event) => {
     setSelectedMentor(event.target.value);
   }
-  useEffect(() => { console.log(selectedBatch) }, [selectedBatch])
+  // useEffect(() => { console.log(selectedBatch) }, [selectedBatch])
   const handleStudentselect = (event) => {
     setSelectedStudents(event.target.value);
   }
@@ -1012,9 +1052,30 @@ function Mentor_Meeting() {
 
   // For the validation of the page userType
 
+  // useEffect(() => {
+  //   const type = localStorage.getItem('userType');
+  //   setUserType(type);
+  // }, []);
+
   useEffect(() => {
     const type = localStorage.getItem('userType');
+    const adminEmail=localStorage.getItem('adminEmail');
+    const mentorEmail=localStorage.getItem('mentorEmail');
+    const studentEmail=localStorage.getItem('studentEmail');
+    const assistantMentor=localStorage.getItem('Mentor_Assistant');
+    // let email
+    if(adminEmail)
+      {setUserEmail(adminEmail);}
+    else if (mentorEmail)
+      {setUserEmail(mentorEmail);}
+    else if(studentEmail)
+      {setUserEmail(studentEmail);}
+    else if(assistantMentor)
+      {setUserEmail(assistantMentor);}
+    
+    // setIsLoading(false);
     setUserType(type);
+    
   }, []);
 
 
@@ -1113,11 +1174,27 @@ function Mentor_Meeting() {
     option.batchName.toLowerCase().includes(searchValue.toLowerCase())
   );
 
+  const [batchAlert,setBatchAlert]=useState(false)
+  
+
+  useEffect(()=>{
+    if(batchAlert){
+      setTimeout(()=>{
+        setBatchAlert(false)
+      },6000)
+    }
+   
+  },[batchAlert])
+  useEffect(()=>{
+    if(selectedBatch.length>0){console.log('batchalert',selectedBatch)
+      setBatchAlert(true)
+    }
+    
+  },[selectedBatch])
 
 
-  if (userType !== 'Mentor') {
-    return <PageNotFound />
-  }
+
+  if (userType == 'Mentor' || userType=='Mentor_Assistant') {
 
   return (
     <>
@@ -1132,11 +1209,11 @@ function Mentor_Meeting() {
                 {/* <button onClick={handleClick} style={{ border: 'none',color:"white" }}
                 ><i class="fa fa-ellipsis-v" style={{ fontSize: '20px', fontWeight: 'bold', color: 'green' }}></i></button> */}
                 <div className="flex" style={{gap:"4px"}}>
-                     <Button style={{backgroundColor:"#206d32"}} variant="contained" className="mr-2" onClick={() => {
+                     <Button style={{backgroundColor:"#206d32",color:"white"}} variant="contained" className="mr-2" onClick={() => {
               handleShowMeeting()
               setSchedule('')
             }}>Create Classes</Button>
-                     <Button style={{backgroundColor:"#206d32"}} variant="contained"   onClick={() => { handleShowMeetingReschedule() }}>Re-schedule classes</Button>
+                     <Button style={{backgroundColor:"#206d32",color:"white"}} variant="contained"   onClick={() => { handleShowMeetingReschedule() }}>Re-schedule classes</Button>
 
                      {/* <Button style={{backgroundColor:"#206d32"}} variant="contained"   onClick={() => { handleShowApplyLeave() }}>Apply leave</Button> */}
                 </div>
@@ -1402,6 +1479,7 @@ function Mentor_Meeting() {
                     <MenuItem value={'Batch'}>Batch</MenuItem>
                     <MenuItem value={'Student'}>Student</MenuItem>
                     <MenuItem value={'Teacher'}>Teacher</MenuItem>
+                    <MenuItem value={'Assistant_Mentor'}>Assistant Mentor</MenuItem>
                     <MenuItem value={'Individual'}>Individual</MenuItem>
                   </Select>
                 </FormControl>
@@ -1609,7 +1687,74 @@ function Mentor_Meeting() {
                     </div>
                   </>
 
-                }                {
+                }                
+                 {
+                  meetparticipate === 'Assistant_Mentor' &&
+                  <>
+                    <FormControl style={{ width: '230px', paddingLeft: '5px' }}>
+                      <Autocomplete
+                        multiple
+                        options={assistantMentorList}
+                        getOptionLabel={(option) => option.name}
+                        value={assistantMentorList.filter(option => selectedAssistantMentor.includes(option))}
+                        onChange={(event, newValue) => {
+                          setSelectedAssistantMentor(newValue); // Store the full mentor object
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Mentors"
+                            placeholder="Search..."
+                            variant="outlined"
+                            InputProps={{
+                              ...params.InputProps,
+                              startAdornment: null, // Remove internal display of selected mentors
+                            }}
+                          />
+                        )}
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                        renderOption={(props, option, { selected }) => (
+                          <li {...props} key={option.id}>
+                            <Checkbox
+                              checked={selectedAssistantMentor.some((selected) => selected.id === option.id)}
+                            />
+                            <ListItemText primary={option.name} />
+                          </li>
+                        )}
+                        disableCloseOnSelect
+                        clearOnBlur={false}
+                        popupIcon={null} // Optionally remove the dropdown icon
+                      />
+                    </FormControl>
+
+                    {/* Display selected mentors below the input */}
+                    <div style={{ marginTop: '20px' }}>
+                      {selectedAssistantMentor.length > 0 ? (
+                        <div>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginTop: '10px' }}>
+                            {selectedAssistantMentor.map((mentor) => (
+                              <div key={mentor.id} style={{ display: 'flex', alignItems: 'center' }}>
+                                <Chip
+                                  label={mentor.name}
+                                  onDelete={() => {
+                                    // Remove the selected mentor from the list
+                                    setSelectedAssistantMentor(selectedAssistantMentor.filter(item => item.id !== mentor.id));
+                                  }}
+                                  style={{ backgroundColor: '#f0f0f0', borderRadius: '5px' }}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <div></div>
+                      )}
+                    </div>
+                  </>
+
+                }
+                
+                {
                   meetparticipate == 'Individual' &&
                   // <Individual_nm meetPersonnmRef={meetPersonnmRef} />
                   <ScheduleEmChip individualEm={individualEm} setIndividualEm={setIndividualEm} />
@@ -1636,6 +1781,7 @@ function Mentor_Meeting() {
                     <MenuItem value={'Batch'}>Batch</MenuItem>
                     <MenuItem value={'Student'}>Student</MenuItem>
                     <MenuItem value={'Teacher'}>Teacher</MenuItem>
+                    <MenuItem value={'Assistant_Mentor'}>Assistant Mentor</MenuItem>
                     <MenuItem value={'Individual'}>Individual</MenuItem>
                   </Select>
                 </FormControl>
@@ -1753,7 +1899,7 @@ function Mentor_Meeting() {
                             {selectedStudent.length > 0 ? (
                               <div>
                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginTop: '10px' }}>
-                                  {selectedStudent.map((student) => (
+                                  {selectedStudent?.map((student) => (
                                     <div key={student.id} style={{ display: 'flex', alignItems: 'center' }}>
                                       <Chip
                                         label={student.Name}
@@ -1783,7 +1929,7 @@ function Mentor_Meeting() {
                               multiple
                               options={mentorList}
                               getOptionLabel={(option) => option.name}
-                              value={mentorList.filter(option => selectedmentor.includes(option))}
+                              value={mentorList?.filter(option => selectedmentor.includes(option))}
                               onChange={(event, newValue) => {
                                 setSelectedMentor(newValue); // Store the full mentor object
                               }}
@@ -1839,6 +1985,72 @@ function Mentor_Meeting() {
                           </div>
                         </>
                       }
+                        {
+                  meetparticipate2 === 'Assistant_Mentor' &&
+                  <>
+                    <FormControl style={{ width: '230px', paddingLeft: '5px' }}>
+                      <Autocomplete
+                        multiple
+                        options={assistantMentorList}
+                        getOptionLabel={(option) => option.name}
+                        value={assistantMentorList.filter(option => selectedAssistantMentor.includes(option))}
+                        onChange={(event, newValue) => {
+                          setSelectedAssistantMentor(newValue); // Store the full mentor object
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Mentors"
+                            placeholder="Search..."
+                            variant="outlined"
+                            InputProps={{
+                              ...params.InputProps,
+                              startAdornment: null, // Remove internal display of selected mentors
+                            }}
+                          />
+                        )}
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                        renderOption={(props, option, { selected }) => (
+                          <li {...props} key={option.id}>
+                            <Checkbox
+                              checked={selectedAssistantMentor.some((selected) => selected.id === option.id)}
+                            />
+                            <ListItemText primary={option.name} />
+                          </li>
+                        )}
+                        disableCloseOnSelect
+                        clearOnBlur={false}
+                        popupIcon={null} // Optionally remove the dropdown icon
+                      />
+                    </FormControl>
+
+                    {/* Display selected mentors below the input */}
+                    <div style={{ marginTop: '20px' }}>
+                      {selectedAssistantMentor.length > 0 ? (
+                        <div>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginTop: '10px' }}>
+                            {selectedAssistantMentor.map((mentor) => (
+                              <div key={mentor.id} style={{ display: 'flex', alignItems: 'center' }}>
+                                <Chip
+                                  label={mentor.name}
+                                  onDelete={() => {
+                                    // Remove the selected mentor from the list
+                                    setSelectedAssistantMentor(selectedAssistantMentor.filter(item => item.id !== mentor.id));
+                                  }}
+                                  style={{ backgroundColor: '#f0f0f0', borderRadius: '5px' }}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <div></div>
+                      )}
+                    </div>
+                  </>
+
+                }
+
                       {
                         meetparticipate2 == 'Individual' &&
                         // <Individual_nm meetPersonnmRef={meetPersonnmRef} />
@@ -1875,6 +2087,7 @@ function Mentor_Meeting() {
                     <MenuItem value={'Batch'}>Batch</MenuItem>
                     <MenuItem value={'Student'}>Student</MenuItem>
                     <MenuItem value={'Teacher'}>Teacher</MenuItem>
+                    <MenuItem value={'Assistant_Mentor'}>Assistant Mentor</MenuItem>
                     <MenuItem value={'Individual'}>Individual</MenuItem>
                   </Select>
                 </FormControl>
@@ -2077,6 +2290,73 @@ function Mentor_Meeting() {
                         </>
 
                       }
+                     
+                     {
+                  meetparticipate3 === 'Assistant_Mentor' &&
+                  <>
+                    <FormControl style={{ width: '230px', paddingLeft: '5px' }}>
+                      <Autocomplete
+                        multiple
+                        options={assistantMentorList}
+                        getOptionLabel={(option) => option.name}
+                        value={assistantMentorList.filter(option => selectedAssistantMentor.includes(option))}
+                        onChange={(event, newValue) => {
+                          setSelectedAssistantMentor(newValue); // Store the full mentor object
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Mentors"
+                            placeholder="Search..."
+                            variant="outlined"
+                            InputProps={{
+                              ...params.InputProps,
+                              startAdornment: null, // Remove internal display of selected mentors
+                            }}
+                          />
+                        )}
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                        renderOption={(props, option, { selected }) => (
+                          <li {...props} key={option.id}>
+                            <Checkbox
+                              checked={selectedAssistantMentor.some((selected) => selected.id === option.id)}
+                            />
+                            <ListItemText primary={option.name} />
+                          </li>
+                        )}
+                        disableCloseOnSelect
+                        clearOnBlur={false}
+                        popupIcon={null} // Optionally remove the dropdown icon
+                      />
+                    </FormControl>
+
+                    {/* Display selected mentors below the input */}
+                    <div style={{ marginTop: '20px' }}>
+                      {selectedAssistantMentor.length > 0 ? (
+                        <div>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginTop: '10px' }}>
+                            {selectedAssistantMentor.map((mentor) => (
+                              <div key={mentor.id} style={{ display: 'flex', alignItems: 'center' }}>
+                                <Chip
+                                  label={mentor.name}
+                                  onDelete={() => {
+                                    // Remove the selected mentor from the list
+                                    setSelectedAssistantMentor(selectedAssistantMentor.filter(item => item.id !== mentor.id));
+                                  }}
+                                  style={{ backgroundColor: '#f0f0f0', borderRadius: '5px' }}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <div></div>
+                      )}
+                    </div>
+                  </>
+
+                }
+
                       {
                         meetparticipate3 == 'Individual' &&
                         //  <Individual_nm meetPersonnmRef={meetPersonnmRef}/>
@@ -2807,6 +3087,8 @@ function Mentor_Meeting() {
       <ToastContainer />
     </>
   );
+}
+return <PageNotFound />
 }
 
 export default Mentor_Meeting;

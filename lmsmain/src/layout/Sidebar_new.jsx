@@ -19,12 +19,20 @@ const Sidebar_new = () => {
 
     const [isOpen, setIsOpen] = useState(false);
     const [isPlacementOpen, setIsPlacementOpen] = useState(false);
+    const [isTestOpen, setIsTestOpen] = useState(false);
+    const [isAssignmentOpen, setIsAssignmentOpen] = useState(false);
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
     const togglePlacementMenu = () => {
         setIsPlacementOpen(!isPlacementOpen);
+    };
+    const toggleTestMenu = () => {
+        setIsTestOpen(!isPlacementOpen);
+    };
+    const toggleAssignmentMenu = () => {
+        setIsAssignmentOpen(!isPlacementOpen);
     };
     //Sidebar
     const [activeDropdown, setActiveDropdown] = useState(null);
@@ -112,6 +120,59 @@ const Sidebar_new = () => {
                                         <FontAwesomeIcon className='mr-10 text-white' icon={faCalendar} />
                                         Calendar
                                     </NavLink>
+
+                                    <div
+                                        className="list-group-item nav-link list-group-item-action p-2"
+                                        onClick={toggleTestMenu}
+                                        role="button"
+                                        aria-expanded={isOpen}
+                                        aria-controls="collapseauthentication"
+                                    >
+                                        <FontAwesomeIcon className='mr-10 text-white' icon={faListCheck} /> Tests <span className='pull-right'><FontAwesomeIcon className='mr-10 text-white' icon={faAngleDown} /></span></div>
+                                    {/* Submenu */}
+                                    <div className={`collapse ${isTestOpen ? 'show' : ''}`} id="collapseauthentication">
+                                        <ul className="nav flex-column">
+                                            <li className="nav-item">
+                                                <NavLink className="nav-link pl-3" to={'/mentor-test'}>Create Test</NavLink>
+                                            </li>
+                                            
+                                            <li className="nav-item">
+                                                <NavLink className="nav-link pl-3" to='/view-test'>View Tests</NavLink>
+                                            </li>
+                                            
+                                            <li className="nav-item">
+                                                <NavLink className="nav-link pl-3" to={'/test_evaluation'}>Test Evaluation</NavLink>
+                                            </li>
+                                            <li className="nav-item">
+                                                <NavLink className="nav-link pl-3" to={'/mentor-see-results'}>Results</NavLink>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+ 
+                                    <div
+                                        className="list-group-item nav-link list-group-item-action p-2"
+                                        onClick={toggleAssignmentMenu}
+                                        role="button"
+                                        aria-expanded={isOpen}
+                                        aria-controls="collapseauthentication"
+                                    >
+                                        <FontAwesomeIcon className='mr-10 text-white' icon={faListCheck} /> Assignments <span className='pull-right'><FontAwesomeIcon className='mr-10 text-white' icon={faAngleDown} /></span></div>
+                                    <div className={`collapse ${isAssignmentOpen ? 'show' : ''}`} id="collapseauthentication">
+                                        <ul className="nav flex-column">
+                                            <li className="nav-item">
+                                                <NavLink className="nav-link pl-3" to={'/Mentor-Assignments-creation'}>Create</NavLink>
+                                            </li>
+                                            
+                                            <li className="nav-item">
+                                                <NavLink className="nav-link pl-3" to='/Mentor-Submission-List'>Submission List</NavLink>
+                                            </li>
+                                            
+                                        </ul>
+                                    </div>
+
+
+                                    
 
                                     <NavLink className="nav-link pl-3" to="/leave-management">
                                         <FontAwesomeIcon className='mr-10 text-white' icon={faHomeUser} />
