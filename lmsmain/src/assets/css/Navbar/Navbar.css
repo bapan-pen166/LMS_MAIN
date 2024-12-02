@@ -149,7 +149,7 @@
     /* background-color: beige; */
     background-color: #f5f2ef;
     padding: 0;
-    font-family: 'aptos';
+    /* font-family: 'aptos'; */
   }
   .box-heading{
     color: rgb(74, 128, 90);
@@ -308,6 +308,11 @@
   font-size: 20px;    
 }
 
+@media only screen and (max-width: 1200px) {
+  .res_sidebar{
+    display: none;
+  }
+}
 @media only screen and (max-width: 770px) {
   .nav-wel-back{
     font-weight: bold;

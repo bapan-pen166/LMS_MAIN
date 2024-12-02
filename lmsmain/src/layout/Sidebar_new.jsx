@@ -47,11 +47,12 @@ const Sidebar_new = () => {
                                         Overview</NavLink>
 
                                     <div
-                                        className="list-group-item nav-link list-group-item-action p-2"
+                                        className="list-group-item nav-link list-group-item-action p-2 d-flex"
                                         onClick={toggleMenu}
                                         role="button"
                                         aria-expanded={isOpen}
                                         aria-controls="collapseauthentication"
+                                        style={{alignItems: "center"}}
                                     >
                                         <FontAwesomeIcon className='mr-10' icon={faListCheck} />Students <span className='pull-right'><FontAwesomeIcon className='mr-10' icon={faAngleDown} /></span></div>
                                     {/* Submenu */}

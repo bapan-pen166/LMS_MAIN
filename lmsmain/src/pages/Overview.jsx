@@ -69,7 +69,7 @@ function Overview() {
         <>
             {/* <h1>This is overview page</h1> */}
             {/* content body  */}
-            <div className='row content-body g-3' style={{backgroundColor:"#f2edf3"}}>
+            <div className='row g-3' style={{backgroundColor:"#fff"}}>
                 {/* <div className='row '>
                     <div className='container-fluid'>
                        
@@ -139,7 +139,7 @@ function Overview() {
                                 </table>
                             </div>
                         </div> */}
-                        <div className=' col-md-12 col-lg-12 col-sm-12 mt-2'>
+                        <div className=' col-md-12 col-lg-12 col-sm-12'>
                             {/* <div className="row ">
                                 <div className="col-md-8 mt-2 mb-2">
                                     <h6 class="box-heading" style={{textAlign:'left'}}><b>Stulents Onboard</b> </h6>
@@ -149,7 +149,7 @@ function Overview() {
                                 </div>
 
                             </div> */}
-                            <div className="content-box max-height-300 text-center">
+                            <div className="">
                                 <Students_onboarded />
                             </div>
                             {/* <div className="row">
@@ -199,9 +199,9 @@ function Overview() {
                         </div>
                     </div>
                     <div className='row '>
-                        <div className='col-md-4 mt-2 col-sm-12'>
+                        <div className='col-md-6 mt-2 col-sm-12'>
                             {/* <h6 class="box-heading">Urgent Reminder</h6>  */}
-                            <div className="content-box max-height-300">
+                            <div className="box-border-light">
                                 <Top_course />
 
                             </div>
@@ -236,6 +236,9 @@ function Overview() {
                                 </tbody>
                             </table> */}
                         </div>
+                        
+                    </div>
+                    <div className="row">
                         <div className=' col-md-8 col-sm-12 mt-2'>
                             <div className="content-box max-height-300">
                                 <div className="d-flex justify-content-between align-items-center m-2">

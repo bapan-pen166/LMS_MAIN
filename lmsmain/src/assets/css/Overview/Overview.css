@@ -222,3 +222,7 @@ body{
 .font-30{
     font-size: 30px;
 }
+.box-border-light{
+    border-radius: 5px;
+    border: 1px solid rgb(221, 224, 227);
+}

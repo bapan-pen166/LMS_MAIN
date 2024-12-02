@@ -226,7 +226,7 @@ function Master_Layout() {
                                                 <img className='avatar-img rounded-circle' src={profileImagePreview} alt="Profile Preview" />
                                             
                                         ) : (
-                                                <img className='avatar-img rounded-circle p-3' src={profile_photo} alt="profile_photo" />
+                                                <img className='avatar-img rounded-circle p-3' src={profile_photo} alt="profile_photo" style={{width: '170px'}} />
                                             
                                         )}
 
@@ -327,7 +327,7 @@ function Master_Layout() {
                         } */}
                         <div className="container-fluid mt-4 px-5">
                             <div className="row">
-                                <div className="col-md-2 d-sm-done">
+                                <div className="col-md-2 d-sm-done res_sidebar">
                                     <div>
 
                                         {!isErrorPage && <Sidebar_new />}
