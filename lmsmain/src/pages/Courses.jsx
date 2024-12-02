@@ -104,6 +104,16 @@ export default function Courses() {
                 position: "top-center",
                 style: { fontWeight: 'bold' },
             });
+            if(response.data.status==1){
+                handleAddCourseClose()
+                
+                setAddCourseDetails({
+                    courseName: '',
+                    code: '',
+                    description: '',
+                    content: null,
+                });
+            }
         } catch (error) {
             if (error.name === 'ValidationError') {
                 console.log(error.inner);
@@ -224,6 +234,18 @@ export default function Courses() {
                 console.log(" data : ", Response.data);
                 // setCourseList(Response.data.result);
                 handleAllCourseList()
+                if(Response.data.status===1){
+                    console.log(" data : ", Response.data.status);
+                    setEditCourseDetails({
+                        courseName: '',
+                        code: '',
+                        description: '',
+                        content: null,
+                        activeFlag: '',
+                        id: '',
+                        delete: ''
+                    })
+                }
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -390,6 +412,21 @@ export default function Courses() {
                     position: "top-center",
                     style: { fontWeight: 'bold' },
                 });
+                setCourseContentData([{
+                    courseId: '',
+                    courseName: '',
+                    contentName: '',
+                    contentId: '',
+                    contentDuration: '',
+                    subModules: [
+                        {
+                            subModuleNm: '',
+                            contentDetails: '',
+                            moduleDuration: ''
+                        }
+                    ]
+                }])
+
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -563,6 +600,7 @@ export default function Courses() {
                     position: "top-center",
                     style: { fontWeight: 'bold' },
                 });
+                setSubModuleDetails({})
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -1061,6 +1099,7 @@ export default function Courses() {
                         <Button variant="contained" onClick={() => {
                             // handleAddCourseData()
                             // handleInsReviewClose()
+                            handleEditCourseClose()
                             handleEditCourseData()
                         }}>Update</Button>
                         <Button variant="contained" onClick={() => {
@@ -1378,536 +1417,7 @@ export default function Courses() {
                                     <p>{editCourseDetails?.code}</p>
                                 </div>
                             </div>
-                            {/* <div className='col-md-2 p-2'>
-                                Course Description
-                            </div>
-                            <div className='col-md-10 p-2'>
-                                <div class="input-group ">
-                                    <textarea class="form-control" rows="5" id="comment" name='description' onChange={handleEditCourse} value={editCourseDetails?.description}></textarea>
-                                </div>
-                            </div> */}
-
-                            {/* <div className='col-md-2 p-2'>
-                                Content
-                            </div>
-                            <div className='col-md-4 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                       
-                                        
-                                    />
-                                </div>
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                Duration
-                            </div>
-                            <div className='col-md-4 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                       
-                                        
-                                    />
-                                </div>
-                            </div>
                             
-                            <div className='col-md-2 p-2'>
-                                Sub-Content
-                            </div>
-                            <div className='col-md-6 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                        
-                                        
-                                    />
-                                </div>
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                Duration
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                        
-                                        
-                                    />
-                                </div>
-                            </div>
-                            
-                            <div className='col-md-2 p-2'>
-                                Description
-                            </div>
-                            <div className='col-md-10 p-2'>
-                            <div class="input-group ">
-                                    <textarea class="form-control" rows="5" id="comment" name='description' 
-                                    
-                                    ></textarea>
-                                </div>
-                            </div>
-                            
-
-                            {subContentNo>1 && 
-                            <>
-                            
-                           
-                            <div className='col-md-2 p-2'>
-                                Sub-Content 2
-                            </div>
-                            <div className='col-md-6 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                        
-                                        
-                                    />
-                                </div>
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                Duration
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                       
-                                        
-                                    />
-                                </div>
-                            </div>
-                            
-                            <div className='col-md-2 p-2'>
-                                Description
-                            </div>
-                            <div className='col-md-10 p-2'>
-                            <div class="input-group ">
-                                    <textarea class="form-control" rows="5" id="comment" name='description' 
-                                    
-                                    ></textarea>
-                                </div>
-                            </div>
-                            
-                            </>
-                            }
-                            {subContentNo>2 && 
-                            <>
-                            
-                            
-                            <div className='col-md-2 p-2'>
-                                Sub-Content 2
-                            </div>
-                            <div className='col-md-6 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                        
-                                        
-                                    />
-                                </div>
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                Duration
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                        
-                                        
-                                    />
-                                </div>
-                            </div>
-                            
-                            <div className='col-md-2 p-2'>
-                                Description
-                            </div>
-                            <div className='col-md-10 p-2'>
-                            <div class="input-group ">
-                                    <textarea class="form-control" rows="5" id="comment" name='description' 
-                                    
-                                    ></textarea>
-                                </div>
-                            </div>
-                            
-                            </>
-                            }
-                            {subContentNo>3 && 
-                            <>
-                            
-                            
-                            <div className='col-md-2 p-2'>
-                                Sub-Content 2
-                            </div>
-                            <div className='col-md-6 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                       
-                                        
-                                    />
-                                </div>
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                Duration
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                      
-                                        
-                                    />
-                                </div>
-                            </div>
-                            
-                            <div className='col-md-2 p-2'>
-                                Description
-                            </div>
-                            <div className='col-md-10 p-2'>
-                            <div class="input-group ">
-                                    <textarea class="form-control" rows="5" id="comment" name='description' 
-                                    
-                                    ></textarea>
-                                </div>
-                            </div>
-                            
-                            </>
-                            }
-                            {subContentNo>4 && 
-                            <>
-                            
-                            
-                            <div className='col-md-2 p-2'>
-                                Sub-Content 2
-                            </div>
-                            <div className='col-md-6 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                        
-                                        
-                                    />
-                                </div>
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                Duration
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                    
-                                        
-                                    />
-                                </div>
-                            </div>
-                            
-                            <div className='col-md-2 p-2'>
-                                Description
-                            </div>
-                            <div className='col-md-10 p-2'>
-                            <div class="input-group ">
-                                    <textarea class="form-control" rows="5" id="comment" name='description' 
-                                  
-                                    ></textarea>
-                                </div>
-                            </div>
-                            
-                            </>
-                            }
-                            {subContentNo>5 && 
-                            <>
-                            
-                           
-                            <div className='col-md-2 p-2'>
-                                Sub-Content 2
-                            </div>
-                            <div className='col-md-6 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                        
-                                    />
-                                </div>
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                Duration
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                     
-                                        
-                                    />
-                                </div>
-                            </div>
-                            
-                            <div className='col-md-2 p-2'>
-                                Description
-                            </div>
-                            <div className='col-md-10 p-2'>
-                            <div class="input-group ">
-                                    <textarea class="form-control" rows="5" id="comment" name='description' 
-                                   
-                                    ></textarea>
-                                </div>
-                            </div>
-                            
-                            </>
-                            }
-                            {subContentNo>6 && 
-                            <>
-                            
-                            
-                            <div className='col-md-2 p-2'>
-                                Sub-Content 2
-                            </div>
-                            <div className='col-md-6 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                     
-                                        
-                                    />
-                                </div>
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                Duration
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                       
-                                        
-                                    />
-                                </div>
-                            </div>
-                            
-                            <div className='col-md-2 p-2'>
-                                Description
-                            </div>
-                            <div className='col-md-10 p-2'>
-                            <div class="input-group ">
-                                    <textarea class="form-control" rows="5" id="comment" name='description' 
-                                 
-                                    ></textarea>
-                                </div>
-                            </div>
-                            
-                            </>
-                            }
-                            {subContentNo>7 && 
-                            <>
-                            
-                          
-                            <div className='col-md-2 p-2'>
-                                Sub-Content 2
-                            </div>
-                            <div className='col-md-6 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                        
-                                        
-                                    />
-                                </div>
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                Duration
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                        
-                                        
-                                    />
-                                </div>
-                            </div>
-                            
-                            <div className='col-md-2 p-2'>
-                                Description
-                            </div>
-                            <div className='col-md-10 p-2'>
-                            <div class="input-group ">
-                                    <textarea class="form-control" rows="5" id="comment" name='description' 
-                                    
-                                    ></textarea>
-                                </div>
-                            </div>
-                            
-                            </>
-                            }
-                            {subContentNo>8 && 
-                            <>
-                            
-                            
-                            <div className='col-md-2 p-2'>
-                                Sub-Content 2
-                            </div>
-                            <div className='col-md-6 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                        
-                                        
-                                    />
-                                </div>
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                Duration
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                       
-                                        
-                                    />
-                                </div>
-                            </div>
-                            
-                            <div className='col-md-2 p-2'>
-                                Description
-                            </div>
-                            <div className='col-md-10 p-2'>
-                            <div class="input-group ">
-                                    <textarea class="form-control" rows="5" id="comment" name='description' 
-                                    
-                                    ></textarea>
-                                </div>
-                            </div>
-                            
-                            </>
-                            }
-                            {subContentNo>9 && 
-                            <>
-                            
-                           
-                            <div className='col-md-2 p-2'>
-                                Sub-Content 2
-                            </div>
-                            <div className='col-md-6 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                      
-                                        
-                                    />
-                                </div>
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                Duration
-                            </div>
-                            <div className='col-md-2 p-2'>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                        
-                                        
-                                    />
-                                </div>
-                            </div>
-                            
-                            <div className='col-md-2 p-2'>
-                                Description
-                            </div>
-                            <div className='col-md-10 p-2'>
-                            <div class="input-group ">
-                                    <textarea class="form-control" rows="5" id="comment" name='description' 
-                                    
-                                    ></textarea>
-                                </div>
-                            </div>
-                            
-                            </>
-                            } */}
-                            {/* {console.log(subContentNo)}
-                            <div className='offset-md-11 col-md-1 p-2 d-flex justify-content-end'>
-                            <i class="fa fa-plus"  style={{fontWeight:'bold',fontSize:'25px',paddingRight:'2px'}} onClick={() => {setSubContent(parseInt(subContentNo)+parseInt(1)) }} ></i>
-                            <i class="fa fa-minus"  style={{fontWeight:'bold',fontSize:'25px',paddingLeft:'2px'}} onClick={() => {setSubContent(parseInt(subContentNo)-parseInt(1)) }} ></i>
-                            </div> */}
-                            {/* {courseContentData[0].Modules.map((module, index) => (
-                                <>
-                                    <div className="col-md-2 p-2">Content</div>
-                                    <div className="col-md-4 p-2">
-                                        <div className="input-group">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            name="moduleNm"
-                                            value={module.moduleNm}
-                                            onChange={(e) => handleInputChange(index, 'moduleNm', e.target.value)}
-                                        />
-                                        </div>
-                                    </div>
-                                    <div className="col-md-2 p-2">Duration</div>
-                                    <div className="col-md-4 p-2">
-                                        <div className="input-group">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            name="Duration"
-                                            value={module.Duration}
-                                            onChange={(e) => handleInputChange(index, 'Duration', e.target.value)}
-                                        />
-                                        </div>
-                                    </div>
-                                    <div className="col-md-2 p-2">Sub-Content</div>
-                                    <div className="col-md-6 p-2">
-                                        <div className="input-group">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            name="contentDetails"
-                                            value={module.contentDetails}
-                                            onChange={(e) => handleInputChange(index, 'contentDetails', e.target.value)}
-                                        />
-                                        </div>
-                                    </div>
-                                    <div className="col-md-2 p-2">Duration</div>
-                                    <div className="col-md-2 p-2">
-                                        <div className="input-group">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            name="Duration"
-                                            value={module.Duration}
-                                            onChange={(e) => handleInputChange(index, 'Duration', e.target.value)}
-                                        />
-                                        </div>
-                                    </div>
-                                    <div className="col-md-2 p-2">Description</div>
-                                    <div className="col-md-10 p-2">
-                                        <div className="input-group">
-                                        <textarea
-                                            className="form-control"
-                                            rows="5"
-                                            id="comment"
-                                            name="description"
-                                            value={module.description}
-                                            onChange={(e) => handleInputChange(index, 'description', e.target.value)}
-                                        ></textarea>
-                                        </div>
-                                    </div>
-                                </>
-                                    ))}
-                                    <div className="offset-md-11 col-md-1 p-2 d-flex justify-content-end">
-                                        <i
-                                        className="fa fa-plus"
-                                        style={{ fontWeight: 'bold', fontSize: '25px', paddingRight: '2px' }}
-                                        onClick={addSubContent}
-                                        ></i>
-                                        <i
-                                        className="fa fa-minus"
-                                        style={{ fontWeight: 'bold', fontSize: '25px', paddingLeft: '2px' }}
-                                        onClick={removeSubContent}
-                                        ></i>
-                                    </div> */}
 
                             <div className="col-md-2 p-2 d-flex align-items-center">Module Name</div>
                             <div className="col-md-4 p-2">
@@ -2026,10 +1536,27 @@ export default function Courses() {
                             // handleInsReviewClose()
                             // handleEditCourseData()
                             handleContentDetails(editCourseDetails?.courseName, editCourseDetails?.code)
+                            handleViewCourseContentClose()
                         }}>ADD</Button>
 
                         <Button variant="secondary"
-                            onClick={() => { handleViewCourseContentClose() }}
+                            onClick={() => { 
+                                handleViewCourseContentClose()
+                                setCourseContentData([{
+                                    courseId: '',
+                                    courseName: '',
+                                    contentName: '',
+                                    contentId: '',
+                                    contentDuration: '',
+                                    subModules: [
+                                        {
+                                            subModuleNm: '',
+                                            contentDetails: '',
+                                            moduleDuration: ''
+                                        }
+                                    ]
+                                }])
+                            }}
                         >
                             Close
                         </Button>
@@ -2337,10 +1864,16 @@ export default function Courses() {
                             // handleContentDetails(editCourseDetails?.courseName,editCourseDetails?.code)
                             handleEditContentdetails()
                             handleAddNewSubContentdetails()
+                            handleEditCourseContentClose()
+                            
+                            // setSubModuleDetails({})
                         }}>Update</Button>
 
                         <Button variant="secondary"
-                            onClick={() => { handleEditCourseContentClose() }}
+                            onClick={() => { handleEditCourseContentClose() 
+                                
+                                setSubModuleDetails({})
+                            }}
                         >
                             Close
                         </Button>

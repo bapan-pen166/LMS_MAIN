@@ -591,6 +591,22 @@ export default function Mentors() {
                 position: "top-center",
                 style: { fontWeight: 'bold' },
             });
+             setAddMentorBasicInfo({
+                name: '',
+                gender: '',
+                dob: '',
+                email: '',
+                phoneNo: '',
+                AlternatePhoneNo: '',
+                address1: '',
+                address2: '',
+                country: country || { id: '', name: "" },
+                state: state || { id: '', name: "" },
+                city: city || { id: '', name: "" },
+                pinNo: '',
+                IdType: '',
+                idNo: '',
+            });
         } catch (error) {
             if (error.name === 'ValidationError') {
                 // Handle validation errors
@@ -687,6 +703,21 @@ export default function Mentors() {
                 toast.success("Added Mentor Educational Info Successfully!", {
                     position: "top-center",
                 });
+                setAddMentorEducationInfo({
+                    email: '',
+                    gradDegree: '',
+                    gradDept: '',
+                    gradPassout: '',
+                    gradInsNm: '',
+                    gradCgpa: '',
+                    hsPassout: '',
+                    hsInsNm: '',
+                    hsCgpa: '',
+                    matricPassout: '',
+                    matricNm: '',
+                    matricCgpa: '',
+            
+                });
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -731,6 +762,18 @@ export default function Mentors() {
                 toast.success("Added Mentor Proffesional Info Successfully!", {
                     position: "top-center",
                 });
+                setAddMentorProffesionalInfo({
+                    email: '',
+                    totalExp: '',
+                    currentOrg: '',
+                    currentDesg: '',
+                    LinkdinUrl: linkedinProfileLink,
+                    // profilePhoto: '',
+                    // uniCirtificate: '',
+                    activeFlag: '',
+            
+            
+                })
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -2014,7 +2057,24 @@ export default function Mentors() {
                         }}>
                             Next
                         </Button>
-                        <Button variant="secondary" onClick={handleaddInsBasicInfoClose}>
+                        <Button variant="secondary" onClick={()=>{
+                            setAddMentorBasicInfo({
+                                name: '',
+                                gender: '',
+                                dob: '',
+                                email: '',
+                                phoneNo: '',
+                                AlternatePhoneNo: '',
+                                address1: '',
+                                address2: '',
+                                country: country || { id: '', name: "" },
+                                state: state || { id: '', name: "" },
+                                city: city || { id: '', name: "" },
+                                pinNo: '',
+                                IdType: '',
+                                idNo: '',
+                            });
+                            handleaddInsBasicInfoClose()}}>
                             Close
                         </Button>
                     </Stack>
@@ -2258,7 +2318,23 @@ export default function Mentors() {
                         }}>
                             Next
                         </Button>
-                        <Button variant="secondary" onClick={handleaddInsEducationInfoClose}>
+                        <Button variant="secondary" onClick={()=>{
+                             setAddMentorEducationInfo({
+                                email: '',
+                                gradDegree: '',
+                                gradDept: '',
+                                gradPassout: '',
+                                gradInsNm: '',
+                                gradCgpa: '',
+                                hsPassout: '',
+                                hsInsNm: '',
+                                hsCgpa: '',
+                                matricPassout: '',
+                                matricNm: '',
+                                matricCgpa: '',
+                        
+                            });
+                            handleaddInsEducationInfoClose()}}>
                             Close
                         </Button>
                     </Stack>
@@ -2435,7 +2511,20 @@ export default function Mentors() {
                         {/* <Button variant="contained" color="success">
                     Next
                     </Button> */}
-                        <Button variant="secondary" onClick={handleaddInsProffesionInfoClose}>
+                        <Button variant="secondary" onClick={()=>{
+                            setAddMentorProffesionalInfo({
+                                email: '',
+                                totalExp: '',
+                                currentOrg: '',
+                                currentDesg: '',
+                                LinkdinUrl: linkedinProfileLink,
+                                // profilePhoto: '',
+                                // uniCirtificate: '',
+                                activeFlag: '',
+                        
+                        
+                            })
+                            handleaddInsProffesionInfoClose()}}>
                             Close
                         </Button>
                     </Stack>
@@ -2948,7 +3037,9 @@ export default function Mentors() {
                         >
                             Next
                         </Button>
-                        <Button variant="secondary" onClick={handleInsEditDetailsClose} >
+                        <Button variant="secondary" onClick={()=>{
+                             
+                            handleInsEditDetailsClose()}} >
                             Close
                         </Button>
                     </Stack>

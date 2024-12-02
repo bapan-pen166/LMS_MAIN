@@ -15,6 +15,8 @@ import { Popover, List, ListItem } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
+import Snackbar from '@mui/material/Snackbar';
+import Box from '@mui/material/Box';
 
 
 // Time 
@@ -327,6 +329,7 @@ function Meeting() {
         meetings: meeting,
         batchList: selectedBatch,
         mentorList: selectedmentor,
+        assistantMentor:selectedAssistantMentor,
         studentList: selectedStudent,
         individualEmailList: individualEm
       })
@@ -392,11 +395,11 @@ function Meeting() {
   }, [])
 
   const handlemeeting = () => {
-    console.log(meetNmRef.current.value);
-    console.log(meetDateRef.current.value);
-    console.log('meetDateFromRef.current', meetDateFromRef.current);
-    // console.log('meetDateFromRef.current',meetDateFromRef.current)
-    console.log(meetDateToRef.current);
+    // console.log(meetNmRef.current.value);
+    // console.log(meetDateRef.current.value);
+    // console.log('meetDateFromRef.current', meetDateFromRef.current);
+    // // console.log('meetDateFromRef.current',meetDateFromRef.current)
+    // console.log(meetDateToRef.current);
     // console.log(meetDateEndRef.current.value);
     const meet_nm = meetNmRef.current.value;
     const date = meetDateRef.current.value;
@@ -431,6 +434,7 @@ function Meeting() {
         var alldates = filterDatesInWeekOff(date, date2)
       }
       else if (meetDayPattern == 'Monthly') {
+        console.log('monthly')
         console.log('alldates');
         var alldates = generateMonthlyDates(date, date2, selectedNumber, selectedFrequency)
         setMeetDayPattern('')
@@ -461,7 +465,9 @@ function Meeting() {
           startDate: date,
           endDate: date,
           startTime: timeFrom,
-          endTime: timeTo
+          endTime: timeTo,
+          userType:userType,
+          userEmail:userEmail
         };
         console.log('newMeeting', newMeeting);
         newMeetings.push(newMeeting);
@@ -989,14 +995,10 @@ function Meeting() {
     
   }, []);
 
-  if(isLoading){
-    return <div>loading...</div>
-  }
+ 
   
 
-  if (userType !== 'Admin') {
-    return <PageNotFound />
-  }
+ 
 
 
   //////////////////////////////////////////////////
@@ -1011,8 +1013,31 @@ function Meeting() {
   );
 
 
+  const [batchAlert,setBatchAlert]=useState(false)
+  
+
+  useEffect(()=>{
+    if(batchAlert){
+      setTimeout(()=>{
+        setBatchAlert(false)
+      },6000)
+    }
+   
+  },[batchAlert])
+  useEffect(()=>{
+    if(selectedBatch.length>0){console.log('batchalert',selectedBatch)
+      setBatchAlert(true)
+    }
+    
+  },[selectedBatch])
 
 
+  if(isLoading){
+    return <div>loading...</div>
+  }
+  if (userType !== 'Admin') {
+    return <PageNotFound />
+  }
   return (
     <>
       <div className="row content-body container-fluid main-meeting">
@@ -2445,8 +2470,8 @@ function Meeting() {
                     label="Group"
                     onChange={(e) => { setMeetDayPattern(e.target.value) }}
                   >
-                    <MenuItem value={'Regular'}>Daily</MenuItem>
-                    <MenuItem value={'WeekOff'}>Weekly</MenuItem>
+                    <MenuItem value={'Regular'}>All Days</MenuItem>
+                    <MenuItem value={'WeekOff'}>Week Days</MenuItem>
                     <MenuItem value={'Monthly'}>Monthly</MenuItem>
                     <MenuItem value={'CustomDay'}>Custom Day</MenuItem>
                     {/* <MenuItem value={'Individual'}>Individual</MenuItem> */}
@@ -2568,13 +2593,19 @@ function Meeting() {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseMeetingReschedule}>
+          {/* <Button variant="secondary" onClick={handleCloseMeetingReschedule}>
+            Close
+          </Button> */}
+          <Button variant="secondary" onClick={()=>{
+            setBatchAlert(false)
+            handleCloseMeetingReschedule()}}>
             Close
           </Button>
           <button className="btn btn-success" onClick={
             () => {
               handlemeetingReschedule()
               handleCloseMeetingReschedule()
+              setBatchAlert(false)
 
             }} >Create</button>
 
@@ -2780,6 +2811,17 @@ function Meeting() {
       <Monthlymeetschedule openmonthly={openmonthly} handleCloseMonthly={handleCloseMonthly} selectedNumber={selectedNumber} setSelectedNumber={setSelectedNumber} selectedFrequency={selectedFrequency} setSelectedFrequency={setSelectedFrequency} handleNumberChange={handleNumberChange} handleFrequencyChange={handleFrequencyChange} />
       {/* weekly custom day modal  */}
       <Custom_weekDay handleWeekDaysOpen={handleWeekDaysOpen} handleWeekDaysClose={handleWeekDaysClose} selectedWeekDays={selectedWeekDays} setSelectedWeekDays={setSelectedWeekDays} WeekDaysopen={WeekDaysopen} />
+
+      <Box sx={{ width: 500 }}>
+      
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={batchAlert}
+        // onClose={handleClose}
+        message="Please Select Teacher "
+        // key={vertical + horizontal}
+      />
+      </Box>
     </>
   );
 }

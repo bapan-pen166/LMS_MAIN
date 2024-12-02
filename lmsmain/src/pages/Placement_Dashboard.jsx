@@ -269,7 +269,7 @@ export default function Placement_Dashboard(){
                             </div> */}
                         </div>
                         <div className="col-md-4 pt-5 col-sm-2">
-                            <div  className="headLineBox">
+                             <div  className="headLineBox">
                                 <h4>Student's Placed</h4>
                             </div>
                             <div  >
@@ -329,18 +329,7 @@ export default function Placement_Dashboard(){
                            
                             
                         </div>
-                        {/* <div className="col-md-12 pt-5 d-flex justify-content-center">
-                            <CourseStudentCount/>
-                        </div> */}
-                        {/* <div className="col-md-12 pt-5 d-flex justify-content-center">
-                            <PlacementAndGrade/>
-                        </div> */}
-                        {/* <div className="col-md-12 pt-5 d-flex justify-content-center">
-                            <CourseVsPlacementRatio/>
-                        </div> */}
-                        {/* <div className="col-md-12 pt-5 d-flex justify-content-center">
-                            <PlacementsCountVsCompany/>
-                        </div> */}
+                    
                     </div>
                     
                 </div>

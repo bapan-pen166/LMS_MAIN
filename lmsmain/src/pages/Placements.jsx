@@ -68,6 +68,7 @@ export default function Placements() {
   // Payload for the company add
   const [newCompany, setNewCompany] = useState({
     companyName: "",
+    companyEmail:"",
     // course: [],
     dateOfArrival: "",
     salaryRange: "",
@@ -104,6 +105,8 @@ export default function Placements() {
     employementType: Yup.string().required("Employee type is required"),
     graduationYear: Yup.string().required("Graduation year is required"),
     relevantExperience : Yup.string().required("Relevant experience is required"),
+    companyEmail :Yup.string().email("Invalid email format")
+    .required("Email is required"),
     totalExperience :Yup.string().required("Total experience is required"),
     designation : Yup.string().required("Designation is required"),
     totalRounds : Yup.string().required("Total rounds is required"),
@@ -187,7 +190,7 @@ export default function Placements() {
 
 
   useEffect(() => {
-    const newMentorList = mentorlistAllObj.map(result => ({
+    const newMentorList = mentorlistAllObj?.map(result => ({
       name: result.name,
       id: result.id
     }));
@@ -216,7 +219,13 @@ export default function Placements() {
 
   const [showEditBatches, setShowEditCompany] = useState(false);
   const [showHideJobModal, setShowHideJobModal] = useState(false);
-  const handleEditBatchesClose = () => setShowEditCompany(false);
+
+  const handleEditBatchesClose = () => {
+    setShowEditCompany(false) ;
+    setEditCompany({})
+  
+  }
+
   const handleEditCompanyShow = () => setShowEditCompany(true);
   const handleJobDes = () => setShowHideJobModal(true);
   const handleJobDesClose = () => setShowHideJobModal(false);
@@ -255,7 +264,15 @@ export default function Placements() {
     } else {
       const filterData = searchres.filter((f) => {
         return (
-          (f.company_name && f.company_name.toLowerCase().includes(query.toLowerCase()))
+          (f.companyName && f.companyName.toLowerCase().includes(query.toLowerCase())) ||
+
+          (f.designation && f.designation.toLowerCase().includes(query.toLowerCase())) ||
+
+          (f.placementCoOrdinator && f.placementCoOrdinator.toLowerCase().includes(query.toLowerCase())) || 
+
+          (f.jobLocation && f.jobLocation.toLowerCase().includes(query.toLowerCase())) ||
+
+          (f.employementType && f.employementType.toLowerCase().includes(query.toLowerCase()))
         );
       });
       setAllPlacements(filterData);
@@ -347,6 +364,7 @@ export default function Placements() {
       [name]: tempEdit
     }))
   }
+
 
   const [selectedItemsEdit, setSelectedItemsEdit] = useState([]);
   const [isAllSelectedEdit, setIsAllSelectedEdit] = useState(false);
@@ -451,6 +469,8 @@ useEffect(()=>{
           toast.success("Company details updated successfully.", {
             position: "top-center",
           });
+          setEditCompany({})
+          handleEditBatchesClose()
         }
 
         getALLplacementDetails();
@@ -488,10 +508,15 @@ useEffect(()=>{
       const response = await axios.post(`${api2}/student/insert_placement`, newCompany);
   
       if (response?.data?.success) {
-        toast.success("Company details saved successfully.", {
-          position: "top-center",
-        });
-        
+        toast.success("Company details saved successfully.", { position: "top-center" });
+  
+        // Clear the form
+        setNewCompany({});
+  
+        // Close modal after resetting form
+        handleAddBatchesClose();
+  
+        // Fetch updated data
         getALLplacementDetails();
       } else {
         toast.error("Failed to save company details. Please try again.", {
@@ -629,6 +654,12 @@ useState(()=>{
     } = event;
     setSelectedCourseOptions(typeof value === 'string' ? value.split(',') : value);
   };
+
+
+
+  
+
+
 
 
   if(isLoading){
@@ -879,7 +910,7 @@ useState(()=>{
                 </div>
                 <div className=''>
                   <div class="input-group ">
-                    <input type="text" class="form-control"
+                    <input type="email" class="form-control"
                       name='companyEmail'
                       value={newCompany?.companyEmail}
                       onChange={handleADDnewCompany}
@@ -887,7 +918,7 @@ useState(()=>{
                     />
                   </div>
                 </div>
-                {errors?.placementCoOrdinator && <div className="error">{errors.placementCoOrdinator}</div>}
+                {errors?.companyEmail && <div className="error">{errors.companyEmail}</div>}
               </div>
               <div className='col-md-6 pt-4'>
                 <div className=''>
@@ -1071,7 +1102,7 @@ useState(()=>{
                           onChange={handleChangeCourse}
                           renderValue={(selected) => selected.join(', ')}
                         >
-                          {courses.map((option) => (
+                          {courses?.map((option) => (
                             <MenuItem key={option} value={option}>
                               <Checkbox checked={selectedCourseOptions.indexOf(option) > -1} />
                               <ListItemText primary={option} />
@@ -1091,15 +1122,15 @@ useState(()=>{
                       id="batch-multiple-checkbox"
                       multiple
                       name="batch"
-                      value={newCompany?.batch.map(item => JSON.stringify(item)) || []} 
+                      value={newCompany?.batch?.map(item => JSON.stringify(item)) || []} 
                       onChange={handleADDnewCompany}
                       input={<OutlinedInput label="Batch" />}
-                      renderValue={(selected) => selected.map(item => JSON.parse(item).batchName).join(', ')}
+                      renderValue={(selected) => selected?.map(item => JSON.parse(item).batchName).join(', ')}
                       MenuProps={MenuProps}
                     >
-                      {batchList && batchList.map((batchALL) => (
+                      {batchList && batchList?.map((batchALL) => (
                         <MenuItem key={batchALL.id} value={JSON.stringify({ batchName: batchALL.batchName, id: batchALL.id })}>
-                          <Checkbox checked={newCompany?.batch.some(batch => batch.id === batchALL.id)} />
+                          <Checkbox checked={newCompany?.batch?.some(batch => batch.id === batchALL.id)} />
                           <ListItemText primary={batchALL.batchName} />
                         </MenuItem>
                       ))}
@@ -1120,7 +1151,7 @@ useState(()=>{
         value={selectedItems}
         onChange={handleChange}
         renderValue={(selected) => {
-          return selected.map(user => user?.fullName).join(', ');
+          return selected?.map(user => user?.fullName).join(', ');
         }}
         MenuProps={{
           PaperProps: {
@@ -1138,9 +1169,9 @@ useState(()=>{
         </MenuItem>
 
         {/* Individual users */}
-        {studentList.map(user => (
+        {studentList?.map(user => (
           <MenuItem key={user.id} value={user}>
-            <Checkbox checked={selectedItems.some(val => val?.id === user.id)} />
+            <Checkbox checked={selectedItems?.some(val => val?.id === user.id)} />
             <ListItemText primary={user.fullName} />
           </MenuItem>
         ))}
@@ -1190,7 +1221,9 @@ useState(()=>{
             <Button variant="contained" onClick={saveCompanyDetails}>Add</Button>
 
             <Button style={{ backgroundColor: "red" }} variant="contained"
-              onClick={() => { handleAddBatchesClose() }}
+              onClick={() => {
+                // setNewCompany({})
+                handleAddBatchesClose() }}
             >
               Close
             </Button>
@@ -1494,15 +1527,15 @@ useState(()=>{
                       id="batch-multiple-checkbox"
                       multiple
                       name="batch"
-                      value={editCompany?.batch.map(item => JSON.stringify(item)) || []} // Ensure value is an array of strings
+                      value={editCompany?.batch?.map(item => JSON.stringify(item)) || []} // Ensure value is an array of strings
                       onChange={handleEditNewCompany}
                       input={<OutlinedInput label="Batch" />}
-                      renderValue={(selected) => selected.map(item => JSON.parse(item).batchName).join(', ')}
+                      renderValue={(selected) => selected?.map(item => JSON.parse(item).batchName).join(', ')}
                       MenuProps={MenuProps}
                     >
-                      {batchList && batchList.map((batchALL) => (
+                      {batchList && batchList?.map((batchALL) => (
                         <MenuItem key={batchALL.id} value={JSON.stringify({ batchName: batchALL.batchName, id: batchALL.id })}>
-                          <Checkbox checked={editCompany?.batch.some(batch => batch.id === batchALL.id)} />
+                          <Checkbox checked={editCompany?.batch?.some(batch => batch.id === batchALL.id)} />
                           <ListItemText primary={batchALL.batchName} />
                         </MenuItem>
                       ))}
@@ -1541,7 +1574,7 @@ useState(()=>{
                               {/* Individual users */}
                               {studentListEdit.map(user => (
                                 <MenuItem key={user.id} value={user}>
-                                  <Checkbox checked={selectedItemsEdit.some(val => val?.id === user.id)} />
+                                  <Checkbox checked={selectedItemsEdit?.some(val => val?.id === user.id)} />
                                   <ListItemText primary={user.fullName} />
                                 </MenuItem>
                               ))}
@@ -1550,7 +1583,6 @@ useState(()=>{
                     </div>
                 </div>
             </div>
-
           </div>
         </Modal.Body>
         <Modal.Footer>

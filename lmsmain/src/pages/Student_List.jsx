@@ -23,6 +23,7 @@ import Checkbox from '@mui/material/Checkbox';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import PageNotFound from '../ErrorPage/PageNotFound';
+import * as Yup from 'yup';
 
 
 const ITEM_HEIGHT = 48;
@@ -127,6 +128,7 @@ function Student_List() {
     const [aadhar, setAadhar] = useState('');
     const [pan, setpan] = useState('');
     const [idType, setidType] = useState('')
+    const [idproofNumber,setIdproofNumber]=useState('');
     const [foldername, setFolderName] = useState('');
 
     const [selectedCountrys, setSelectedCountrys] = useState('');
@@ -196,7 +198,7 @@ function Student_List() {
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    const [batchdata,setBatchdata] = useState();
+    const [batchdata, setBatchdata] = useState();
 
 
 
@@ -266,6 +268,7 @@ function Student_List() {
 
     useEffect(() => {
         if (info) {
+            try{
             setFname(info.firstName);
             setMname(info.middleName);
             setLname(info.lastName);
@@ -276,10 +279,10 @@ function Student_List() {
             setAdd1(info.fullAddress1);
             setAdd2(info.fullAddress2);
 
-
-            setCountry(info.country);
-            setState(info.state);
-            setCity(info.city)
+            // const countryJson=JSON.parse(info.country);
+            setCountry( JSON.parse(info.country));
+            setState(JSON.parse(info.state));
+            setCity(JSON.parse(info.city))
 
             setPin(info.zipCode);
             setphone(info.mobileNumber);
@@ -288,7 +291,11 @@ function Student_List() {
             setEmailid(info.email)
             setAadhar(info.aadharNumber)
             setpan(info.panNumber)
-
+            setIdproofNumber(info.idproofNumber)
+            }
+            catch(error){
+                console.log(error)
+            }
 
 
 
@@ -296,16 +303,16 @@ function Student_List() {
     }, [info]);
 
     useEffect(() => {
-        const initialCountry = countrylist.find((val) => val.name == country);
-        setSelectedCountrys(initialCountry)
+        // const initialCountry = countrylist.find((val) => val.name == country);
+        setSelectedCountrys(country)
     }, [country])
 
     useEffect(() => {
         console.log(statelist)
         console.log(state)
         if (statelist) {
-            const initialState = statelist.find((val) => val.name == state);
-            setSelectedStates(initialState)
+            // const initialState = statelist.find((val) => val.name == state);
+            setSelectedStates(state)
         }
 
     }, [state, statelist])
@@ -314,53 +321,91 @@ function Student_List() {
         console.log(citylist)
         console.log(city)
         if (citylist) {
-            const initialCity = citylist.find((val) => val.name == city);
-            setSelectedCitys(initialCity)
+            // const initialCity = citylist.find((val) => val.name == city);
+            setSelectedCitys(city)
         }
 
     }, [city, citylist])
 
-    const handleBasicInfoSave = (email) => {
-        console.log(fname, mname, lname, gender, Dob, gardian, add1, add2, country, state, city, pin, phone, altphone, emailid, idType, aadhar, pan);
-        axios.post(`${api}/reg/updateBasicDetails`, {
-            info: {
-                firstName: fname,
-                middleName: mname,
-                lastName: lname,
-                gender: gender,
-                dob: Dob,
-                mobileNumber: phone,
-                alternateNumber: altphone,
-                gurdianName: gardian,
-                email: emailid,
-                // idNo: aadhar,
-                IdproofType: idType,
-                country: country,
-                state: state,
-                city: city,
-                zipCode: pin,
-                fullAddress1: add1,
-                fullAddress2: add2,
-                // countryCode: '91',
-                idproofNumber: aadhar
 
 
-            }
-            // crmId: 2,
+    // For the validations  ==>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    const [errors, setErrors] = useState({});
 
-        })
-            .then((Response) => {
-                console.log(Response.data);
-                toast.success("Updated Successfully!", {
-                    position: "top-center",
-                });
-                //  setCitysetBasicDetails(Response.data.cityList);
-                handleStudentList();
+    // Validation Schema
+    const validationSchema = Yup.object({
+        firstName: Yup.string().required("First name is required"),
+        middleName: Yup.string().optional(),
+        lastName: Yup.string().required("Last name is required"),
+        gender: Yup.string().required("Gender is required"),
+        dob: Yup.date()
+            .nullable()
+            .required("Date of Birth is required")
+            .typeError("Invalid Date")
+            .transform((value, originalValue) => {
+                return originalValue === '' ? null : value;
+            }),
+        mobileNumber: Yup.string().required("Mobile number is required"),
+        alternateNumber: Yup.string().optional(),
+        gurdianName: Yup.string().optional(),
+        email: Yup.string().email("Invalid email address").required("Email is required"),
+        IdproofType: Yup.string().nullable().optional(),
+        idproofNumber: Yup.string().nullable().optional(),
+        country: Yup.object().required("Country is required"),
+        state: Yup.object().required("State is required"),
+        city: Yup.object().required("City is required"),
+        zipCode: Yup.string().required("ZIP code is required"),
+        fullAddress1: Yup.string().required("Address 1 is required"),
+        fullAddress2: Yup.string().optional(),
+    });
+
+    const handleBasicInfoSave = () => {
+        const formData = {
+            firstName: fname,
+            middleName: mname,
+            lastName: lname,
+            gender: gender,
+            dob: Dob,
+            mobileNumber: phone,
+            alternateNumber: altphone,
+            gurdianName: gardian,
+            email: emailid,
+            IdproofType: idType,
+            idproofNumber: idproofNumber,
+            country: country,
+            state: state,
+            city: city,
+            zipCode: pin,
+            fullAddress1: add1,
+            fullAddress2: add2,
+        };
+
+        validationSchema.validate(formData, { abortEarly: false })
+            .then(() => {
+                setErrors({}); // Clear errors on successful validation
+                axios.post(`${api}/reg/updateBasicDetails`, {
+                    info: formData,
+                })
+                    .then((response) => {
+                        toast.success("Updated Successfully!", {
+                            position: "top-center",
+                        });
+                        handleStudentList();
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
             })
-            .catch((error) => {
-                console.error('Error:', error);
+            .catch((validationError) => {
+                const newErrors = {};
+                validationError.inner.forEach((error) => {
+                    newErrors[error.path] = error.message;
+                });
+                setErrors(newErrors); // Set errors to state
             });
-    }
+    };
+
+
 
     useEffect(() => {
         handleStatelist();
@@ -368,7 +413,11 @@ function Student_List() {
     useEffect(() => {
         handleCitylist();
     }, [selectedStates])
-
+    useEffect(()=>{
+        console.log('country',country)
+        console.log('country',state)
+        console.log('country',city)
+    },[info,country])
 
     //    const handlePreviousInfo=(e)=>{
     //     console.log('submit click');
@@ -395,7 +444,7 @@ function Student_List() {
 
 
     // for dropout ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    const [dropout,setDropout] = useState();
+    const [dropout, setDropout] = useState();
 
 
 
@@ -500,10 +549,34 @@ function Student_List() {
         }
     }, [profession]);
 
+
+
+
+    // For the validations  ==>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    const [errorsProfe, setErrorsProfe] = useState({});
+
+    // Validation Schema
+    const validationSchemaProf = Yup.object({
+        designation: Yup.string().required("Designation is required"),
+        email: Yup.string()
+            .email("Invalid email address")
+            .required("Email is required"),
+        linkedinProfileLink: Yup.string()
+            .optional(),
+        workExp: Yup.number()
+            .typeError("Work experience must be a number")
+            .required("Work experience is required"),
+        workOrganization: Yup.string().required("Organization is required"),
+        workStatus: Yup.string().optional(),
+        selectedBatch: Yup.string().required("Batch selection is required"),
+    });
+    
+
+
+
     const handleProfessionSave = () => {
-        console.log(profession);
-        console.log(profEmail);
-        axios.post(`${api}/reg/updateProfessionalDetails`, {
+        // Create the data object
+        const data = {
             crmId: 2,
             designation: designation,
             email: profEmail,
@@ -511,22 +584,47 @@ function Student_List() {
             workExp: parseInt(workExp),
             workOrganization: org,
             workStatus: workstatus,
-            selectedBatch: batchname
-
-        })
-            .then((Response) => {
-                console.log(Response.data);
-
-                toast.success("Updated Successfully!", {
-                    position: "top-center",
-                });
-                handleStudentList();
-
+            selectedBatch: batchname,
+        };
+    
+        // Validate the data using validationSchemaProf
+        validationSchemaProf
+            .validate(data, { abortEarly: false }) // Validate all fields
+            .then(() => {
+                // Clear errors if validation passes
+                setErrorsProfe({});
+    
+                // Proceed with API call
+                axios.post(`${api}/reg/updateProfessionalDetails`, data)
+                    .then((Response) => {
+                        console.log(Response.data);
+    
+                        toast.success("Updated Successfully!", {
+                            position: "top-center",
+                        });
+                        handleStudentList();
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
             })
-            .catch((error) => {
-                console.error('Error:', error);
+            .catch((validationErrors) => {
+                // Map Yup errors to state-friendly format
+                const formattedErrors = validationErrors.inner.reduce((acc, err) => {
+                    acc[err.path] = err.message;
+                    return acc;
+                }, {});
+    
+                // Set errors in state
+                setErrorsProfe(formattedErrors);
             });
-    }
+    };
+    
+
+
+
+
+    
     //    http://localhost:3000/Student-List
 
     const ViewDoc = () => {
@@ -643,27 +741,27 @@ function Student_List() {
     }
 
 
-    const handleStdList = ()=>{
+    const handleStdList = () => {
         console.log(batchdata)
-        
-        
+
+
         axios.post(`${api}/student/getStudentListOnBatch`, batchdata)
-        .then((Response) => {
-            console.log("student list data : ", Response.data);
-            setStudentList(Response.data.result);
-            setSearchres(Response.data.result);
-            console.log("from searches", searchres)
-            handleBatchlist()
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+            .then((Response) => {
+                console.log("student list data : ", Response.data);
+                setStudentList(Response.data.result);
+                setSearchres(Response.data.result);
+                console.log("from searches", searchres)
+                handleBatchlist()
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
 
     }
 
-    useEffect(()=>{
-          handleStdList()
-    },[batchdata])
+    useEffect(() => {
+        handleStdList()
+    }, [batchdata])
 
     const handleStudentEmail = (email) => {
         console.log('submit click');
@@ -714,6 +812,24 @@ function Student_List() {
             [name]: value
         });
     };
+    useEffect(() => {
+        if (selectedCountrys) {
+            setCountry(selectedCountrys)
+        }
+
+    }, [selectedCountrys])
+    useEffect(() => {
+        if (selectedStates) {
+            setState(selectedStates)
+        }
+
+    }, [selectedStates])
+    useEffect(() => {
+        if (selectedCitys) {
+            setCity(selectedCitys)
+        }
+
+    }, [selectedCitys])
 
 
     const inputChange = (e) => {
@@ -761,20 +877,20 @@ function Student_List() {
     }, []);
 
 
-   useEffect(()=>{
+    useEffect(() => {
         axios.post(`${api}/crm/crm`)
-        .then((Response)=>{
-            console.log(Response);
-        })
-        .catch((error)=>{
-            console.log(error);
-        })
-   },[])
+            .then((Response) => {
+                console.log(Response);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }, [])
 
 
-   const handledroutStatusChange = (e)=>{
-    setDropout(e.target.value);
-   }
+    const handledroutStatusChange = (e) => {
+        setDropout(e.target.value);
+    }
 
 
 
@@ -792,23 +908,23 @@ function Student_List() {
         setBatchdata(JSON.parse(event.target.value));
     };
 
-     const saveDropoutStatusChange = (email)=>{
-        console.log(email,dropout)
-        axios.post(`${api}/reg/dropoutStudentDetails`,{email:email,dropoutStatus:dropout})
-        .then((Response)=>{
-              console.log(Response);
-        })
-        .catch((error)=>{
-            console.log(error);
-        })
-     }
+    const saveDropoutStatusChange = (email) => {
+        console.log(email, dropout)
+        axios.post(`${api}/reg/dropoutStudentDetails`, { email: email, dropoutStatus: dropout })
+            .then((Response) => {
+                console.log(Response);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
 
 
 
     return (
         <>
             {/* content body  */}
-            <div className='row content-body' style={{backgroundColor:"#f2edf3"}}>
+            <div className='row content-body' style={{ backgroundColor: "#f2edf3" }}>
                 <div className='row '>
                     {/* <div className='container-fluid'>
 
@@ -819,7 +935,7 @@ function Student_List() {
 
                     </div> */}
                 </div>
-                <div className="container-fluid mt-4 ml-2 m-r-2" style={{backgroundColor:"#f2edf3"}}>
+                <div className="container-fluid mt-4 ml-2 m-r-2" style={{ backgroundColor: "#f2edf3" }}>
                     <div className="d-flex justify-content-center flex-wrap ml-2">
                         <div className="d-flex align-items-center flex-grow-1 ">
                             <input type="text" className="form-control pl-2 pr-5" placeholder='Search here' value={searchquery} onChange={inputChange} />
@@ -994,6 +1110,7 @@ function Student_List() {
                                             onChange={(e) => { setFname(e.target.value) }}
                                         />
                                     </div>
+                                    {errors?.firstName && <div className="error">{errors.firstName}</div>}
                                 </div>
                                 <div className="col-md-3 subheading p-2">
                                     Middle Name
@@ -1007,6 +1124,7 @@ function Student_List() {
                                             onChange={(e) => { setMname(e.target.value) }}
                                         />
                                     </div>
+                                    {errors?.middleName && <div className="error">{errors.middleName}</div>}
                                 </div>
                                 <div className="col-md-3 subheading p-2">
                                     Last Name <i class="fa fa-star"></i>
@@ -1020,6 +1138,7 @@ function Student_List() {
                                             onChange={(e) => { setLname(e.target.value) }}
                                         />
                                     </div>
+                                    {errors?.lastName && <div className="error">{errors.lastName}</div>}
                                 </div>
                                 <div className="col-md-3 subheading p-2">
                                     Gender <i class="fa fa-star"></i>
@@ -1036,6 +1155,7 @@ function Student_List() {
                                             <option value='Transgender'>Transgender</option>
                                         </select>
                                     </div>
+                                    {errors?.gender && <div className="error">{errors.gender}</div>}
                                 </div>
                                 {/* </div> */}
                                 {/* <div className="col-md-12"> */}
@@ -1052,9 +1172,10 @@ function Student_List() {
                                         />
 
                                     </div>
+                                    {errors?.dob && <div className="error">{errors.dob}</div>}
                                 </div>
                                 <div className="col-md-3 subheading p-2">
-                                    Gurdian's Name <i class="fa fa-star"></i>
+                                    Gurdian's Name 
                                 </div>
                                 <div className="col-md-3 p-2">
                                     <div class="custom-file">
@@ -1065,6 +1186,7 @@ function Student_List() {
                                             onChange={(e) => { setGardian(e.target.value) }}
                                         />
                                     </div>
+                                    {errors?.gurdianName && <div className="error">{errors.gurdianName}</div>}
                                 </div>
                                 {/* </div> */}
 
@@ -1078,7 +1200,7 @@ function Student_List() {
                         </div> */}
                                 {/* <div className="col-md-12"> */}
                                 <div className="col-md-3 subheading p-2">
-                                    Address Line 1 <i class="fa fa-star"></i>
+                                    Address 1 <i class="fa fa-star"></i>
                                 </div>
                                 <div className="col-md-3 p-2">
                                     <div class="input-group ">
@@ -1089,9 +1211,10 @@ function Student_List() {
                                             onChange={(e) => { setAdd1(e.target.value) }}
                                         />
                                     </div>
+                                    {errors?.fullAddress1 && <div className="error">{errors.fullAddress1}</div>}
                                 </div>
                                 <div className="col-md-3 subheading p-2">
-                                    Address Line 2
+                                    Address 2
                                 </div>
                                 <div className="col-md-3 p-2">
                                     <div class="input-group ">
@@ -1102,6 +1225,7 @@ function Student_List() {
                                             onChange={(e) => { setAdd2(e.target.value) }}
                                         />
                                     </div>
+                                    {errors?.fullAddress2 && <div className="error">{errors.fullAddress2}</div>}
                                 </div>
                                 {/* </div> */}
                                 {/* <div className="col-md-12"> */}
@@ -1139,6 +1263,7 @@ function Student_List() {
                                         
                                     </select> */}
                                     </div>
+                                    {errors?.country && <div className="error">{errors.country}</div>}
                                 </div>
                                 <div className="col-md-3 subheading p-2">
                                     State <i class="fa fa-star"></i>
@@ -1172,6 +1297,7 @@ function Student_List() {
                                         
                                     </select> */}
                                     </div>
+                                    {errors?.state && <div className="error">{errors.state}</div>}
                                 </div>
                                 <div className="col-md-3 subheading p-2">
                                     City <i class="fa fa-star"></i>
@@ -1203,6 +1329,7 @@ function Student_List() {
                                     
                                     </select> */}
                                     </div>
+                                    {errors?.city && <div className="error">{errors.city}</div>}
                                 </div>
                                 <div className="col-md-3 subheading p-2">
                                     Pin Code <i class="fa fa-star"></i>
@@ -1215,6 +1342,7 @@ function Student_List() {
                                             onChange={(e) => { setPin(e.target.value) }}
                                             id="basic-url" aria-describedby="basic-addon3" />
                                     </div>
+                                    {errors?.zipCode && <div className="error">{errors.zipCode}</div>}
                                 </div>
                                 {/* </div> */}
 
@@ -1237,6 +1365,7 @@ function Student_List() {
                                             onChange={(e) => { setphone(e.target.value) }}
                                             id="basic-url" aria-describedby="basic-addon3" />
                                     </div>
+                                    {errors?.mobileNumber && <div className="error">{errors.mobileNumber}</div>}
                                 </div>
                                 <div className="col-md-3 subheading p-2">
                                     Alternate Phone No.
@@ -1249,13 +1378,14 @@ function Student_List() {
                                             onChange={(e) => { setAltphone(e.target.value) }}
                                             id="basic-url" aria-describedby="basic-addon3" />
                                     </div>
+                                    {errors?.alternateNumber && <div className="error">{errors.alternateNumber}</div>}
                                 </div>
                                 {/* </div> */}
                                 {/* <div className="col-md-12"> */}
                                 <div className="col-md-3 subheading p-2">
                                     Email Id <i class="fa fa-star"></i>
                                 </div>
-                                <div className="col-md-3 p-2">
+                                <div className="col-md-9 p-2">
                                     {/* <div class="input-group ">
                                         <input type="email" class="form-control"
                                             // value={info?.email} 
@@ -1265,8 +1395,14 @@ function Student_List() {
                                             id="basic-url" aria-describedby="basic-addon3" />
                                     </div> */}
                                     <div>
-                                        <p style={{ backgroundColor: "lightblue", width: "220px", padding: "2px", borderRadius: "5px" }}>{emailid}</p>
+                                        {/* <p style={{ backgroundColor: "lightblue", width: "220px", padding: "2px", borderRadius: "5px" }}>{emailid}</p> */}
+                                        <input type="text" class="form-control"
+                                            // value={info?.alternateNumber} 
+                                            value={emailid}
+                                            // onChange={(e) => { setAltphone(e.target.value) }}
+                                            id="basic-url" aria-describedby="basic-addon3" readOnly />
                                     </div>
+                                    {errors?.email && <div className="error">{errors.email}</div>}
                                 </div>
                                 {/* <div className="col-md-3 subheading p-2">
                             Upload Cirtificate
@@ -1308,6 +1444,8 @@ function Student_List() {
                                         <option value='aadhar'>Aadhar</option>
                                     </select> */}
                                     </div>
+
+                                {errors?.idproofNumber && <div className="error">{errors.idproofNumber}</div>}
                                 </div>
 
                                 {(() => {
@@ -1320,7 +1458,7 @@ function Student_List() {
                                                 <div className="col-md-3 p-2">
                                                     <div class="input-group ">
                                                         <input type="text" class="form-control"
-                                                            value={aadhar}
+                                                            value={idproofNumber}
                                                             onChange={(e) => { setAadhar(e.target.value) }} id="basic-url" aria-describedby="basic-addon3" />
                                                     </div>
                                                 </div>
@@ -1336,8 +1474,8 @@ function Student_List() {
                                                 <div class="input-group ">
 
                                                     <input type="text" class="form-control"
-                                                        value={info?.panNumber}
-                                                        onChange={(e) => { setAadhar(e.target.value) }}
+                                                        value={idproofNumber}
+                                                        onChange={(e) => { setIdproofNumber(e.target.value) }}
                                                         id="basic-url" aria-describedby="basic-addon3" />
                                                 </div>
                                             </div>
@@ -1354,7 +1492,7 @@ function Student_List() {
 
                                                     <input type="text" class="form-control"
                                                         value={info?.idproofNumber}
-                                                        onChange={(e) => { setAadhar(e.target.value) }}
+                                                        onChange={(e) => { setIdproofNumber(e.target.value) }}
                                                         id="basic-url" aria-describedby="basic-addon3" />
                                                 </div>
                                             </div>
@@ -1588,7 +1726,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        Year of passing <i className="fa fa-star"></i>
+                                        Year of passing 
                                     </div>
                                     <div className="col-md-3 col-sm-12 p-2 m-right-80">
                                         <div className="input-group mb-3">
@@ -1596,7 +1734,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        University/ College /Institute Name <i className="fa fa-star"></i>
+                                        University/ College /Institute Name 
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="input-group mb-3">
@@ -1604,7 +1742,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        {formData?.doctorsInstituteCgpaGpaType || 'GPA'} <i className="fa fa-star"></i>
+                                        {formData?.doctorsInstituteCgpaGpaType || 'GPA'} 
                                         <select name="doctorsInstituteCgpaGpaType" value={formData?.doctorsInstituteCgpaGpaType} onChange={handleChange}>
                                             <option value="">select</option>
                                             <option value="CGPA">CGPA</option>
@@ -1617,7 +1755,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        Upload Certificate <i className="fa fa-star"></i>
+                                        Upload Certificate 
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="custom-file">
@@ -1637,7 +1775,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        Year of passing <i className="fa fa-star"></i>
+                                        Year of passing 
                                     </div>
                                     <div className="col-md-3 col-sm-12 p-2 m-right-80">
                                         <div className="input-group mb-3">
@@ -1645,7 +1783,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        University/ College /Institute Name <i className="fa fa-star"></i>
+                                        University/ College /Institute Name 
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="input-group mb-3">
@@ -1653,7 +1791,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        {formData?.mastersInstituteCgpaGpaType || 'GPA'}  <i className="fa fa-star"></i>
+                                        {formData?.mastersInstituteCgpaGpaType || 'GPA'}  
                                         <select name="mastersInstituteCgpaGpaType" value={formData?.mastersInstituteCgpaGpaType} onChange={handleChange} id="">
                                             <option value="">select</option>
                                             <option value="CGPA">CGPA</option>
@@ -1666,7 +1804,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        Upload Certificate <i className="fa fa-star"></i>
+                                        Upload Certificate 
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="custom-file">
@@ -1686,7 +1824,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        Year of passing <i className="fa fa-star"></i>
+                                        Year of passing 
                                     </div>
                                     <div className="col-md-3 col-sm-12 p-2 m-right-80">
                                         <div className="input-group mb-3">
@@ -1694,7 +1832,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        University/ College /Institute Name <i className="fa fa-star"></i>
+                                        University/ College /Institute Name 
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="input-group mb-3">
@@ -1702,7 +1840,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        {formData?.bachelorInstituteCgpaGpaType || 'GPA'}  <i className="fa fa-star"></i>
+                                        {formData?.bachelorInstituteCgpaGpaType || 'GPA'}  
                                         <select name="bachelorInstituteCgpaGpaType" value={formData?.bachelorInstituteCgpaGpaType} onChange={handleChange} id="">
                                             <option value="">select</option>
                                             <option value="CGPA">CGPA</option>
@@ -1715,7 +1853,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        Upload Certificate <i className="fa fa-star"></i>
+                                        Upload Certificate 
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="custom-file">
@@ -1734,7 +1872,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        Year of passing <i className="fa fa-star"></i>
+                                        Year of passing 
                                     </div>
                                     <div className="col-md-3 col-sm-12 p-2 m-right-80">
                                         <div className="input-group mb-3">
@@ -1742,7 +1880,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        University/ College /Institute Name <i className="fa fa-star"></i>
+                                        University/ College /Institute Name 
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="input-group mb-3">
@@ -1750,7 +1888,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        {formData?.associateInstituteCgpaGpaType || 'GPA'}  <i className="fa fa-star"></i>
+                                        {formData?.associateInstituteCgpaGpaType || 'GPA'}  
                                         <select name="associateInstituteCgpaGpaType" value={formData?.associateInstituteCgpaGpaType} onChange={handleChange} id="">
                                             <option value="">select</option>
                                             <option value="CGPA">CGPA</option>
@@ -1763,7 +1901,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        Upload Certificate <i className="fa fa-star"></i>
+                                        Upload Certificate 
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="custom-file">
@@ -1781,7 +1919,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        Year of passing <i className="fa fa-star"></i>
+                                        Year of passing 
                                     </div>
                                     <div className="col-md-3 col-sm-12 p-2 m-right-80">
                                         <div className="input-group mb-3">
@@ -1789,7 +1927,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        University/ College /Institute Name <i className="fa fa-star"></i>
+                                        University/ College /Institute Name 
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="input-group mb-3">
@@ -1797,7 +1935,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        {formData?.graduationInstituteCgpaGpaType || 'GPA'}  <i className="fa fa-star"></i>
+                                        {formData?.graduationInstituteCgpaGpaType || 'GPA'}  
                                         <select name="graduationInstituteCgpaGpaType" value={formData?.graduationInstituteCgpaGpaType} onChange={handleChange} id="">
                                             <option value="">select</option>
                                             <option value="CGPA">CGPA</option>
@@ -1810,7 +1948,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        Upload Certificate <i className="fa fa-star"></i>
+                                        Upload Certificate 
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="custom-file">
@@ -1828,7 +1966,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        Year of passing <i className="fa fa-star"></i>
+                                        Year of passing 
                                     </div>
                                     <div className="col-md-3 p-2 m-right-80">
                                         <div className="input-group mb-3">
@@ -1836,7 +1974,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        School/ College/Institute Name <i className="fa fa-star"></i>
+                                        School/ College/Institute Name 
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="input-group mb-3">
@@ -1844,7 +1982,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        {formData?.highSchoolInstituteCgpaGpaType || 'GPA'}  <i className="fa fa-star"></i>
+                                        {formData?.highSchoolInstituteCgpaGpaType || 'GPA'}  
                                         <select name="highSchoolInstituteCgpaGpaType" value={formData?.highSchoolInstituteCgpaGpaType} onChange={handleChange} id="">
                                             <option value="">select</option>
                                             <option value="CGPA">CGPA</option>
@@ -1857,7 +1995,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        Upload Certificate <i className="fa fa-star"></i>
+                                        Upload Certificate 
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="custom-file">
@@ -1876,7 +2014,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        Any Professional Training Certificate or Equivalent <i className="fa fa-star"></i>
+                                        Any Professional Training Certificate or Equivalent 
                                     </div>
                                     <div className="col-md-3 col-sm-12 p-2 m-right-80">
                                         <div className="input-group mb-3">
@@ -1884,7 +2022,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        No of years of Field Experience <i className="fa fa-star"></i>
+                                        No of years of Field Experience 
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="input-group mb-3">
@@ -1905,7 +2043,7 @@ function Student_List() {
                                 </div>
                             </div> */}
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        Upload Certificate <i className="fa fa-star"></i>
+                                        Upload Certificate 
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="custom-file">
@@ -2170,8 +2308,8 @@ function Student_List() {
                                     <div class="input-group ">
                                         <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"
 
-                                            value={workExp}
                                             // value={}
+                                            value={workExp}
 
                                             // onChange={handleworkexp}
                                             onChange={(e) => {
@@ -2179,6 +2317,7 @@ function Student_List() {
                                             }}
                                         />
                                     </div>
+                                    {errorsProfe?.workExp && <div className="error">{errorsProfe.workExp}</div>}
                                 </div>
                                 {/* </div> */}
                                 {/* <div className="col-md-12"> */}
@@ -2197,6 +2336,7 @@ function Student_List() {
                                             }}
                                         />
                                     </div>
+                                    {errorsProfe?.workOrganization && <div className="error">{errorsProfe.workOrganization}</div>}
                                 </div>
                                 <div className="col-md-3 subheading p-2">
                                     Current Designation <i class="fa fa-star"></i>
@@ -2213,6 +2353,7 @@ function Student_List() {
                                         // onChange={handleDesig}
                                         />
                                     </div>
+                                    {errorsProfe?.designation && <div className="error">{errorsProfe.designation}</div>}
                                 </div>
                                 {/* </div> */}
 
@@ -2240,6 +2381,7 @@ function Student_List() {
                                             }}
                                         />
                                     </div>
+                                    {errorsProfe?.linkedinProfileLink && <div className="error">{errorsProfe.linkedinProfileLink}</div>}
                                 </div>
                                 <div className="col-md-3 subheading p-2">
                                     All Documents
@@ -2294,6 +2436,7 @@ function Student_List() {
 
                                         </select>
                                     </div>
+                                    {errorsProfe?.selectedBatch && <div className="error">{errorsProfe.selectedBatch}</div>}
                                 </div>
                                 {(() => {
                                     if (rejectflag == true) {
@@ -2321,21 +2464,21 @@ function Student_List() {
                                 }
 
                                 <div className='col-md-3'>
-                                     Dropout Status
+                                    Dropout Status
                                 </div>
                                 <div className='col-md-3'>
-                                     <select onChange={handledroutStatusChange} name="" id="">
+                                    <select onChange={handledroutStatusChange} name="" id="">
                                         <option disabled value="">SELECT option</option>
                                         <option value="1">Dropped</option>
                                         <option value="0">N/A</option>
-                                     </select>
-                                 <Button style={{marginTop:"2px"}} onClick={()=>{saveDropoutStatusChange(profEmail)}} variant="secondary">SAVE</Button>
-                                </div> 
+                                    </select>
+                                    <Button style={{ marginTop: "2px" }} onClick={() => { saveDropoutStatusChange(profEmail) }} variant="secondary">SAVE</Button>
+                                </div>
                             </div>
 
                             <div className="row">
                                 <div className="col-md-8">
-                                   
+
                                 </div>
                                 <div className="col-md-4 flex-end">
 

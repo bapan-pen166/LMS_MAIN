@@ -288,11 +288,27 @@ export default function Batches() {
 
             // Handle the response
             console.log("Data:", response.data);
-            handleAllBatchList();
-            toast.success("Batch details added successfully!", {
-                position: "top-center",
-                style: { fontWeight: 'bold' },
-            });
+            // handleAllBatchList();
+            if(response.data.status==1 && response.data.success==true ){
+                toast.success("Batch details added successfully!", {
+                    position: "top-center",
+                    style: { fontWeight: 'bold' },
+                });
+                handleAddBatchesClose()
+                setMentorList([])
+                setMentorAssistantList([])
+                setAddBatchDetails({})
+                handlebatchcountsData()
+                handleAllBatchList();
+            }
+            else if(response.data.status==1 && response.data.success==false){
+                toast.error("Batch has been already exixts", {
+                    position: "top-center",
+                    style: { fontWeight: 'bold' },
+                });
+            }
+            
+            
         } catch (error) {
             if (error.name === 'ValidationError') {
                 console.log(error.inner);
@@ -948,7 +964,11 @@ const handleBatchDetailsShow = () => setShowBatchDetails(true);
                     Prev
                     </Button> */}
                         <Button variant="secondary"
-                            onClick={() => { handleAddBatchesClose() }}
+                            onClick={() => {
+                                setAddBatchDetails({})
+                                setMentorList([])
+                                setMentorAssistantList([])
+                                handleAddBatchesClose() }}
                         >
                             Close
                         </Button>
