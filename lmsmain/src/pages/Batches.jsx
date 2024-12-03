@@ -1,7 +1,7 @@
 import React from 'react';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import { useState,useContext } from 'react';
+import { useState, useContext } from 'react';
 import { button, Modal } from 'react-bootstrap';
 import { api2 } from '../ApiUrl/ApiUrl';
 import axios from 'axios';
@@ -32,37 +32,52 @@ import BatchMentorDetails from '../components/Batches/BatchMentorDetails';
 import Student_courses from '../Student_section/Pages/Student_courses';
 import { Datacontext } from '../Context';
 // import "../../assets/css/TableStyle/TableStyle.css"
- 
+
+
+import {
+
+    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, TablePagination,
+
+    TextField, IconButton,
+
+} from '@mui/material';
+import DownloadForOfflineOutlinedIcon from '@mui/icons-material/DownloadForOfflineOutlined';
+
+import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
+
+import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
+import { visuallyHidden } from '@mui/utils';
+
 
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
-  
+
     return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-      </div>
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+        </div>
     );
-  }
+}
 
 CustomTabPanel.propTypes = {
     children: PropTypes.node,
     index: PropTypes.number.isRequired,
     value: PropTypes.number.isRequired,
-  };
-  
-  function a11yProps(index) {
+};
+
+function a11yProps(index) {
     return {
-      id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
     };
-  }
+}
 
 
 export default function Batches() {
@@ -82,11 +97,11 @@ export default function Batches() {
     const [courseList, setCourseList] = useState([]);
     const [courselistAllObj, setCourseListAllObj] = useState([]);
     const [courselistAll, setCourseListAll] = useState([]);
-    
 
-    const {batchselect,setBatchselect}=useContext(Datacontext);
 
-   
+    const { batchselect, setBatchselect } = useContext(Datacontext);
+
+
 
 
     // for the page validatin userType
@@ -184,7 +199,7 @@ export default function Batches() {
     }, [])
 
     // const [assistantMentorObj,setAssistantMentorObj]=useState('');
-    const [mentorAssistantList,setMentorAssistantList]=useState([]);
+    const [mentorAssistantList, setMentorAssistantList] = useState([]);
     function handleAssistantMetorData() {
         console.log('submit click');
         // axios.post(`${api}/student/getStudentList`, { course: coursedata, status: status })
@@ -197,17 +212,17 @@ export default function Batches() {
                 console.error('Error:', error);
             });
     }
-    useEffect(()=>{
+    useEffect(() => {
         handleAssistantMetorData()
-    },[])
+    }, [])
 
-    
 
-    const [mentorAssistant,setMentorAssistant]=useState([
+
+    const [mentorAssistant, setMentorAssistant] = useState([
         // {id:1,name:'Sumit Singh',email:'sumit@gmail.com'},
         // {id:2,name:'Sonali Roy',email:'sonali@gmail.com'},
         // {id:2,name:'Raju Rawat',email:'Raju@gmail.com'},
-        
+
     ])
 
     const handleMentorAssistantChange = (event) => {
@@ -289,7 +304,7 @@ export default function Batches() {
             // Handle the response
             console.log("Data:", response.data);
             // handleAllBatchList();
-            if(response.data.status==1 && response.data.success==true ){
+            if (response.data.status == 1 && response.data.success == true) {
                 toast.success("Batch details added successfully!", {
                     position: "top-center",
                     style: { fontWeight: 'bold' },
@@ -301,14 +316,14 @@ export default function Batches() {
                 handlebatchcountsData()
                 handleAllBatchList();
             }
-            else if(response.data.status==1 && response.data.success==false){
+            else if (response.data.status == 1 && response.data.success == false) {
                 toast.error("Batch has been already exixts", {
                     position: "top-center",
                     style: { fontWeight: 'bold' },
                 });
             }
-            
-            
+
+
         } catch (error) {
             if (error.name === 'ValidationError') {
                 console.log(error.inner);
@@ -376,7 +391,7 @@ export default function Batches() {
             batchName: editBatchDetails.batchName,
             courseName: editCourse,
             mentorName: mentorList,
-            assistant_mentor:mentorAssistantList,
+            assistant_mentor: mentorAssistantList,
             activeFlag: editBatchDetails.activeFlag,
             id: id
 
@@ -428,63 +443,63 @@ export default function Batches() {
 
     const [clickedRow, setClickedRow] = useState(null); // State to track the clicked row
 
-  const handleRowClick = (rowId) => {
-    setClickedRow(rowId);
-    console.log(`Row with ID ${rowId} clicked`);
-  };
+    const handleRowClick = (rowId) => {
+        setClickedRow(rowId);
+        console.log(`Row with ID ${rowId} clicked`);
+    };
 
-  const [batchCountData,setBatchCountData]=useState();
-     
-     const handlebatchcountsData = () => {
-      console.log('assignment score called')
-      axios.post(`${api2}/batch/getBatchStudentMentorData`, {})
-         .then((response) => {
-            // console.log(response.data[0])
-            setBatchCountData(response.data);
-         })
-         .catch((error) => {
-            console.log(error);
-         });
-   };
-     useEffect(() => {
-      handlebatchcountsData()
+    const [batchCountData, setBatchCountData] = useState();
+
+    const handlebatchcountsData = () => {
+        console.log('assignment score called')
+        axios.post(`${api2}/batch/getBatchStudentMentorData`, {})
+            .then((response) => {
+                // console.log(response.data[0])
+                setBatchCountData(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+    useEffect(() => {
+        handlebatchcountsData()
     }, []);
 
 
-//   Batch Details modal 
-const [showBatchDetails, setShowBatchDetails] = useState(false);
-const handleBatchDetailsClose = () => setShowBatchDetails(false);
-const handleBatchDetailsShow = () => setShowBatchDetails(true);
+    //   Batch Details modal 
+    const [showBatchDetails, setShowBatchDetails] = useState(false);
+    const handleBatchDetailsClose = () => setShowBatchDetails(false);
+    const handleBatchDetailsShow = () => setShowBatchDetails(true);
 
 
 
 
-  
-  const [value, setValue] =useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+    const [value, setValue] = useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
 
 
-  const [batchData,setBatchData]=useState();
-  const [batchStudentDetails,setBatchStudentDetails]=useState()
-  const [batchMentorDetails,setBatchMentorDetails]=useState()
-     
-     const handlebatchData = (id) => {
-      console.log('assignment score called')
-      axios.post(`${api2}/batch/getBatchAllStudentDataList`, {id:id})
-         .then((response) => {
-            // console.log(response.data[0])
-            setBatchStudentDetails(response.data.students);
-            setBatchMentorDetails(response.data.mentors);
-         })
-         .catch((error) => {
-            console.log(error);
-         });
-   };
-     useEffect(() => {
-      handlebatchcountsData()
+    const [batchData, setBatchData] = useState();
+    const [batchStudentDetails, setBatchStudentDetails] = useState()
+    const [batchMentorDetails, setBatchMentorDetails] = useState()
+
+    const handlebatchData = (id) => {
+        console.log('assignment score called')
+        axios.post(`${api2}/batch/getBatchAllStudentDataList`, { id: id })
+            .then((response) => {
+                // console.log(response.data[0])
+                setBatchStudentDetails(response.data.students);
+                setBatchMentorDetails(response.data.mentors);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+    useEffect(() => {
+        handlebatchcountsData()
     }, []);
 
 
@@ -508,7 +523,7 @@ const handleBatchDetailsShow = () => setShowBatchDetails(true);
 
     return (
         <>
-            <div className='row ' style={{ marginTop: '58px',backgroundColor:"#f2edf3" }}>
+            <div className='row ' style={{ marginTop: '58px', backgroundColor: "#f2edf3" }}>
                 {/* <div className='row '>
                     <div className='container-fluid'>
                         <div className=' col-md-12 col-lg-12 col-sm-12 headLineBox d-flex justify-content-start'  >
@@ -517,98 +532,109 @@ const handleBatchDetailsShow = () => setShowBatchDetails(true);
                     </div>
                 </div> */}
                 <div className='col-md-12 col-lg-12 col-sm-12 mb-3'>
-                        <div className='row' >
+                    <div className='row' >
                         <div className='col-md-4' >
-                            <div style={{height:'150px',background:'white'}}>
-                            <p
-                                style={{
-                                    background: 'radial-gradient(circle at 10% 20%, rgb(0, 107, 141) 0%, rgb(0, 69, 91) 90%)',
-                                    width: "100%",
-                                    display: "flex",
-                                    justifyContent:'left',
-                                    padding: "10px 10px",
-                                    borderRadius: '10px 10px 0 0',
-                                    fontWeight: "bold",
-                                    fontSize:'16px',
-                                    color:"white"
-                                }}
-                                className="roboto-medium"
-                            >
-                                Total Batches
-                            </p>
-                            <p
-                                style={{
-                                    fontSize: '30px',
-                                    fontWeight: 'bold',
-                                    position: "absolute",
-                                    bottom: "25%",
-                                    left: "30px",
-                                    display: "block"
-                                }}
-                            >
-                                <div>
+                            <div style={{ height: '150px', background: 'white' }}>
+                                <p
+                                    style={{
+                                        background: 'radial-gradient(circle at 10% 20%, rgb(0, 107, 141) 0%, rgb(0, 69, 91) 90%)',
+                                        width: "100%",
+                                        display: "flex",
+                                        justifyContent: 'left',
+                                        padding: "10px 10px",
+                                        borderRadius: '10px 10px 0 0',
+                                        fontWeight: "bold",
+                                        fontSize: '16px',
+                                        color: "white"
+                                    }}
+                                    className="roboto-medium"
+                                >
+                                    Total Batches
+                                </p>
+                                <p
+                                    style={{
+                                        fontSize: '30px',
+                                        fontWeight: 'bold',
+                                        position: "absolute",
+                                        bottom: "25%",
+                                        left: "30px",
+                                        display: "block"
+                                    }}
+                                >
+                                    <div>
 
-                                </div>
-                            
-                            
-                                {batchCountData?.totalBatchCount}
-                            </p>
+                                    </div>
+
+
+                                    {batchCountData?.totalBatchCount}
+                                </p>
                             </div>
                         </div>
                         <div className='col-md-4' >
-                            <div style={{height:'150px',background:'white'}}>
-                            <p
-                                style={{
-                                    background: 'radial-gradient(circle at 10% 20%, rgb(0, 107, 141) 0%, rgb(0, 69, 91) 90%)',
-                                    width: "100%",
-                                    display: "flex",
-                                    justifyContent:'left',
-                                    padding: "10px 10px",
-                                    borderRadius: '10px 10px 0 0',
-                                    fontWeight: "bold",
-                                    fontSize:'16px',
-                                    color:"white"
-                                }}
-                                className="roboto-medium"
-                            >
-                                Active Batches
-                            </p>
-                            <p
-                                style={{
-                                    fontSize: '30px',
-                                    fontWeight: 'bold',
-                                    position: "absolute",
-                                    bottom: "25%",
-                                    left: "30px",
-                                    display: "block"
-                                }}
-                            >
-                                <div>
+                            <div style={{ height: '150px', background: 'white' }}>
+                                <p
+                                    style={{
+                                        background: 'radial-gradient(circle at 10% 20%, rgb(0, 107, 141) 0%, rgb(0, 69, 91) 90%)',
+                                        width: "100%",
+                                        display: "flex",
+                                        justifyContent: 'left',
+                                        padding: "10px 10px",
+                                        borderRadius: '10px 10px 0 0',
+                                        fontWeight: "bold",
+                                        fontSize: '16px',
+                                        color: "white"
+                                    }}
+                                    className="roboto-medium"
+                                >
+                                    Active Batches
+                                </p>
+                                <p
+                                    style={{
+                                        fontSize: '30px',
+                                        fontWeight: 'bold',
+                                        position: "absolute",
+                                        bottom: "25%",
+                                        left: "30px",
+                                        display: "block"
+                                    }}
+                                >
+                                    <div>
 
-                                </div>
-                            
-                            
-                                {batchCountData?.totalActiveBatchCount}
-                            </p>
+                                    </div>
+
+
+                                    {batchCountData?.totalActiveBatchCount}
+                                </p>
                             </div>
                         </div>
-                        
-                       
-                        </div>
-                        
+
+
                     </div>
+
+                </div>
                 <div className="row" style={{ marginTop: '20px' }}>
                     <div className="row">
                         <div className="col-md-6">
                             <div className="d-flex align-items-center">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Search here"
+                                <TextField
+
+                                    label="Search"
+
+                                    variant="outlined"
+
                                     value={searchquery}
+
                                     onChange={inputChange}
+
+                                    style={{ marginBottom: '16px' }}
+
+                                    InputLabelProps={{
+
+                                        style: { top: '-5px' }
+
+                                    }}
+
                                 />
-                                <CiSearch className="search-btn" />
                             </div>
                         </div>
                         <div className=" col-md-6 col-sm-6 col-lg-6">
@@ -703,17 +729,17 @@ const handleBatchDetailsShow = () => setShowBatchDetails(true);
                         </div>
                         
                     </div> */}
-                    
+
                     <div className="col-md-12 col-lg-12 col-sm-12">
-                       
-                            <div className="row" style={{ height: '90vh', overflowY: 'auto' }}>
-                                {BatchDetails.map((Batch, index) => (
+
+                        <div className="row" style={{ height: '90vh', overflowY: 'auto' }}>
+                            {BatchDetails.map((Batch, index) => (
                                 <div className="col-md-4" key={index}>
-                                    <InstructorCard {...Batch} handleEditBatchesShow={handleEditBatchesShow} setEditBatchDetails={setEditBatchDetails} setMentorList={setMentorList} setEditCourse={setEditCourse} handleDeleteBatch={handleDeleteBatch} handleBatchDetailsShow={handleBatchDetailsShow} handlebatchData={handlebatchData} setBatchselect={setBatchselect} setMentorAssistantList={setMentorAssistantList}/>
+                                    <InstructorCard {...Batch} handleEditBatchesShow={handleEditBatchesShow} setEditBatchDetails={setEditBatchDetails} setMentorList={setMentorList} setEditCourse={setEditCourse} handleDeleteBatch={handleDeleteBatch} handleBatchDetailsShow={handleBatchDetailsShow} handlebatchData={handlebatchData} setBatchselect={setBatchselect} setMentorAssistantList={setMentorAssistantList} />
                                 </div>
-                                ))}
-                            </div>
-                      
+                            ))}
+                        </div>
+
                     </div>
                     {/* <div className="col-md-12 col-lg-12 col-sm-12">
                         <div className="table-container" style={{ height: '90vh', overflowY: 'auto', zIndex: "1" }}>
@@ -968,7 +994,8 @@ const handleBatchDetailsShow = () => setShowBatchDetails(true);
                                 setAddBatchDetails({})
                                 setMentorList([])
                                 setMentorAssistantList([])
-                                handleAddBatchesClose() }}
+                                handleAddBatchesClose()
+                            }}
                         >
                             Close
                         </Button>
@@ -1056,7 +1083,7 @@ const handleBatchDetailsShow = () => setShowBatchDetails(true);
                                         Assistant Mentors
                                     </div>
                                     <div>
-                                    <FormControl sx={{ width: 350 }}>
+                                        <FormControl sx={{ width: 350 }}>
                                             <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
                                             <Select
                                                 labelId="demo-multiple-checkbox-label"
@@ -1077,8 +1104,8 @@ const handleBatchDetailsShow = () => setShowBatchDetails(true);
                                         </FormControl>
                                     </div>
                                 </div>
-                                </div>
-                                <div className='row mt-4'>
+                            </div>
+                            <div className='row mt-4'>
 
                                 <div className='col-md-6'>
                                     <div>
@@ -1140,23 +1167,23 @@ const handleBatchDetailsShow = () => setShowBatchDetails(true);
                             </div>
                             <div className=' col-md-12  mb-3' >
                                 <Box sx={{ width: '100%' }}>
-                                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                                    <Tab label="Student Details" {...a11yProps(0)} />
-                                    <Tab label="Mentor/Asst. Mentor" {...a11yProps(1)} />
-                                    <Tab label="Course Module" {...a11yProps(3)} />
-                                    </Tabs>
-                                </Box>
-                                <CustomTabPanel value={value} index={0}>
-                                   <BatchStudentDetails batchStudentDetails={batchStudentDetails}/>
-                                </CustomTabPanel>
-                                <CustomTabPanel value={value} index={1}>
-                                    <BatchMentorDetails batchMentorDetails={batchMentorDetails}/>
-                                </CustomTabPanel>
-                                <CustomTabPanel value={value} index={2}>
-                                    <Student_courses />
-                                </CustomTabPanel>
-                                {/* <CustomTabPanel value={value} index={2}>
+                                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                                            <Tab label="Student Details" {...a11yProps(0)} />
+                                            <Tab label="Mentor/Asst. Mentor" {...a11yProps(1)} />
+                                            <Tab label="Course Module" {...a11yProps(3)} />
+                                        </Tabs>
+                                    </Box>
+                                    <CustomTabPanel value={value} index={0}>
+                                        <BatchStudentDetails batchStudentDetails={batchStudentDetails} />
+                                    </CustomTabPanel>
+                                    <CustomTabPanel value={value} index={1}>
+                                        <BatchMentorDetails batchMentorDetails={batchMentorDetails} />
+                                    </CustomTabPanel>
+                                    <CustomTabPanel value={value} index={2}>
+                                        <Student_courses />
+                                    </CustomTabPanel>
+                                    {/* <CustomTabPanel value={value} index={2}>
                                     Item Three
                                 </CustomTabPanel> */}
                                 </Box>
@@ -1165,18 +1192,19 @@ const handleBatchDetailsShow = () => setShowBatchDetails(true);
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                   
+
                     <Stack spacing={2} direction="row" >
                         {/* <Button variant="contained" onClick={() => {
                             
                         }}>Update</Button> */}
-                        
-                   
+
+
                         <Button variant="secondary"
-                            onClick={() => { 
+                            onClick={() => {
                                 setBatchMentorDetails([])
                                 setBatchStudentDetails([])
-                                handleBatchDetailsClose() }}
+                                handleBatchDetailsClose()
+                            }}
                         >
                             Close
                         </Button>

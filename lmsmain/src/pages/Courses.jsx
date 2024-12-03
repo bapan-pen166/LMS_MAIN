@@ -1,7 +1,7 @@
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import { FormControl, MenuItem, Select, InputLabel } from '@mui/material';
+// import { FormControl, MenuItem, Select, InputLabel } from '@mui/material';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
@@ -19,10 +19,32 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import '../../src/assets/css/Custom_Global_Style/Global.css';
-import { CiSearch } from "react-icons/ci";
+// import { CiSearch } from "react-icons/ci";
 import PageNotFound from '../ErrorPage/PageNotFound';
 import * as Yup from 'yup';
 import { Flex } from '@patternfly/react-core';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import CloseIcon from '@mui/icons-material/Close';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { faIdBadge, faPencil } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import {
+
+    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, TablePagination,
+
+    TextField, IconButton,
+
+} from '@mui/material';
+import DownloadForOfflineOutlinedIcon from '@mui/icons-material/DownloadForOfflineOutlined';
+
+import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
+
+import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
+import { visuallyHidden } from '@mui/utils';
+
 
 
 export default function Courses() {
@@ -104,16 +126,6 @@ export default function Courses() {
                 position: "top-center",
                 style: { fontWeight: 'bold' },
             });
-            if(response.data.status==1){
-                handleAddCourseClose()
-                
-                setAddCourseDetails({
-                    courseName: '',
-                    code: '',
-                    description: '',
-                    content: null,
-                });
-            }
         } catch (error) {
             if (error.name === 'ValidationError') {
                 console.log(error.inner);
@@ -175,8 +187,8 @@ export default function Courses() {
     const handleEditCourse = (e) => {
         const { name, value, type, files } = e.target;
         console.log(e.target.files)
-        
-       console.log(name)
+
+        console.log(name)
 
         setEditCourseDetails({
             ...editCourseDetails,
@@ -234,18 +246,6 @@ export default function Courses() {
                 console.log(" data : ", Response.data);
                 // setCourseList(Response.data.result);
                 handleAllCourseList()
-                if(Response.data.status===1){
-                    console.log(" data : ", Response.data.status);
-                    setEditCourseDetails({
-                        courseName: '',
-                        code: '',
-                        description: '',
-                        content: null,
-                        activeFlag: '',
-                        id: '',
-                        delete: ''
-                    })
-                }
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -412,21 +412,6 @@ export default function Courses() {
                     position: "top-center",
                     style: { fontWeight: 'bold' },
                 });
-                setCourseContentData([{
-                    courseId: '',
-                    courseName: '',
-                    contentName: '',
-                    contentId: '',
-                    contentDuration: '',
-                    subModules: [
-                        {
-                            subModuleNm: '',
-                            contentDetails: '',
-                            moduleDuration: ''
-                        }
-                    ]
-                }])
-
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -451,7 +436,7 @@ export default function Courses() {
     const [submoduleListView, setSubModuleListView] = useState();
     const [submoduleView, setSubmoduleView] = useState('');
     const [subModuleContentPdf, setSubmoduleContentPdf] = useState();
-    const [course,setCourse] = useState();
+    const [course, setCourse] = useState();
 
 
 
@@ -600,7 +585,6 @@ export default function Courses() {
                     position: "top-center",
                     style: { fontWeight: 'bold' },
                 });
-                setSubModuleDetails({})
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -718,16 +702,16 @@ export default function Courses() {
     }, []);
 
 
-    useEffect(()=>{
+    useEffect(() => {
         axios.get(`${api}/student/getCourseList`)
-        .then((Response)=>{
-            setCourse(Response?.data?.courseList)
+            .then((Response) => {
+                setCourse(Response?.data?.courseList)
 
-        })
-        .catch((error)=>{
-           console.log(error);   
-        })
-    },[])
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }, [])
 
 
     if (isLoading) {
@@ -744,155 +728,128 @@ export default function Courses() {
 
     return (
         <>
-            <div className='row ' style={{ marginTop: '58px',backgroundColor: '#f2edf3' }} >
-                {/* <div className='row '>
-                    <div className='container-fluid'>
-                        <div className=' col-md-12 col-lg-12 col-sm-12 headLineBox d-flex justify-content-start'  >
-                            <h4>Courses</h4>
-                        </div>
-                    </div>
-                </div> */}
-                <div className="row" style={{ marginTop: '20px' }}>
-                    <div className="row">
-                        <div className="col-md-6">
-                            <div className="d-flex align-items-center">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Search here"
-                                    value={searchquery}
-                                    onChange={inputChange}
-                                />
-                                <CiSearch className="search-btn" />
-                            </div>
-                        </div>
-                        <div className="col-md-6 col-sm-6 col-lg-6">
+            <div className='row ' style={{ fontFamily: "Roboto, sans-serif" }}>
+                <div className="container-fluid">
+                    <div className="row" >
+                        <div className="row ml-0">
+                            <div className="col-md-6">
+                                <div className="d-flex align-items-center">
+                                    {/* <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Search here"
+                                        value={searchquery}
+                                        onChange={inputChange}
+                                    />
+                                    <CiSearch className="search-btn" /> */}
+                                    <TextField
 
-                            <Stack spacing={2} direction="row" sx={{ justifyContent: 'flex-end' }}>
-                                {/* <Button variant="contained" onClick={() => {
+                                        label="Search"
+
+                                        variant="outlined"
+
+                                        value={searchquery}
+
+                                        onChange={inputChange}
+
+                                        style={{ marginBottom: '16px' }}
+
+                                        InputLabelProps={{
+
+                                            style: { top: '-5px' }
+
+                                        }}
+
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-md-6 col-sm-6 col-lg-6">
+
+                                <Stack spacing={2} direction="row" sx={{ justifyContent: 'flex-end' }}>
+                                    {/* <Button variant="contained" onClick={() => {
                                     handleDownloadXLS()
                                 }}>Download Content Format</Button> */}
-                                <Button variant="contained" onClick={() => {
-                                    handleAddCourseShow()
-                                }}>Add Course</Button>
+                                    <Button style={{ backgroundColor: "rgb(32, 109, 50)" }} variant="contained" onClick={() => {
+                                        handleAddCourseShow()
+                                    }}>Add Course <AddCircleOutlineIcon /></Button>
 
-                            </Stack>
+                                </Stack>
+                            </div>
                         </div>
-                    </div>
-                    <div className="col-md-12 col-lg-12 col-sm-12">
-                        <div className="table-container" style={{ height: '90vh', overflowY: 'auto', zIndex: "1" }}>
-                            <table className="table table-bordered pt-1" >
-                                <thead style={{ position: 'sticky', top: -2, zIndex: 3 }}>
-                                    <tr>
-                                        <th>Courses</th>
-                                        <th >Code</th>
-                                        <th >Updated On</th>
-                                        <th >Status</th>
-                                        <th >Action</th>
+                        <div className="col-md-12 col-lg-12 col-sm-12">
+                            <div className="p-0 custom-table-container" style={{ paddingTop: "0px", height: '400px', overflowY: 'auto' }}>
+                                <table className="table-bordered custom-table" >
+                                    <thead className="custom-thead " style={{ position: 'sticky', top: 0, zIndex: 3, fontSize: "1vw" }}>
+                                        <tr>
+                                            <th style={{ textAlign: 'left', verticalAlign: 'middle' }}>Courses</th>
+                                            <th style={{ textAlign: 'left', verticalAlign: 'middle' }}>Code</th>
+                                            <th style={{ textAlign: 'left', verticalAlign: 'middle' }}>Updated On</th>
+                                            <th style={{ textAlign: 'left', verticalAlign: 'middle' }}>Status</th>
+                                            <th style={{ textAlign: 'left', verticalAlign: 'middle' }}>Action</th>
+                                        </tr>
+                                    </thead>
 
-
-                                    </tr>
-                                </thead>
-
-                                <tbody style={{ zIndex: 1 }}>
-                                    {courseList?.map(courseList => {
-                                        return (
-                                            <>
-                                                <tr>
-                                                    <td>{courseList?.courseName}</td>
-                                                    <td>{courseList?.code}</td>
-                                                    <td>1/2/2024</td>
-                                                    <td>{
-                                                        courseList?.activeFlag ? 'Active' : 'De-Active'
-                                                        // courseList?.activeFlag == '0' ? <p>De-Active</p> :
-                                                        // courseList?.activeFlag == '1' ? <p>Active</p> : 
-                                                        // courseList?.activeFlag == '2' ? <p>Pending</p> :''
-                                                        // (()=>{
-                                                        //     if(courseList?.activeFlag==='0'){
-                                                        //         return (<><p style={{backgroundColor:'lightgray'}}>De-Active</p> </>)
-                                                        //     }
-                                                        //     else if(courseList?.activeFlag==='1'){
-                                                        //         return (<><p style={{backgroundColor:'green'}}>Active</p> </>)
-                                                        //     }
-                                                        //     else if(courseList?.activeFlag==='2') {
-                                                        //        return (<p style={{backgroundColor:'red'}}> Pending</p>)
-                                                        //     }
-                                                        // })()
-
-                                                    }</td>
-                                                    <td><button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Edit'><i class="fa fa-edit custom-icon" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }} onClick={() => {
-                                                        // handleEditCourseData(courseList?.id)
-                                                        handleEditCourseShow()
-                                                        setEditCourseDetails({
-                                                            courseName: courseList?.courseName,
-                                                            code: courseList?.code,
-                                                            description: courseList?.description,
-                                                            // content: courseList?.description,
-                                                            activeFlag: courseList?.activeFlag,
-                                                            id: courseList?.id,
-
-                                                        })
-                                                    }}></i></button>
-                                                        <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Delete'><i class="fa fa-trash custom-icon" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }} onClick={() => {
-                                                            handleDeleteCourse(
-
-                                                                courseList?.courseName,
-                                                                courseList?.code,
-                                                                courseList?.description,
-                                                                //  courseList?.description,
-                                                                courseList?.activeFlag,
-                                                                courseList?.id,
-
-
-                                                            )
-                                                        }}></i></button>
-                                                        <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='View'><i class="fa fa-eye custom-icon" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }} onClick={() => {
+                                    <tbody className="custom-tbody" style={{ fontSize: "1vw" }}>
+                                        {courseList?.map(courseList => {
+                                            return (
+                                                <>
+                                                    <tr>
+                                                        <td >{courseList?.courseName}</td>
+                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{courseList?.code}</td>
+                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>1/2/2024</td>
+                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{
+                                                            courseList?.activeFlag ? 'Active' : 'De-Active'
+                                                        }</td>
+                                                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}><button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Edit'><i class="fa fa-edit custom-icon" style={{ color: 'rgb(32, 109, 50)', fontSize: "14pt", padding: '2px' }} onClick={() => {
                                                             // handleEditCourseData(courseList?.id)
-                                                            handleViewCourseShow()
-                                                            // setEditCourseDetails({
-                                                            //     courseName: courseList?.courseName,
-                                                            //     code: courseList?.code,
-                                                            //     description: courseList?.description,
-                                                            //     // content: courseList?.description,
-                                                            //     activeFlag:courseList?.activeFlag,
-                                                            //     id:courseList?.id,
-
-                                                            // })
-                                                            setViewCourse({
+                                                            handleEditCourseShow()
+                                                            setEditCourseDetails({
                                                                 courseName: courseList?.courseName,
-                                                                courseCode: courseList?.code,
-                                                                courseDesc: courseList?.description,
-                                                                courseDocFolder: courseList?.folderName,
-                                                                id: courseList?.id
+                                                                code: courseList?.code,
+                                                                description: courseList?.description,
+                                                                // content: courseList?.description,
+                                                                activeFlag: courseList?.activeFlag,
+                                                                id: courseList?.id,
+
                                                             })
-                                                            setcourseContent(courseList?.folderName)
-                                                            handleModuleName(courseList?.courseName, courseList?.code)
                                                         }}></i></button>
-                                                    </td>
-                                                </tr>
-                                            </>
-                                        )
-                                    })}
-                                    {/* <tr>
-                                        <td>BIM Ready Plus1</td>
-                                        <td>BIM1</td>
-                                        <td>01/02/2024</td>
-                                        <td>Active</td>
-                                        <td><button style={{ background: 'transparent', border: 'none' }}><i class="fa fa-edit" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }}></i></button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>BIM Ready</td>
-                                        <td>BIM1</td>
-                                        <td>01/02/2024</td>
-                                        <td>Active</td>
-                                        <td><button style={{ background: 'transparent', border: 'none' }}><i class="fa fa-edit" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }}></i></button>
-                                        <button style={{ background: 'transparent', border: 'none' }}><i class="fa fa-trash" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }}></i></button>
-                                        </td>
-                                    </tr> */}
+                                                            <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Delete'><i class="fa fa-trash custom-icon" style={{ color: 'rgb(32, 109, 50)', fontSize: "14pt", padding: '2px' }} onClick={() => {
+                                                                handleDeleteCourse(
+
+                                                                    courseList?.courseName,
+                                                                    courseList?.code,
+                                                                    courseList?.description,
+                                                                    //  courseList?.description,
+                                                                    courseList?.activeFlag,
+                                                                    courseList?.id,
 
 
-                                </tbody>
-                            </table>
+                                                                )
+                                                            }}></i></button>
+                                                            <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='View'><i class="fa fa-eye custom-icon" style={{ color: 'rgb(32, 109, 50)', fontSize: "14pt", padding: '2px' }} onClick={() => {
+                                                                // handleEditCourseData(courseList?.id)
+                                                                handleViewCourseShow()
+
+                                                                setViewCourse({
+                                                                    courseName: courseList?.courseName,
+                                                                    courseCode: courseList?.code,
+                                                                    courseDesc: courseList?.description,
+                                                                    courseDocFolder: courseList?.folderName,
+                                                                    id: courseList?.id
+                                                                })
+                                                                setcourseContent(courseList?.folderName)
+                                                                handleModuleName(courseList?.courseName, courseList?.code)
+                                                            }}></i></button>
+                                                        </td>
+                                                    </tr>
+                                                </>
+                                            )
+                                        })}
+
+
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -907,7 +864,7 @@ export default function Courses() {
                 <Modal.Body>
                     <div className='container-fluid'>
                         <div className='row'>
-                            <div className=' col-md-12 headLineBox mb-3' >
+                            <div className=' col-md-12 mb-3' >
                                 <h4>Add Course</h4>
                             </div>
 
@@ -992,17 +949,17 @@ export default function Courses() {
                         Save Changes
                     </Button> */}
                     <Stack spacing={2} direction="row" >
-                        <Button variant="contained" onClick={() => {
+                        <Button style={{ backgroundColor: "rgb(32, 109, 50)" }} variant="contained" onClick={() => {
                             handleAddCourseData()
                             // handleInsReviewClose()
-                        }}>Add</Button>
+                        }}> Add <AddCircleOutlineIcon /></Button>
                         {/* <Button variant="contained" color="success">
                     Prev
                     </Button> */}
-                        <Button variant="secondary"
+                        <Button variant="contained" style={{ backgroundColor: "red" }}
                             onClick={() => { handleAddCourseClose() }}
                         >
-                            Close
+                            Close <CloseIcon />
                         </Button>
                     </Stack>
                 </Modal.Footer>
@@ -1019,24 +976,24 @@ export default function Courses() {
                         <div className='row'>
 
 
-                            <div className=' col-md-12 headLineBox mb-3' >
+                            <div className=' col-md-12 mb-3' >
                                 <h4>Edit Course</h4>
                             </div>
 
                             <div className="row">
                                 <div className='col-md-6'>
-                                <div>
+                                    <div>
                                         Select course Name
                                     </div>
-                                <select name='courseName' value={editCourseDetails.courseName} style={{ borderRadius: "10px", backgroundColor: "white" }} className="form-select  mb-3 mt-1 w-100" aria-label="Default select example" onChange={handleEditCourse}>
-                                <option value="[]" selected>Courses</option>
-                                {course?.length > 0 && course.map((data) => {
-                                    const Course = data.Course;
-                                    return (
-                                        <option value={data.Course}>{data.Course}</option>
-                                    );
-                                })}
-                            </select>
+                                    <select name='courseName' value={editCourseDetails.courseName} style={{ borderRadius: "10px", backgroundColor: "white" }} className="form-select  mb-3 mt-1 w-100" aria-label="Default select example" onChange={handleEditCourse}>
+                                        <option value="[]" selected>Courses</option>
+                                        {course?.length > 0 && course.map((data) => {
+                                            const Course = data.Course;
+                                            return (
+                                                <option value={data.Course}>{data.Course}</option>
+                                            );
+                                        })}
+                                    </select>
                                 </div>
                                 <div className='col-md-6'>
                                     <div>
@@ -1096,13 +1053,12 @@ export default function Courses() {
                 <Modal.Footer>
 
                     <Stack spacing={2} direction="row" >
-                        <Button variant="contained" onClick={() => {
+                        <Button style={{ backgroundColor: "rgb(32, 109, 50)" }} variant="contained" onClick={() => {
                             // handleAddCourseData()
                             // handleInsReviewClose()
-                            handleEditCourseClose()
                             handleEditCourseData()
-                        }}>Update</Button>
-                        <Button variant="contained" onClick={() => {
+                        }}>Update <span style={{ marginLeft: "3px" }}> <FontAwesomeIcon icon={faPencil} /> </span> </Button>
+                        <Button style={{ backgroundColor: "rgb(32, 109, 50)" }} variant="contained" onClick={() => {
                             // handleAddCourseData()
                             // handleInsReviewClose()
                             handleViewCourseContentShow()
@@ -1113,17 +1069,18 @@ export default function Courses() {
                                 courseName: editCourseDetails?.courseName,
                                 courseId: editCourseDetails?.code
                             }]);
-                        }}>Add Content</Button>
+                        }}>Add Content <ArrowForwardIcon /></Button>
                         <Button variant="contained" onClick={() => {
                             handleEditCourseClose()
                             handleEditCourseContentShow()
                             handleModuleName(editCourseDetails?.courseName, editCourseDetails?.code)
-                        }}>Edit Content</Button>
+                        }}>Edit Content <ArrowForwardIcon /></Button>
 
-                        <Button variant="secondary"
+                        <Button variant="contained"
+                            style={{ backgroundColor: "red" }}
                             onClick={() => { handleEditCourseClose() }}
                         >
-                            Close
+                            Close <CloseIcon />
                         </Button>
                     </Stack>
                 </Modal.Footer>
@@ -1147,14 +1104,7 @@ export default function Courses() {
                                 Course Name
                             </div>
                             <div className='col-md-4 p-2'>
-                                {/* <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='courseName'
-                                        value={addCourseDetails?.courseName}
-                                        onChange={handleAddCourse }
-                                        // required
-                                    />
-                                </div> */}
+
                                 <div>
                                     <p>{viewCourse?.courseName}</p>
                                 </div>
@@ -1163,14 +1113,7 @@ export default function Courses() {
                                 Course Code
                             </div>
                             <div className='col-md-4 p-2'>
-                                {/* <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                        value={addCourseDetails?.code}
-                                        onChange={handleAddCourse }
-                                        // required
-                                    />
-                                </div> */}
+
                                 <div>
                                     <p>{viewCourse?.courseCode}</p>
                                 </div>
@@ -1191,15 +1134,7 @@ export default function Courses() {
 
                                 <ScheduleEmChip individualEm={individualEm} setIndividualEm={setIndividualEm} />
                             </div>
-                            {/* <div className='col-md-2 p-2'>
-                                View Doc
-                            </div> */}
-                            {/* <div className='col-md-4 p-2'>
-                                <div class="input-group ">
-                                    <button className='btn btn-light' onClick={
-                                        ()=>{viewDoc(viewCourse?.courseDocFolder)}}>View Doc</button>
-                                </div>
-                            </div> */}
+
                             <div className='col-md-12 p-4 d-flex justify-content-center ' >
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked={contentChk === true} onChange={() => { setContentChk(!contentChk) }} />
@@ -1230,26 +1165,7 @@ export default function Courses() {
                                                     {/* <td style={{ fontSize: '14px' }}>{index + 1}</td> */}
 
                                                     <td style={{ fontSize: '14px' }}>{val?.file}</td>
-                                                    {/* <td style={{ fontSize: '14px' }}>{val?.status === 1 ? "Active" : "Deactive"}</td> */}
-                                                    {/* <td><div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}><div><FaEdit onClick={handleShow} style={{ cursor: "pointer" }} /></div></div></td> */}
-                                                    {/* <td>{
-                                                        (()=>{
-                                                            const parts = val?.file.split('_');
 
-                                                            // Step 2: Extract the date and time part (third part)
-                                                            if(parts.length>1){console.log
-                                                            const datetimePart = parts[2].replace('.pdf', '');
-                                                            
-
-                                                            // Step 3: Split the date and time by dash and colon
-                                                            const [datePart, timePart] = datetimePart.split('-').join(':').split(':', 6);
-
-                                                            // Combine the date and time parts into a proper format
-                                                            const datetime = `${datePart.slice(0, 4)}-${datePart.slice(4, 6)}-${datePart.slice(6)} ${timePart.slice(0, 2)}:${timePart.slice(2, 4)}:${timePart.slice(4)}`;
-                                                            return datetime
-                                                            }
-                                                        })()
-                                                        }</td> */}
                                                     <td><button className='btn btn-light' onClick={
                                                         () => { viewDoc(val?.path) }}>View Doc</button></td>
 
@@ -1273,9 +1189,7 @@ export default function Courses() {
                                             class="form-control" id="exampleFormControlSelect1">
                                             <option value=''>---select---</option>
                                             {moduleListView?.map(val => <option value={JSON.stringify(val)}>{val.contentName}</option>)}
-                                            {/* <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Others">Others</option> */}
+
                                         </select>
                                     </div>
                                     <div className='col-md-2 p-2'>
@@ -1290,9 +1204,7 @@ export default function Courses() {
                                                 console.log(val)
                                                 return (<option value={JSON.stringify(val)}>{val.subModuleNm}</option>)
                                             })}
-                                            {/* <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Others">Others</option> */}
+
                                         </select>
                                     </div>
                                     <div className='col-md-12 col-lg-12 scroll' style={{ paddingRight: '0px', paddingLeft: '0px' }}>
@@ -1314,26 +1226,7 @@ export default function Courses() {
                                                             {/* <td style={{ fontSize: '14px' }}>{index + 1}</td> */}
 
                                                             <td style={{ fontSize: '14px' }}>{val?.file}</td>
-                                                            {/* <td style={{ fontSize: '14px' }}>{val?.status === 1 ? "Active" : "Deactive"}</td> */}
-                                                            {/* <td><div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "5px" }}><div><FaEdit onClick={handleShow} style={{ cursor: "pointer" }} /></div></div></td> */}
-                                                            {/* <td>{
-                                                        (()=>{
-                                                            const parts = val?.file.split('_');
 
-                                                            // Step 2: Extract the date and time part (third part)
-                                                            if(parts.length>1){console.log
-                                                            const datetimePart = parts[2].replace('.pdf', '');
-                                                            
-
-                                                            // Step 3: Split the date and time by dash and colon
-                                                            const [datePart, timePart] = datetimePart.split('-').join(':').split(':', 6);
-
-                                                            // Combine the date and time parts into a proper format
-                                                            const datetime = `${datePart.slice(0, 4)}-${datePart.slice(4, 6)}-${datePart.slice(6)} ${timePart.slice(0, 2)}:${timePart.slice(2, 4)}:${timePart.slice(4)}`;
-                                                            return datetime
-                                                            }
-                                                        })()
-                                                        }</td> */}
                                                             <td><button className='btn btn-light' onClick={
                                                                 () => { viewSubModuleDoc(val?.path) }}>View Doc</button></td>
 
@@ -1349,9 +1242,7 @@ export default function Courses() {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    {/* <Button variant="primary" onClick={handleClose}>
-                        Save Changes
-                    </Button> */}
+
                     <Stack spacing={2} direction="row" >
                         <Button variant="contained" onClick={() => {
                             sendEmailCourse(viewCourse?.id)
@@ -1360,10 +1251,10 @@ export default function Courses() {
                         {/* <Button variant="contained" color="success">
                     Prev
                     </Button> */}
-                        <Button variant="secondary"
+                        <Button variant="contained"
                             onClick={() => { handleViewCourseClose() }}
                         >
-                            Close
+                            Close <CloseIcon />
                         </Button>
                     </Stack>
                 </Modal.Footer>
@@ -1380,7 +1271,7 @@ export default function Courses() {
                         <div className='row'>
 
 
-                            <div className=' col-md-12 headLineBox mb-3' >
+                            <div className=' col-md-12 mb-3' >
                                 <h4>Add Course Content</h4>
                             </div>
 
@@ -1389,13 +1280,7 @@ export default function Courses() {
                                 Course Name
                             </div>
                             <div className='col-md-4 p-2'>
-                                {/* <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='courseName'
-                                        value={editCourseDetails?.courseName}
-                                        onChange={handleEditCourse }
-                                    />
-                                </div> */}
+
                                 <div>
                                     <p>{editCourseDetails?.courseName}</p>
 
@@ -1405,19 +1290,12 @@ export default function Courses() {
                                 Course Code
                             </div>
                             <div className='col-md-4 p-2'>
-                                {/* <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                        name='code'
-                                        value={editCourseDetails?.code}
-                                        onChange={handleEditCourse }
-                                        
-                                    />
-                                </div> */}
+
                                 <div>
                                     <p>{editCourseDetails?.code}</p>
                                 </div>
                             </div>
-                            
+
 
                             <div className="col-md-2 p-2 d-flex align-items-center">Module Name</div>
                             <div className="col-md-4 p-2">
@@ -1511,10 +1389,10 @@ export default function Courses() {
                                     ></i> */}
                                 <Stack spacing={1} direction="row" >
                                     <Button variant="contained" onClick={addSubModule} color='success'>
-                                        ADD
+                                        ADD <AddCircleOutlineIcon />
                                     </Button>
                                     <Button variant="contained" onClick={removeSubModule} color='error'>
-                                        Delete
+                                        Delete <DeleteForeverIcon />
                                     </Button>
                                 </Stack>
                             </div>
@@ -1530,35 +1408,18 @@ export default function Courses() {
                             // handleInsReviewClose()
                             handleEditCourseShow()
                             handleViewCourseContentClose()
-                        }}>PREV</Button>
-                        <Button variant="contained" onClick={() => {
+                        }}><ArrowBackIcon /> PREV</Button>
+                        <Button style={{ backgroundColor: "rgb(32, 109, 50)" }} variant="contained" onClick={() => {
                             // handleAddCourseData()
                             // handleInsReviewClose()
                             // handleEditCourseData()
                             handleContentDetails(editCourseDetails?.courseName, editCourseDetails?.code)
-                            handleViewCourseContentClose()
-                        }}>ADD</Button>
+                        }}>ADD <AddCircleOutlineIcon /></Button>
 
-                        <Button variant="secondary"
-                            onClick={() => { 
-                                handleViewCourseContentClose()
-                                setCourseContentData([{
-                                    courseId: '',
-                                    courseName: '',
-                                    contentName: '',
-                                    contentId: '',
-                                    contentDuration: '',
-                                    subModules: [
-                                        {
-                                            subModuleNm: '',
-                                            contentDetails: '',
-                                            moduleDuration: ''
-                                        }
-                                    ]
-                                }])
-                            }}
+                        <Button variant="contained" style={{ backgroundColor: "red" }}
+                            onClick={() => { handleViewCourseContentClose() }}
                         >
-                            Close
+                            Close <CloseIcon />
                         </Button>
                     </Stack>
                 </Modal.Footer>
@@ -1576,7 +1437,7 @@ export default function Courses() {
                         <div className='row'>
 
 
-                            <div className=' col-md-12 headLineBox mb-3' >
+                            <div className=' col-md-12 mb-3' >
                                 <h4>Edit Course Content</h4>
                             </div>
 
@@ -1674,7 +1535,7 @@ export default function Courses() {
                                 </div>
                             </div>
                             <div className='col-md-2 p-2'>
-                                <Button variant="contained" onClick={() => { handleUploadSubModule() }}>ADD</Button>
+                                <Button style={{ backgroundColor: "rgb(32, 109, 50)" }} variant="contained" onClick={() => { handleUploadSubModule() }}>ADD <AddCircleOutlineIcon /></Button>
                             </div>
                             <div className=' col-md-4 p-2 d-flex justify-content-end'>
                                 <div className="form-check">
@@ -1746,10 +1607,10 @@ export default function Courses() {
                                     ></i> */}
                                 <Stack spacing={1} direction="row" >
                                     <Button variant="contained" onClick={addSubModule} color='success'>
-                                        ADD
+                                        ADD <AddCircleOutlineIcon />
                                     </Button>
                                     <Button variant="contained" onClick={removeSubModule} color='error'>
-                                        Delete
+                                        Delete  <DeleteForeverIcon />
                                     </Button>
                                 </Stack>
                             </div>}
@@ -1856,26 +1717,20 @@ export default function Courses() {
                             // handleInsReviewClose()
                             handleEditCourseShow()
                             handleEditCourseContentClose()
-                        }}>PREV</Button>
-                        <Button variant="contained" onClick={() => {
+                        }}><ArrowBackIcon />PREV</Button>
+                        <Button style={{ backgroundColor: "rgb(32, 109, 50)" }} variant="contained" onClick={() => {
                             // handleAddCourseData()
                             // handleInsReviewClose()
                             // handleEditCourseData()
                             // handleContentDetails(editCourseDetails?.courseName,editCourseDetails?.code)
                             handleEditContentdetails()
                             handleAddNewSubContentdetails()
-                            handleEditCourseContentClose()
-                            
-                            // setSubModuleDetails({})
-                        }}>Update</Button>
+                        }}>Update <span style={{ marginLeft: "3px" }}> <FontAwesomeIcon icon={faPencil} /> </span></Button>
 
-                        <Button variant="secondary"
-                            onClick={() => { handleEditCourseContentClose() 
-                                
-                                setSubModuleDetails({})
-                            }}
+                        <Button variant="contained" style={{ backgroundColor: "red" }}
+                            onClick={() => { handleEditCourseContentClose() }}
                         >
-                            Close
+                            Close <CloseIcon />
                         </Button>
                     </Stack>
                 </Modal.Footer>
