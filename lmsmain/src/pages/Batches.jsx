@@ -12,6 +12,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { useEffect } from 'react';
 import Courses from './Courses';
 import { CiSearch } from "react-icons/ci";
+import CloseIcon from '@mui/icons-material/Close';
 
 import '../../src/assets/css/Custom_Global_Style/Global.css';
 import PageNotFound from '../ErrorPage/PageNotFound';
@@ -26,6 +27,8 @@ import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import { faIdBadge, faPencil, faPeopleGroup, faChartLine } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import BatchStudentDetails from '../components/Batches/StudentsDetails';
 import BatchMentorDetails from '../components/Batches/BatchMentorDetails';
@@ -47,6 +50,7 @@ import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import { visuallyHidden } from '@mui/utils';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 
 
@@ -523,7 +527,7 @@ export default function Batches() {
 
     return (
         <>
-            <div className='row ' style={{ marginTop: '58px', backgroundColor: "#f2edf3" }}>
+            <div className='row ' >
                 {/* <div className='row '>
                     <div className='container-fluid'>
                         <div className=' col-md-12 col-lg-12 col-sm-12 headLineBox d-flex justify-content-start'  >
@@ -531,7 +535,41 @@ export default function Batches() {
                         </div>
                     </div>
                 </div> */}
-                <div className='col-md-12 col-lg-12 col-sm-12 mb-3'>
+                <div className="row container-fluid">
+                    <div class="row g-2 container-fluid">
+                        <div class="col-sm-6 col-lg-6">
+                            <div className="card mb-1">
+                                <div className="d-flex justify-content-between align-items-center p-3 bg-orange bg-opacity-15 rounded-3 " >
+                                    <span className="text-orange">
+                                        <FontAwesomeIcon style={{ fontSize: "5vw" }} icon={faPeopleGroup} />
+                                    </span>
+                                    <div className="ms-4">
+                                        <h5 className="purecounter fw-bold pb-2" style={{ fontSize: "2vw" }}>Total Batches</h5>
+                                        <p className="mb-0 h6 fw-light"> {batchCountData?.totalBatchCount}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 col-lg-6">
+                            <div className="card mb-1">
+                                <div className="d-flex justify-content-between align-items-center p-3 bg-purple bg-opacity-15 rounded-3">
+                                    <span className="text-purple">
+                                        <FontAwesomeIcon style={{ fontSize: "5vw" }} icon={faChartLine} />
+                                    </span>
+                                    <div className="ms-4">
+                                        <h5 className="purecounter fw-bold pb-2" style={{ fontSize: "2vw" }}>Active Batches</h5>
+                                        <p className="mb-0 h6 fw-light">{batchCountData?.totalActiveBatchCount}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                {/* <div className='col-md-12 col-lg-12 col-sm-12 mb-3'>
                     <div className='row' >
                         <div className='col-md-4' >
                             <div style={{ height: '150px', background: 'white' }}>
@@ -611,11 +649,11 @@ export default function Batches() {
 
                     </div>
 
-                </div>
-                <div className="row" style={{ marginTop: '20px' }}>
+                </div> */}
+                <div className="row container-fluid" style={{ marginTop: '20px' }}>
                     <div className="row">
-                        <div className="col-md-6">
-                            <div className="d-flex align-items-center">
+                        <div className="col-md-6 pl-6">
+                            <div className="d-flex align-items-center pl-3">
                                 <TextField
 
                                     label="Search"
@@ -641,94 +679,14 @@ export default function Batches() {
 
                             <Stack spacing={2} direction="row" sx={{ justifyContent: 'flex-end' }}>
 
-                                <Button variant="contained" onClick={() => {
+                                <Button style={{ backgroundColor: "rgb(32, 109, 50)",paddingRight:"10px" }} variant="contained" onClick={() => {
                                     handleAddBatchesShow()
-                                }}>Add Batch</Button>
+                                }}>Add Batch <AddCircleOutlineIcon /></Button>
 
                             </Stack>
                         </div>
                     </div>
-                    {/* <div className='col-md-12 col-lg-12 col-sm-12 mb-3'>
-                        <div className='row' >
-                        <div className='col-md-4' >
-                            <div style={{height:'150px',background:'white'}}>
-                            <p
-                                style={{
-                                    background: 'radial-gradient(circle at 10% 20%, rgb(0, 107, 141) 0%, rgb(0, 69, 91) 90%)',
-                                    width: "100%",
-                                    display: "flex",
-                                    justifyContent:'left',
-                                    padding: "10px 10px",
-                                    borderRadius: '10px 10px 0 0',
-                                    fontWeight: "bold",
-                                    fontSize:'16px',
-                                    color:"white"
-                                }}
-                                className="roboto-medium"
-                            >
-                                Overall Performance
-                            </p>
-                            <p
-                                style={{
-                                    fontSize: '30px',
-                                    fontWeight: 'bold',
-                                    position: "absolute",
-                                    bottom: "25%",
-                                    left: "30px",
-                                    display: "block"
-                                }}
-                            >
-                                <div>
 
-                                </div>
-                            
-                            
-                                98%
-                            </p>
-                            </div>
-                        </div>
-                        <div className='col-md-4' >
-                            <div style={{height:'150px',background:'white'}}>
-                            <p
-                                style={{
-                                    background: 'radial-gradient(circle at 10% 20%, rgb(0, 107, 141) 0%, rgb(0, 69, 91) 90%)',
-                                    width: "100%",
-                                    display: "flex",
-                                    justifyContent:'left',
-                                    padding: "10px 10px",
-                                    borderRadius: '10px 10px 0 0',
-                                    fontWeight: "bold",
-                                    fontSize:'16px',
-                                    color:"white"
-                                }}
-                                className="roboto-medium"
-                            >
-                                Overall Performance
-                            </p>
-                            <p
-                                style={{
-                                    fontSize: '30px',
-                                    fontWeight: 'bold',
-                                    position: "absolute",
-                                    bottom: "25%",
-                                    left: "30px",
-                                    display: "block"
-                                }}
-                            >
-                                <div>
-
-                                </div>
-                            
-                            
-                                98%
-                            </p>
-                            </div>
-                        </div>
-                        
-                       
-                        </div>
-                        
-                    </div> */}
 
                     <div className="col-md-12 col-lg-12 col-sm-12">
 
@@ -826,8 +784,8 @@ export default function Batches() {
 
                     <div className='container-fluid'>
                         <div className='row'>
-                            <div className=' col-md-12 headLineBox mb-3' >
-                                <h4>Add Batches</h4>
+                            <div className=' col-md-12 mb-3' >
+                                <h5>Add Batches</h5>
                             </div>
                             <div className="row">
                                 <div className='col-md-6'>
@@ -982,14 +940,14 @@ export default function Batches() {
                         Save Changes
                     </Button> */}
                     <Stack spacing={2} direction="row" >
-                        <Button variant="contained" onClick={() => {
+                        <Button style={{ backgroundColor: "rgb(32, 109, 50)" }} variant="contained" onClick={() => {
                             handleAddBatchData()
                             // handleInsReviewClose()
-                        }}>Add</Button>
+                        }}>Add <AddCircleOutlineIcon /> </Button>
                         {/* <Button variant="contained" color="success">
                     Prev
                     </Button> */}
-                        <Button variant="secondary"
+                        <Button variant="contained" style={{ backgroundColor: "red" }}
                             onClick={() => {
                                 setAddBatchDetails({})
                                 setMentorList([])
@@ -997,7 +955,7 @@ export default function Batches() {
                                 handleAddBatchesClose()
                             }}
                         >
-                            Close
+                            Close <CloseIcon />
                         </Button>
                     </Stack>
                 </Modal.Footer>
@@ -1015,7 +973,7 @@ export default function Batches() {
 
                     <div className='container-fluid'>
                         <div className='row'>
-                            <div className=' col-md-12 headLineBox mb-3' >
+                            <div className=' col-md-12 mb-3' >
                                 <h4>Update Batch Details</h4>
                             </div>
                             <div className="row">
@@ -1134,18 +1092,18 @@ export default function Batches() {
                         Save Changes
                     </Button> */}
                     <Stack spacing={2} direction="row" >
-                        <Button variant="contained" onClick={() => {
+                        <Button style={{ backgroundColor: "rgb(32, 109, 50)" }} variant="contained" onClick={() => {
                             handleEditBatchData(editBatchDetails?.id)
                             setMentorList([])
                             // handleInsReviewClose()
-                        }}>Update</Button>
+                        }}>Update  <span style={{ marginLeft: "3px" }}> <FontAwesomeIcon icon={faPencil} /> </span>  </Button>
                         {/* <Button variant="contained" color="success">
                     Prev
                     </Button> */}
-                        <Button variant="secondary"
+                        <Button variant="contained" style={{ backgroundColor: "red" }}
                             onClick={() => { handleEditBatchesClose() }}
                         >
-                            Close
+                            Close <CloseIcon />
                         </Button>
                     </Stack>
                 </Modal.Footer>

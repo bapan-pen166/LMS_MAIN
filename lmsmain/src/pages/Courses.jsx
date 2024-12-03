@@ -30,21 +30,20 @@ import CloseIcon from '@mui/icons-material/Close';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { faIdBadge, faPencil } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import {
-
-    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, TablePagination,
-
-    TextField, IconButton,
-
-} from '@mui/material';
-import DownloadForOfflineOutlinedIcon from '@mui/icons-material/DownloadForOfflineOutlined';
-
-import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
-
-import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
-import { visuallyHidden } from '@mui/utils';
-
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    TablePagination,
+    IconButton,
+    TextField
+  } from '@mui/material';
+  import EditIcon from '@mui/icons-material/Edit';
+  import DeleteIcon from '@mui/icons-material/Delete';
+  import VisibilityIcon from '@mui/icons-material/Visibility';
 
 
 export default function Courses() {
