@@ -70,23 +70,11 @@ function Top_course() {
                     </tr>
                 </thead>
             </table>
-            <div className="row" >
-                <div className="col-lg-12 ml-3 d-flex py-2" style={{backgroundColor: "rgb(85, 120, 145)"}}>
-                    <div className="col-lg-2">
-                    
-                    </div>
-                    <div className="col-lg-5 text-white">
-                        Course Name
-                    </div>
-                    <div className="col-lg-5 text-white text-right">
-                        Total Student
-                    </div>
-                </div>
-            </div>
+
             {coursedata.map((data) => {
                 return (
                         <div className="align-items-center mb-3 d-flex justify-content-between box-border-light hover-effect px-2 py-3 flex-wrap">
-                            <div className="col-lg-10 d-flex align-items-center">
+                            <div className="col-lg-9 d-flex align-items-center">
                                 <span className="text-white mb-0" style={{
                                     width: "3vw",
                                     height: "3vw",
@@ -107,10 +95,11 @@ function Top_course() {
                                     {data.Course}
                                 </span>
                             </div>
-                            <div className='col-lg-2 align-items-center text-center'>
+                            <div className='col-lg-3 align-items-center text-center'>
                                 <h5 className="fw-600 mb-0 badge badge-pill badge-primary">
                                     {data.studentCount} <i class="fa fa-user"></i>
                                 </h5>
+                                <p class="text-gray mt-1 mb-0 font-10">Total Student</p>
                             </div>
                         </div>
                 )

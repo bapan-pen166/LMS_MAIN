@@ -405,8 +405,8 @@ const Mentor_Students_Dashboard = () => {
                                     <FontAwesomeIcon style={{ fontSize: "5vw" }} icon={faPeopleGroup} />
                                 </span>
                                 <div className="ms-4">
-                                    <h5 className="purecounter fw-bold pb-2" style={{ fontSize: "2vw" }}>{batchchangeStudCount}</h5>
-                                    <p className="mb-0 h6 fw-light">Batch change students</p>
+                                    <h5 className="purecounter fw-bold pb-2 text-center" style={{ fontSize: "2vw" }}>{batchchangeStudCount}</h5>
+                                    <p className="mb-0 h6 fw-light text-right">Batch change students</p>
                                 </div>
                                 </div>
                             </div>
@@ -419,8 +419,8 @@ const Mentor_Students_Dashboard = () => {
                                     <img src={batch_icon} alt="" style={{width:'70px'}}/>
                                 </span>
                                 <div className="ms-4">
-                                    <h5 className="purecounter fw-bold pb-2" style={{ fontSize: "2vw" }}>{yetToBeStarted}</h5>
-                                    <p className="mb-0 h6 fw-light">Batch yet to be started</p>
+                                    <h5 className="purecounter fw-bold pb-2 text-center" style={{ fontSize: "2vw" }}>{yetToBeStarted}</h5>
+                                    <p className="mb-0 h6 fw-light text-right">Batch yet to be started</p>
                                 </div>
                                 </div>
                             </div>
@@ -484,7 +484,7 @@ const Mentor_Students_Dashboard = () => {
                                 <div class="py-2 border-bottom rounded-lg d-flex justify-content-between align-items-center"><h5 class="card-header-title ml-3">Course wise Students </h5></div>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
 
-                                    <div className="row mt-2">
+                                    <div className="row px-3 py-2">
                                         <div className="col-lg-5">
                                             <DatePicker
                                                 label="Start Date"
@@ -515,7 +515,7 @@ const Mentor_Students_Dashboard = () => {
                                     <div class="py-2 border-bottom rounded-lg d-flex justify-content-between align-items-center"><h5 class="card-header-title ml-3">Batch wise Students </h5></div>
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
 
-                                    <div className="row mt-2 px-3">
+                                    <div className="row px-3 py-2">
                                         <div className="col-lg-5">
                                             <DatePicker
                                                 label="Start Date"

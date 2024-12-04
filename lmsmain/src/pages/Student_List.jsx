@@ -23,6 +23,7 @@ import Checkbox from '@mui/material/Checkbox';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import PageNotFound from '../ErrorPage/PageNotFound';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, TablePagination, TextField } from '@mui/material';
 import * as Yup from 'yup';
 
 
@@ -50,6 +51,16 @@ const names = [
 
 function Student_List() {
     const [personName, setPersonName] = React.useState([]);
+
+    // For mui table
+    const [order, setOrder] = useState('asc');
+    const [orderBy, setOrderBy] = useState('');
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [search, setSearch] = useState('');
+
+
+
     //for education updated one
     const [formData, setFormData] = useState({
 
@@ -97,6 +108,7 @@ function Student_List() {
     const [student, setStudent] = useState([]);
     const [tast, settest] = useState(0);
     const [studentList, setStudentList] = useState([]);
+    const [isLoadingLoader, setLoader] = useState(true);
     const [coursedata, setcoursedata] = useState([]);
     const [courseselct, setCourseselect] = useState([]);
     const [status, setstatus] = useState([]);
@@ -128,7 +140,7 @@ function Student_List() {
     const [aadhar, setAadhar] = useState('');
     const [pan, setpan] = useState('');
     const [idType, setidType] = useState('')
-    const [idproofNumber,setIdproofNumber]=useState('');
+    const [idproofNumber, setIdproofNumber] = useState('');
     const [foldername, setFolderName] = useState('');
 
     const [selectedCountrys, setSelectedCountrys] = useState('');
@@ -268,32 +280,32 @@ function Student_List() {
 
     useEffect(() => {
         if (info) {
-            try{
-            setFname(info.firstName);
-            setMname(info.middleName);
-            setLname(info.lastName);
-            setGender(info.gender);
-            setDob(info.dob);
+            try {
+                setFname(info.firstName);
+                setMname(info.middleName);
+                setLname(info.lastName);
+                setGender(info.gender);
+                setDob(info.dob);
 
-            setGardian(info.relation);
-            setAdd1(info.fullAddress1);
-            setAdd2(info.fullAddress2);
+                setGardian(info.relation);
+                setAdd1(info.fullAddress1);
+                setAdd2(info.fullAddress2);
 
-            // const countryJson=JSON.parse(info.country);
-            setCountry( JSON.parse(info.country));
-            setState(JSON.parse(info.state));
-            setCity(JSON.parse(info.city))
+                // const countryJson=JSON.parse(info.country);
+                setCountry(JSON.parse(info.country));
+                setState(JSON.parse(info.state));
+                setCity(JSON.parse(info.city))
 
-            setPin(info.zipCode);
-            setphone(info.mobileNumber);
-            setAltphone(info.alternateNumber);
-            setGardian(info.gurdianName);
-            setEmailid(info.email)
-            setAadhar(info.aadharNumber)
-            setpan(info.panNumber)
-            setIdproofNumber(info.idproofNumber)
+                setPin(info.zipCode);
+                setphone(info.mobileNumber);
+                setAltphone(info.alternateNumber);
+                setGardian(info.gurdianName);
+                setEmailid(info.email)
+                setAadhar(info.aadharNumber)
+                setpan(info.panNumber)
+                setIdproofNumber(info.idproofNumber)
             }
-            catch(error){
+            catch (error) {
                 console.log(error)
             }
 
@@ -413,11 +425,11 @@ function Student_List() {
     useEffect(() => {
         handleCitylist();
     }, [selectedStates])
-    useEffect(()=>{
-        console.log('country',country)
-        console.log('country',state)
-        console.log('country',city)
-    },[info,country])
+    useEffect(() => {
+        console.log('country', country)
+        console.log('country', state)
+        console.log('country', city)
+    }, [info, country])
 
     //    const handlePreviousInfo=(e)=>{
     //     console.log('submit click');
@@ -570,7 +582,7 @@ function Student_List() {
         workStatus: Yup.string().optional(),
         selectedBatch: Yup.string().required("Batch selection is required"),
     });
-    
+
 
 
 
@@ -586,19 +598,19 @@ function Student_List() {
             workStatus: workstatus,
             selectedBatch: batchname,
         };
-    
+
         // Validate the data using validationSchemaProf
         validationSchemaProf
             .validate(data, { abortEarly: false }) // Validate all fields
             .then(() => {
                 // Clear errors if validation passes
                 setErrorsProfe({});
-    
+
                 // Proceed with API call
                 axios.post(`${api}/reg/updateProfessionalDetails`, data)
                     .then((Response) => {
                         console.log(Response.data);
-    
+
                         toast.success("Updated Successfully!", {
                             position: "top-center",
                         });
@@ -614,17 +626,17 @@ function Student_List() {
                     acc[err.path] = err.message;
                     return acc;
                 }, {});
-    
+
                 // Set errors in state
                 setErrorsProfe(formattedErrors);
             });
     };
-    
 
 
 
 
-    
+
+
     //    http://localhost:3000/Student-List
 
     const ViewDoc = () => {
@@ -733,10 +745,12 @@ function Student_List() {
                 setStudentList(Response.data.result);
                 setSearchres(Response.data.result);
                 console.log("from searches", searchres)
-                handleBatchlist()
+                handleBatchlist();
+                setLoader(false);
             })
             .catch((error) => {
                 console.error('Error:', error);
+                setLoader(false);
             });
     }
 
@@ -919,12 +933,58 @@ function Student_List() {
             })
     }
 
+    const handleRequestSort = (property) => {
+        const isAsc = orderBy === property && order === 'asc';
+        setOrder(isAsc ? 'desc' : 'asc');
+        setOrderBy(property);
+    };
+
+    const handleSearchChange = (event) => {
+        setSearch(event.target.value);
+        setPage(0); // Reset pagination when search changes
+    };
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
+    const getComparator = (order, orderBy) => {
+        return order === 'desc'
+            ? (a, b) => (b[orderBy] < a[orderBy] ? -1 : 1)
+            : (a, b) => (a[orderBy] < b[orderBy] ? -1 : 1);
+    };
+
+    const stableSort = (array, comparator) => {
+        const stabilizedArray = array.map((el, index) => [el, index]);
+        stabilizedArray.sort((a, b) => {
+            const order = comparator(a[0], b[0]);
+            if (order !== 0) return order;
+            return a[1] - b[1];
+        });
+        return stabilizedArray.map((el) => el[0]);
+    };
+
+    // Ensure studentList is always an array before calling .filter
+    const filteredStudents = (studentList || []).filter((student) =>
+        (student.Name && student.Name.toLowerCase().includes(search.toLowerCase())) ||
+        (student.emailID && student.emailID.toLowerCase().includes(search.toLowerCase()))
+    );
+
+
+    const sortedStudents = stableSort(filteredStudents, getComparator(order, orderBy));
+
+    const visibleStudents = sortedStudents.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 
     return (
         <>
             {/* content body  */}
-            <div className='row content-body' style={{ backgroundColor: "#f2edf3" }}>
+            <div className='row rounded-top card box-shadow' >
                 <div className='row '>
                     {/* <div className='container-fluid'>
 
@@ -935,15 +995,15 @@ function Student_List() {
 
                     </div> */}
                 </div>
-                <div className="container-fluid mt-4 ml-2 m-r-2" style={{ backgroundColor: "#f2edf3" }}>
-                    <div className="d-flex justify-content-center flex-wrap ml-2">
-                        <div className="d-flex align-items-center flex-grow-1 ">
+                <div className="container-fluid mt-4 m-r-2" >
+                    <div className="row ml-2">
+                        <div className="col-lg-3 d-flex align-items-center">
                             <input type="text" className="form-control pl-2 pr-5" placeholder='Search here' value={searchquery} onChange={inputChange} />
                             <div className=''>
                                 <CiSearch className="search-btn" />
                             </div>
                         </div>
-                        <div className="flex-grow-1 mr-4">
+                        <div className="col-lg-3">
                             <select style={{ borderRadius: "10px", backgroundColor: "white" }} className="form-select  mb-3 mt-1 w-100" aria-label="Default select example" onChange={handleBatchChange}>
                                 <option value="[]" selected>Batches</option>
                                 {batchList?.length > 0 && batchList.map((data) => {
@@ -955,7 +1015,7 @@ function Student_List() {
                             </select>
                         </div>
 
-                        <div className="flex-grow-1 mr-4">
+                        <div className="col-lg-3">
                             <select style={{ borderRadius: "10px", backgroundColor: "white" }} className="form-select  mb-3 mt-1 w-100" aria-label="Default select example" onChange={handleCourseChange}>
                                 <option value="[]" selected>Courses</option>
                                 {course?.length > 0 && course.map((data) => {
@@ -966,7 +1026,7 @@ function Student_List() {
                                 })}
                             </select>
                         </div>
-                        <div className="flex-grow-1 mr-2">
+                        <div className="col-lg-3">
                             <select style={{ borderRadius: "10px", backgroundColor: "white" }} className="form-select mb-3 mt-1 w-100" aria-label="Default select example" value={JSON.stringify(status)} onChange={handleStatusChange}>
                                 <option value="[]" selected>Status</option>
                                 <option value={JSON.stringify([{ "status": 0, "statusDetails": 'Registration Pending' }])}>Registration Pending</option>
@@ -979,30 +1039,52 @@ function Student_List() {
                 </div>
 
                 <div className='container-fluid pr-2 pl-2' style={{ minHeight: '100vh' }}>
-                    <div className='row'>
+                    {isLoadingLoader ?
+                        <div className="loader">
+                            <div class="spinner"></div>
+                        </div>
+                        : ""}
+                    <div className='row pl-3'>
                         <div className='col-md-12 col-lg-12 scroll' style={{ paddingRight: '0px', paddingLeft: '0px' }}>
-                            <table className="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Course</th>
-                                        <th>Batch</th>
-                                        <th>Mobile No.</th>
-                                        <th>Email</th>
-                                        <th>Updated on</th>
-                                        <th>Status</th>
-                                        <th>Registration Link</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {Array.isArray(studentList) && studentList.length > 0 && studentList?.map((val) => {
-                                        return (
-                                            <tr>
-                                                <td style={{ fontSize: '14px' }}>{val?.Name}</td>
-                                                <td style={{ fontSize: '14px' }}>{val?.Course}</td>
-                                                <td style={{ fontSize: '14px' }}>
-                                                    {val?.batch ? (
+                            {/* <TextField
+                                label="Search"
+                                variant="outlined"
+                                fullWidth
+                                margin="normal"
+                                value={search}
+                                onChange={handleSearchChange}
+                            /> */}
+                            <TableContainer>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>Index</TableCell>
+                                            <TableCell
+                                                sortDirection={orderBy === 'Name' ? order : false}
+                                                onClick={() => handleRequestSort('Name')}
+                                            >
+                                                <TableSortLabel active={orderBy === 'Name'} direction={orderBy === 'Name' ? order : 'asc'}>
+                                                    Name
+                                                </TableSortLabel>
+                                            </TableCell>
+                                            <TableCell>Course</TableCell>
+                                            <TableCell>Batch</TableCell>
+                                            <TableCell>Mobile No.</TableCell>
+                                            <TableCell>Email</TableCell>
+                                            <TableCell>Updated on</TableCell>
+                                            <TableCell>Status</TableCell>
+                                            <TableCell>Registration Link</TableCell>
+                                            <TableCell>Action</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {visibleStudents.map((val, index) => (
+                                            <TableRow key={val.emailID}>
+                                                <TableCell>{index + 1 + page * rowsPerPage}</TableCell>
+                                                <TableCell>{val.Name}</TableCell>
+                                                <TableCell>{val.Course}</TableCell>
+                                                <TableCell>
+                                                    {val.batch ? (
                                                         <span>{val.batch}</span>
                                                     ) : (
                                                         <select
@@ -1018,48 +1100,87 @@ function Student_List() {
                                                             ))}
                                                         </select>
                                                     )}
-                                                </td>
-                                                <td style={{ fontSize: '14px' }}>{val?.contactNo}</td>
-                                                <td style={{ fontSize: '14px' }}>{val?.emailID}</td>
-                                                <td style={{ fontSize: '14px' }}>{val?.updatedAt}</td>
-                                                <td style={{ fontSize: '14px' }}>{
-                                                    (() => {
-                                                        if (val?.status == 0) {
-                                                            return (
-                                                                <>Registration Pending</>
-                                                            )
-                                                        } else if (val?.status == 1) {
-                                                            return (
-                                                                <>Approval Pending</>
-                                                            )
-                                                        } else if (val?.status == 2) {
-                                                            return (
-                                                                <>Onboarded</>
-                                                            )
+                                                </TableCell>
+                                                <TableCell>{val.contactNo}</TableCell>
+                                                <TableCell>{val.emailID}</TableCell>
+                                                <TableCell>{val.updatedAt}</TableCell>
+                                                <TableCell>
+                                                    {(() => {
+                                                        if (val.status === 0) {
+                                                            return 'Registration Pending';
+                                                        } else if (val.status === 1) {
+                                                            return 'Approval Pending';
+                                                        } else if (val.status === 2) {
+                                                            return 'Onboarded';
                                                         } else {
-                                                            return (
-                                                                <>On Hold</>
-                                                            )
+                                                            return 'On Hold';
                                                         }
-                                                    })()
-                                                }</td>
-                                                <td> <button style={{ background: 'transparent', border: 'none' }} className='custom-button' onClick={() => { handleStudentEmail(val?.emailID) }}><i className='fa fa-reply custom-icon' style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }}></i></button></td>
-                                                <td className='d-flex' style={{ border: 'none' }}>
-                                                    {/* <button style={{ background: 'transparent', border: 'none' }} className='custom-button' onClick={() => { handleStudentEmail(val?.emailID) }}><i className='fa fa-reply custom-icon' style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }}></i></button> */}
-                                                    <button style={{ background: 'transparent', border: 'none' }} className='custom-button'
+                                                    })()}
+                                                </TableCell>
+                                                <TableCell>
+                                                    <button
+                                                        style={{ background: 'transparent', border: 'none' }}
+                                                        className="custom-button"
+                                                        onClick={() => handleStudentEmail(val.emailID)}
+                                                    >
+                                                        <i
+                                                            className="fa fa-reply custom-icon"
+                                                            style={{
+                                                                color: 'rgb(212, 139, 2)',
+                                                                fontSize: '14pt',
+                                                                padding: '2px',
+                                                            }}
+                                                        ></i>
+                                                    </button>
+                                                </TableCell>
+                                                <TableCell className="d-flex" style={{ border: 'none' }}>
+                                                    <button
+                                                        style={{ background: 'transparent', border: 'none' }}
+                                                        className="custom-button"
                                                         onClick={() => {
-                                                            handleBasicInfo(val?.emailID)
-                                                            handleCountrylist();
-                                                            handleShow()
+                                                            handleBasicInfo(val.emailID);
+                                                            handleShow();
                                                         }}
-                                                    ><i className="fa fa-edit custom-icon" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }}></i></button>
-                                                    <button disabled={val?.batch} onClick={() => updateBatch(val?.emailID)} style={{ background: 'transparent', border: 'none' }} className='custom-button'><i class="fa fa-save custom-icon" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }}></i></button>
-                                                </td>
-                                            </tr>
-                                        )
-                                    })}
-                                </tbody>
-                            </table>
+                                                    >
+                                                        <i
+                                                            className="fa fa-edit custom-icon"
+                                                            style={{
+                                                                color: 'rgb(212, 139, 2)',
+                                                                fontSize: '14pt',
+                                                                padding: '2px',
+                                                            }}
+                                                        ></i>
+                                                    </button>
+                                                    <button
+                                                        disabled={val.batch}
+                                                        onClick={() => updateBatch(val.emailID)}
+                                                        style={{ background: 'transparent', border: 'none' }}
+                                                        className="custom-button"
+                                                    >
+                                                        <i
+                                                            className="fa fa-save custom-icon"
+                                                            style={{
+                                                                color: 'rgb(212, 139, 2)',
+                                                                fontSize: '14pt',
+                                                                padding: '2px',
+                                                            }}
+                                                        ></i>
+                                                    </button>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 25]}
+                                component="div"
+                                count={filteredStudents.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
                         </div>
                     </div>
                 </div>
@@ -1175,7 +1296,7 @@ function Student_List() {
                                     {errors?.dob && <div className="error">{errors.dob}</div>}
                                 </div>
                                 <div className="col-md-3 subheading p-2">
-                                    Gurdian's Name 
+                                    Gurdian's Name
                                 </div>
                                 <div className="col-md-3 p-2">
                                     <div class="custom-file">
@@ -1445,7 +1566,7 @@ function Student_List() {
                                     </select> */}
                                     </div>
 
-                                {errors?.idproofNumber && <div className="error">{errors.idproofNumber}</div>}
+                                    {errors?.idproofNumber && <div className="error">{errors.idproofNumber}</div>}
                                 </div>
 
                                 {(() => {
@@ -1726,7 +1847,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        Year of passing 
+                                        Year of passing
                                     </div>
                                     <div className="col-md-3 col-sm-12 p-2 m-right-80">
                                         <div className="input-group mb-3">
@@ -1734,7 +1855,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        University/ College /Institute Name 
+                                        University/ College /Institute Name
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="input-group mb-3">
@@ -1742,7 +1863,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        {formData?.doctorsInstituteCgpaGpaType || 'GPA'} 
+                                        {formData?.doctorsInstituteCgpaGpaType || 'GPA'}
                                         <select name="doctorsInstituteCgpaGpaType" value={formData?.doctorsInstituteCgpaGpaType} onChange={handleChange}>
                                             <option value="">select</option>
                                             <option value="CGPA">CGPA</option>
@@ -1755,7 +1876,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        Upload Certificate 
+                                        Upload Certificate
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="custom-file">
@@ -1775,7 +1896,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        Year of passing 
+                                        Year of passing
                                     </div>
                                     <div className="col-md-3 col-sm-12 p-2 m-right-80">
                                         <div className="input-group mb-3">
@@ -1783,7 +1904,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        University/ College /Institute Name 
+                                        University/ College /Institute Name
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="input-group mb-3">
@@ -1791,7 +1912,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        {formData?.mastersInstituteCgpaGpaType || 'GPA'}  
+                                        {formData?.mastersInstituteCgpaGpaType || 'GPA'}
                                         <select name="mastersInstituteCgpaGpaType" value={formData?.mastersInstituteCgpaGpaType} onChange={handleChange} id="">
                                             <option value="">select</option>
                                             <option value="CGPA">CGPA</option>
@@ -1804,7 +1925,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        Upload Certificate 
+                                        Upload Certificate
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="custom-file">
@@ -1824,7 +1945,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        Year of passing 
+                                        Year of passing
                                     </div>
                                     <div className="col-md-3 col-sm-12 p-2 m-right-80">
                                         <div className="input-group mb-3">
@@ -1832,7 +1953,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        University/ College /Institute Name 
+                                        University/ College /Institute Name
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="input-group mb-3">
@@ -1840,7 +1961,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        {formData?.bachelorInstituteCgpaGpaType || 'GPA'}  
+                                        {formData?.bachelorInstituteCgpaGpaType || 'GPA'}
                                         <select name="bachelorInstituteCgpaGpaType" value={formData?.bachelorInstituteCgpaGpaType} onChange={handleChange} id="">
                                             <option value="">select</option>
                                             <option value="CGPA">CGPA</option>
@@ -1853,7 +1974,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        Upload Certificate 
+                                        Upload Certificate
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="custom-file">
@@ -1872,7 +1993,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        Year of passing 
+                                        Year of passing
                                     </div>
                                     <div className="col-md-3 col-sm-12 p-2 m-right-80">
                                         <div className="input-group mb-3">
@@ -1880,7 +2001,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        University/ College /Institute Name 
+                                        University/ College /Institute Name
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="input-group mb-3">
@@ -1888,7 +2009,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        {formData?.associateInstituteCgpaGpaType || 'GPA'}  
+                                        {formData?.associateInstituteCgpaGpaType || 'GPA'}
                                         <select name="associateInstituteCgpaGpaType" value={formData?.associateInstituteCgpaGpaType} onChange={handleChange} id="">
                                             <option value="">select</option>
                                             <option value="CGPA">CGPA</option>
@@ -1901,7 +2022,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        Upload Certificate 
+                                        Upload Certificate
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="custom-file">
@@ -1919,7 +2040,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        Year of passing 
+                                        Year of passing
                                     </div>
                                     <div className="col-md-3 col-sm-12 p-2 m-right-80">
                                         <div className="input-group mb-3">
@@ -1927,7 +2048,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        University/ College /Institute Name 
+                                        University/ College /Institute Name
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="input-group mb-3">
@@ -1935,7 +2056,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        {formData?.graduationInstituteCgpaGpaType || 'GPA'}  
+                                        {formData?.graduationInstituteCgpaGpaType || 'GPA'}
                                         <select name="graduationInstituteCgpaGpaType" value={formData?.graduationInstituteCgpaGpaType} onChange={handleChange} id="">
                                             <option value="">select</option>
                                             <option value="CGPA">CGPA</option>
@@ -1948,7 +2069,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        Upload Certificate 
+                                        Upload Certificate
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="custom-file">
@@ -1966,7 +2087,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        Year of passing 
+                                        Year of passing
                                     </div>
                                     <div className="col-md-3 p-2 m-right-80">
                                         <div className="input-group mb-3">
@@ -1974,7 +2095,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        School/ College/Institute Name 
+                                        School/ College/Institute Name
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="input-group mb-3">
@@ -1982,7 +2103,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        {formData?.highSchoolInstituteCgpaGpaType || 'GPA'}  
+                                        {formData?.highSchoolInstituteCgpaGpaType || 'GPA'}
                                         <select name="highSchoolInstituteCgpaGpaType" value={formData?.highSchoolInstituteCgpaGpaType} onChange={handleChange} id="">
                                             <option value="">select</option>
                                             <option value="CGPA">CGPA</option>
@@ -1995,7 +2116,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        Upload Certificate 
+                                        Upload Certificate
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="custom-file">
@@ -2014,7 +2135,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        Any Professional Training Certificate or Equivalent 
+                                        Any Professional Training Certificate or Equivalent
                                     </div>
                                     <div className="col-md-3 col-sm-12 p-2 m-right-80">
                                         <div className="input-group mb-3">
@@ -2022,7 +2143,7 @@ function Student_List() {
                                         </div>
                                     </div>
                                     <div className="col-md-3 subheading p-2 align-left">
-                                        No of years of Field Experience 
+                                        No of years of Field Experience
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="input-group mb-3">
@@ -2043,7 +2164,7 @@ function Student_List() {
                                 </div>
                             </div> */}
                                     <div className="col-md-2 subheading p-2 align-left">
-                                        Upload Certificate 
+                                        Upload Certificate
                                     </div>
                                     <div className="col-md-3 p-2">
                                         <div className="custom-file">

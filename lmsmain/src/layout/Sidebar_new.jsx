@@ -132,11 +132,7 @@ const Sidebar_new = () => {
                                             <FontAwesomeIcon className="mr-10 " icon={faAngleDown} />
                                         </span>
                                     </div>
-                                    <div
-                                        className={`collapse ${isTestOpen ? 'show' : ''}`}
-                                        id="collapseTests"
-                                    >
-                                        <FontAwesomeIcon className='mr-10' icon={faListCheck} /> Tests <span className='pull-right'><FontAwesomeIcon className='mr-10' icon={faAngleDown} /></span></div>
+                                    
                                     {/* Submenu */}
                                     <div className={`collapse ${isTestOpen ? 'show' : ''}`} id="collapseauthentication">
                                         <ul className="nav flex-column">

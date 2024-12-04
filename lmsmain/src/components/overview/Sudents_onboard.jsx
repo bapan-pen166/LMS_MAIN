@@ -192,10 +192,23 @@ function Students_onboarded() {
                         if (parseInt(weekdata?.weekStudentsOnboarded) > 0) {
                             return (
                                 <>
-                                    <div className="col-md-12 col-sm-6 p-2 mb-2" style={{ backgroundColor: '#fff' }}>
-                                        <h5><i class="fa fa-arrow-up" style={{ fontSize: '14pt', color: 'green' }}></i>{weekdata?.weekStudentsOnboarded}</h5>
-                                        <h5>{weekdata?.weekGrowthDegrowth}%</h5>
-                                        This Week
+                                    <div className="col-md-12 col-sm-6 p-2 mb-2" style={{ backgroundColor: '#fff', border: "1px solid #dde0e3" }}>
+                                        <div className='d-flex'>
+                                            <div>
+                                                <h1 ><i class="fa fa-graduation-cap" aria-hidden="true"></i></h1>
+                                            </div>
+                                            <div className='d-flex flex-column align-items-center'>
+                                                <span className=' font-30'>
+                                                    {weekdata?.weekStudentsOnboarded}
+                                                </span>
+                                                <p className='font-16'>
+                                                    <span><i class="fa fa-arrow-up" style={{color: 'green' }}></i></span>
+                                                    <span className='ml-1' style={{color: 'green' }}>{weekdata?.weekGrowthDegrowth}%</span></p>
+                                                    <p>
+                                                    <span className='text-gray ml-2'>This Week</span>
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </>
                             )
@@ -214,7 +227,8 @@ function Students_onboarded() {
                                                 </span>
                                                 <p className='font-16'>
                                                     <span><i class="fa fa-arrow-down" style={{color: '#ef4d56' }}></i></span>
-                                                    <span className='ml-1' style={{color: '#ef4d56' }}>{weekdata?.weekGrowthDegrowth}%</span>
+                                                    <span className='ml-1' style={{color: '#ef4d56' }}>{weekdata?.weekGrowthDegrowth}%</span></p>
+                                                    <p>
                                                     <span className='text-gray ml-2'>This Week</span>
                                                 </p>
                                             </div>
@@ -230,10 +244,24 @@ function Students_onboarded() {
                         if (parseInt(monthdata?.monthStudentsOnboarded) > 0) {
                             return (
                                 <>
-                                    <div className="col-md-12 col-sm-6 px-2 mb-2 py-3" style={{ background: '#fff', borderRadius: '5px' }}>
-                                        <h5><a href=""><i class="fa fa-arrow-up" style={{ fontSize: '14pt', color: 'green' }}></i></a>{monthdata?.monthStudentsOnboarded}</h5>
-                                        <h5>{monthdata?.monthGrowthDegrowth}%</h5>
-                                        This Month
+                                    <div className="col-md-12 col-sm-6 px-2 mb-2 py-3" style={{ background: '#fff', borderRadius: '5px', border: "1px solid #dde0e3" }}>
+                                        <div className='d-flex'>
+                                            <div>
+                                                <h1 ><i class="fa fa-graduation-cap" aria-hidden="true"></i></h1>
+                                            </div>
+                                            <div className='d-flex flex-column align-items-center'>
+                                                <span className=' font-30'>
+                                                    {weekdata?.weekStudentsOnboarded}
+                                                </span>
+                                                <p className='font-16'>
+                                                    <span><i class="fa fa-arrow-up" style={{color: 'green' }}></i></span>
+                                                    <span className=' ml-1' style={{color: 'green' }}>{weekdata?.weekGrowthDegrowth}%</span>
+                                                </p>
+                                                <p>
+                                                    <span className='text-gray ml-2'>This Month</span>
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </>
                             )
@@ -253,6 +281,8 @@ function Students_onboarded() {
                                                 <p className='font-16'>
                                                     <span><i class="fa fa-arrow-down" style={{color: '#ef4d56' }}></i></span>
                                                     <span className=' ml-1' style={{color: '#ef4d56' }}>{weekdata?.weekGrowthDegrowth}%</span>
+                                                </p>
+                                                <p>
                                                     <span className='text-gray ml-2'>This Month</span>
                                                 </p>
                                             </div>

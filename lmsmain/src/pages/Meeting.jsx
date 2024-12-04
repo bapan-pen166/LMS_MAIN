@@ -1040,7 +1040,7 @@ function Meeting() {
   }
   return (
     <>
-      <div className="row content-body container-fluid main-meeting">
+      <div className="row container-fluid rounded-top">
         <div className="row ">
           <div className="container-fluid">
             <div className="row">
