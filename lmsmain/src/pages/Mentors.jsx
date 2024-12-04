@@ -21,6 +21,32 @@ import not_verified from "../assets/img/linkedin verify/close.png";
 import PageNotFound from '../ErrorPage/PageNotFound';
 import * as Yup from 'yup';
 
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import CloseIcon from '@mui/icons-material/Close';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { faIdBadge,faPencil } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import DoneIcon from '@mui/icons-material/Done';
+
+
+
+import {
+
+    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, TablePagination,
+
+    TextField, IconButton,
+
+} from '@mui/material';
+import DownloadForOfflineOutlinedIcon from '@mui/icons-material/DownloadForOfflineOutlined';
+
+import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
+
+import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
+import { visuallyHidden } from '@mui/utils';
+
+
 
 
 export default function Mentors() {
@@ -63,96 +89,11 @@ export default function Mentors() {
     const [isLoading, setIsLoading] = useState(true);
 
 
-    // const handleMentorList = (e) => {
-    //     console.log('submit click');
-    //     // axios.post(`${api}/student/getStudentList`, { course: coursedata, status: status })
-    //     axios.post(`http://192.168.1.7:5000/mentor/getMentorList`, { course: course, status: status })
-    //         .then((Response) => {
-    //             console.log(" data : ",Response.data);
-    //             setmentorlist(Response.data.result);
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error:', error);
-    //         });
-    // }
-
-
-    // const handleMentorStatus = (id,status) => {
-    //     console.log('submit click');
-    //     // axios.post(`${api}/student/getStudentList`, { course: coursedata, status: status })
-    //     axios.post(`http://192.168.1.7:5000/mentor/editMentor`, { id,status })
-    //         .then((Response) => {
-    //             console.log(" data : ",Response.data);
-    //             handleMentorList()
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error:', error);
-    //         });
-    // }
-
-    // const handleCourseList = (e) => {
-    //     console.log('submit click');
-    //     // axios.post(`${api}/student/getStudentList`, { course: coursedata, status: status })
-    //     axios.post(`http://192.168.1.7:5000/course/getCourseList`, {})
-    //         .then((Response) => {
-    //             console.log(" data : ",Response.data);
-    //             setCourseList(Response.data.result);
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error:', error);
-    //         });
-    // }
-    // const handleMentor = (e) => {
-    //     console.log('submit click');
-    //     // axios.post(`${api}/student/getStudentList`, { course: coursedata, status: status })
-    //     axios.post(`http://192.168.1.7:5000/mentor/getMentor`, {})
-    //         .then((Response) => {
-    //             console.log(" data : ",Response.data);
-    //             setMentorData(Response.data.result);
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error:', error);
-    //         });
-    // }
-    // const handleBatchList = (courseMentor) => {
-    //     console.log('submit click');
-    //     // axios.post(`${api}/student/getStudentList`, { course: coursedata, status: status })
-    //     axios.post(`http://192.168.1.7:5000/course/getBatchList`, {course:courseMentor})
-    //         .then((Response) => {
-    //             console.log(" data : ",Response.data);
-    //             setBatchList(Response.data.result);
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error:', error);
-    //         });
-    // }
-    // const handleSaveMentorBatch = (mentor,course,batch) => {
-    //     console.log('submit click');
-    //     // axios.post(`${api}/student/getStudentList`, { course: coursedata, status: status })
-    //     axios.post(`http://192.168.1.7:5000/mentor/addMentorBatch`, {mentor:mentor,batchName:batch,course:course})
-    //         .then((Response) => {
-    //             console.log(" data : ",Response.data);
-    //             handleMentorList()
-    //             setCousementor([])
-    //             setMentor([])
-    //             setBatch([])
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error:', error);
-    //         });
-    // }
-
-
-
-
-
-
     useEffect(() => {
         // handleMentorList()
 
     }, [])
-    // useEffect(()=>{handleBatchList(courseMentor)},[courseMentor])
-    // edit instructor details 
+
     const [showinsdetails, setShowinsdetails] = useState(false);
 
     const handleCloseinsdetails = () => setShowinsdetails(false);
@@ -160,7 +101,7 @@ export default function Mentors() {
     const [editmentorDetails, setEditMentorDetails] = useState('');
     const handleEditMetorData = (id) => {
         console.log('submit click');
-        // axios.post(`${api}/student/getStudentList`, { course: coursedata, status: status })
+       
         axios.post(`${api2}/mentor/getMentorBasicList`, { mentorID: id })
 
             .then((Response) => {
@@ -183,7 +124,7 @@ export default function Mentors() {
     };
     const handleUpdateMetorData = () => {
         console.log('submit click');
-        // axios.post(`${api}/student/getStudentList`, { course: coursedata, status: status })
+       
         axios.post(`${api2}/mentor/editMentorBasicInfo`, editmentorDetails)
             .then((Response) => {
                 console.log(" data : ", Response.data);
@@ -228,7 +169,7 @@ export default function Mentors() {
 
     function handleMetorData() {
         console.log('submit click');
-        // axios.post(`${api}/student/getStudentList`, { course: coursedata, status: status })
+       
         axios.post(`${api2}/mentor/getMentorBasicList`, {})
             .then((Response) => {
                 console.log(" data : ", Response.data.result);
@@ -274,24 +215,9 @@ export default function Mentors() {
     };
     const handleAddMentorset = (e) => {
         console.log('submit click');
-        // axios.post(`${api}/student/getStudentList`, { course: coursedata, status: status })
+        
         axios.post(`${api2}/mentor/addMentor`, addMentor
-            //      {
-            //     name: addMentor.name,
-            //     gender: addMentor.gender,
-            //     dob: addMentor.dob,
-            //     highest_qualification:addMentor.highest_qualification,
-            //     college_name: addMentor.college_name,
-            //     total_years_of_exp: addMentor.total_years_of_exp,
-            //     mail_id: addMentor.mail_id,
-            //     linked_in: addMentor.linked_in,
-            //     country: addMentor.country,
-            //     profile_photo: addMentor.profile_photo,
-            //     phn_no: addMentor.phn_no,
-            //     upload_certificate:addMentor.upload_certificate,
-            //     instructor_id: addMentor.instructor_id,
-            //     pan_no:addMentor.pan_no
-            // }
+           
         )
             .then((Response) => {
                 console.log(" data : ", Response.data);
@@ -325,7 +251,7 @@ export default function Mentors() {
     const [courselistAll, setCourseListAll] = useState([]);
     const handleCourseData = (id) => {
         console.log('submit click');
-        // axios.post(`${api}/student/getStudentList`, { course: coursedata, status: status })
+       
         axios.post(`${api2}/mentor/getBatchesByMentorId`, { id: id })
             .then((Response) => {
                 console.log(" data : ", Response.data);
@@ -337,7 +263,7 @@ export default function Mentors() {
     }
     const handleAllCourseList = (e) => {
         console.log('submit click');
-        // axios.post(`${api}/student/getStudentList`, { course: coursedata, status: status })
+       
         axios.post(`${api2}/course/getCourseList`, {})
             .then((Response) => {
                 console.log(" data : ", Response.data);
@@ -355,21 +281,6 @@ export default function Mentors() {
     }, [courselistAllObj])
 
 
-
-
-    // const courses = [
-    //     'Oliver Hansen',
-    //     'Van Henry',
-    //     'April Tucker',
-    //     'Ralph Hubbard',
-    //     'Omar Alexander',
-    //     'Carlos Abbott',
-    //     'Miriam Wagner',
-    //     'Bradley Wilkerson',
-    //     'Virginia Andrews',
-    //     'Kelly Snyder',
-    //   ];
-    // const [courseName, setCourseName] = useState(['April Tucker','Carlos Abbott','Bradley Wilkerson']);
     const handleChange = (event) => {
         setCourseList(event.target.value);
     };
@@ -431,17 +342,7 @@ export default function Mentors() {
                 console.error('Error:', error);
             });
     }
-    // useEffect(() => {
-    //     axios.post(`${api2}/reg/getCountryList`, { countryPhrase: '' })
-    //       .then((response) => {
-    //         console.log(response.data);
-    //         setCountryList(response.data.countryList);
-    //       })
-    //       .catch((error) => {
-    //         console.error('Error:', error);
-    //       });
-    //   }, []);
-    //    country:[{id:country}]
+
     useEffect(() => { console.log(country) }, [country])
     useEffect(() => { console.log(state) }, [state])
     useEffect(() => { console.log(city) }, [city])
@@ -548,7 +449,6 @@ export default function Mentors() {
         pinNo: Yup.string().required("PIN code is required"),
         IdType: Yup.string().required("ID Type is required"),
         idNo: Yup.string().required("ID Number is required"),
-        role: Yup.string().required("Role is required"),
     });
 
 
@@ -590,22 +490,6 @@ export default function Mentors() {
             toast.success("Added Mentor Basic Details Successfully!", {
                 position: "top-center",
                 style: { fontWeight: 'bold' },
-            });
-             setAddMentorBasicInfo({
-                name: '',
-                gender: '',
-                dob: '',
-                email: '',
-                phoneNo: '',
-                AlternatePhoneNo: '',
-                address1: '',
-                address2: '',
-                country: country || { id: '', name: "" },
-                state: state || { id: '', name: "" },
-                city: city || { id: '', name: "" },
-                pinNo: '',
-                IdType: '',
-                idNo: '',
             });
         } catch (error) {
             if (error.name === 'ValidationError') {
@@ -703,21 +587,6 @@ export default function Mentors() {
                 toast.success("Added Mentor Educational Info Successfully!", {
                     position: "top-center",
                 });
-                setAddMentorEducationInfo({
-                    email: '',
-                    gradDegree: '',
-                    gradDept: '',
-                    gradPassout: '',
-                    gradInsNm: '',
-                    gradCgpa: '',
-                    hsPassout: '',
-                    hsInsNm: '',
-                    hsCgpa: '',
-                    matricPassout: '',
-                    matricNm: '',
-                    matricCgpa: '',
-            
-                });
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -762,18 +631,6 @@ export default function Mentors() {
                 toast.success("Added Mentor Proffesional Info Successfully!", {
                     position: "top-center",
                 });
-                setAddMentorProffesionalInfo({
-                    email: '',
-                    totalExp: '',
-                    currentOrg: '',
-                    currentDesg: '',
-                    LinkdinUrl: linkedinProfileLink,
-                    // profilePhoto: '',
-                    // uniCirtificate: '',
-                    activeFlag: '',
-            
-            
-                })
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -917,116 +774,94 @@ export default function Mentors() {
 
     return (
         <>
-            {/* <h1 style={{marginTop:'100px'}}>mentor</h1> */}
-            <div className='row ' style={{ marginTop: '58px', backgroundColor:"#f2edf3" }} >
-                {/* <div className='row '>
-                    <div className='container-fluid'>
-                        <div className=' col-md-12 col-lg-12 col-sm-12 headLineBox d-flex justify-content-start'  >
-                            <h4>Mentor</h4>
-                        </div>
-                    </div>
-                </div> */}
-                <div className="row" style={{ marginTop: '20px' }}>
-                    <div className="row">
+            <div className='row ' style={{fontFamily: "Roboto, sans-serif"}} >
+                <div className="row container-fluid" >
+                    <div className="row ml-0">
                         <div className="col-md-6">
                             <div className="d-flex align-items-center">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Search here"
-                                    value={searchquery}
-                                    onChange={inputChange}
-                                />
-                                <CiSearch className="search-btn" />
+                               
+
+                                <TextField
+
+                                        label="Search"
+
+                                        variant="outlined"
+
+                                        value={searchquery}
+
+                                        onChange={inputChange}
+
+                                        style={{ marginBottom: '16px' }}
+
+                                        InputLabelProps={{
+
+                                            style: { top: '-5px' }
+
+                                        }}
+
+                                    />
+
                             </div>
                         </div>
                         <div className="col-md-6 col-sm-6 col-lg-6">
-                            {/* <button className="btn btn-">New Instructor</button> */}
                             <Stack spacing={2} direction="row" sx={{ justifyContent: 'flex-end' }}>
-                                {/* <FormControl sx={{width:'200px'}}>
-                            <InputLabel id="demo-simple-select-label" >Status</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                // value={age}
-                                label="Age"
-                                sx={{
-                                    paddingTop: '10px', 
-                                    paddingBottom: '10px', 
-                                    '& .MuiSelect-select': {
-                                        paddingLeft: '8px', 
-                                        paddingRight: '8px', 
-                                    },
-                                }}
-                                
-                            >
-                                <MenuItem value={10}>Active</MenuItem>
-                                <MenuItem value={20}>De-Active</MenuItem>
-                                
-                            </Select>
-                        </FormControl> */}
-                                <Button variant="contained" onClick={() => {
-                                    // handleaddInsShow() 
+                            
+                                <Button style={{backgroundColor:"rgb(32, 109, 50)"}} variant="contained" onClick={() => {
+                                    
                                     handleaddInsBasicInfoShow()
                                     handleCountrylist()
-
-                                    // handleCourseList()
-                                    // handleMentor()
-                                    // handleBatchList()
-                                }}>Add Mentor</Button>
+                                }}>Add Mentor <AddCircleOutlineIcon/></Button>
 
                             </Stack>
                         </div>
                     </div>
                     <div className="col-md-12 col-lg-12 col-sm-12">
-                        <div className="table-container" style={{ height: '90vh', overflowY: 'auto', zIndex: "1" }}>
-                            <table className="table table-bordered pt-1" >
-                                <thead style={{ position: 'sticky', top: -2, zIndex: 3 }}>
+                        <div className="p-0 custom-table-container" style={{paddingTop:"0px", height: '400px', overflowY: 'auto' }}>
+                            <table className="table-bordered custom-table" >
+                                <thead className="custom-thead " style={{ position: 'sticky', top: 0, zIndex: 3, fontSize:"1vw" }}>
                                     <tr>
-                                        <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Mentor Id</th>
-                                        <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Name</th>
-                                        <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Role</th>
-                                        <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Phone No</th>
-                                        <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Total Students</th>
-                                        <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Total Batches</th>
-                                        <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Status</th>
+                                        <th style={{ textAlign: 'left', verticalAlign: 'middle' }}>Mentor Id</th>
+                                        <th style={{ textAlign: 'left', verticalAlign: 'middle' }}>Name</th>
 
-                                        <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Action</th>
+                                        <th style={{ textAlign: 'left', verticalAlign: 'middle' }}>Phone No</th>
+                                        <th style={{ textAlign: 'left', verticalAlign: 'middle' }}>Total Students</th>
+                                        <th style={{ textAlign: 'left', verticalAlign: 'middle' }}>Total Batches</th>
+                                        <th style={{ textAlign: 'left', verticalAlign: 'middle' }}>Status</th>
+
+                                        <th style={{ textAlign: 'left', verticalAlign: 'middle' }}>Action</th>
 
                                     </tr>
                                 </thead>
-                                {console.log(mentorDetails)}
-                                <tbody style={{ zIndex: 1 }}>
-                                    {mentorDetails.map(mentorDetails => {
+                                {/* {console.log(mentorDetails)} */}
+                                <tbody className="custom-tbody" style={{fontSize:"1vw" }}>
+                                    {mentorDetails?.map(mentorDetails => {
                                         return (
                                             <tr>
                                                 <td>{mentorDetails?.id}</td>
                                                 <td>{mentorDetails && mentorDetails?.name}</td>
-                                                <td>{mentorDetails?.role}</td>
-                                                <td>{mentorDetails?.phoneNumber}</td>
-                                                <td class="text-center align-middle">{mentorDetails?.NoOfStudents}</td>
-                                                {/* <td style={{ display:"flex",justifyContent:"center",alignItems:"center"}}>{mentorDetails?.NoOfBatches}</td> */}
-                                                <td class="text-center align-middle" >{mentorDetails?.NoOfBatches}</td>
 
-                                                <td class="text-center align-middle">{mentorDetails?.activeFlag ? <span style={{ backgroundColor: 'green', color: 'white', padding: '5px' }}>Active</span> : <span style={{ backgroundColor: 'red', color: 'white', padding: '5px' }}>De-Active</span>}
+                                                <td>{mentorDetails?.phoneNumber}</td>
+                                                <td >{mentorDetails?.NoOfStudents}</td>
+                                                <td  >{mentorDetails?.NoOfBatches}</td>
+
+                                                <td >{mentorDetails?.activeFlag ? <span style={{ backgroundColor: 'green', color: 'white', padding: '5px',borderRadius:"10px" }}>Active</span> : <span style={{ backgroundColor: 'red', color: 'white', padding: '5px' }}>De-Active</span>}
 
                                                 </td>
                                                 <td className='d-flex' >
-                                                    <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Edit'><i class="fa fa-edit custom-icon" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }} onClick={() => {
-                                                        // handleShowinsdetails ()
+                                                    <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Edit'><i class="fa fa-edit custom-icon" style={{ color: 'rgb(32, 109, 50)',  padding: '2px' }} onClick={() => {
                                                         handleInsEditDetailsShow()
                                                         handleCountrylist()
-                                                        // handleEditMetorData(mentorDetails?.id)
+                                                        
                                                         handleEditMetorDetails(mentorDetails?.id)
                                                     }}></i></button>
-                                                    <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Delete'><i class="fa fa-trash custom-icon" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }} onClick={() => {
+                                                    <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Delete'><i class="fa fa-trash custom-icon" style={{ color: 'rgb(32, 109, 50)',  padding: '2px' }} onClick={() => {
 
                                                         handleMentorDelete(mentorDetails?.id)
                                                     }}></i></button>
-                                                    <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='View'><i class="fa fa-eye custom-icon" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }} onClick={() => {
+                                                    <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='View'><i class="fa fa-eye custom-icon" style={{ color: 'rgb(32, 109, 50)',  padding: '2px' }} onClick={() => {
 
                                                         handleShowinspopup()
-                                                        //    handleCloseinsdetails()
+                                                       
                                                         handleCourseData(mentorDetails.id)
                                                         handleAllCourseList()
                                                     }}></i></button>
@@ -1049,14 +884,12 @@ export default function Mentors() {
             <Modal show={showinsdetails} onHide={handleCloseinsdetails} backdrop="static"
                 keyboard={false}
                 size='lg'>
-                {/* <Modal.Header closeButton>
-                    <Modal.Title>Modal Heading</Modal.Title>
-                </Modal.Header> */}
+               
                 <Modal.Body>
                     <div className='container-fluid'>
                         <div className='row'>
-                            {/* {console.log(editmentorDetails)} */}
-                            <div className=' col-md-12 headLineBox mb-3' >
+                          
+                            <div className=' col-md-12  mb-3' >
                                 <h4>Edit Mentor</h4>
                             </div>
                             <div className='col-md-3 p-2'>
@@ -1182,7 +1015,7 @@ export default function Mentors() {
                             <div className='col-md-3 p-2'>
                                 <div class="input-group ">
                                     <input type="text" class="form-control"
-                                        // name='linkedinLink'
+                                        
                                         value={linkedinProfileLink}
                                         onChange={handleLinkdin}
 
@@ -1238,10 +1071,11 @@ export default function Mentors() {
                             handleAllCourseList()
                         }}
                         >
-                            Next
+                            Next <ArrowForwardIcon/>
                         </Button>
-                        <Button variant="secondary" onClick={handleCloseinsdetails} >
-                            Close
+                        <Button  variant="contained"
+                            style={{backgroundColor:"red"}} onClick={handleCloseinsdetails} >
+                            Close <CloseIcon/>
                         </Button>
                     </Stack>
                 </Modal.Footer>
@@ -1258,7 +1092,7 @@ export default function Mentors() {
 
                     <div className='container-fluid'>
                         <div className='row'>
-                            <div className=' col-md-12 headLineBox mb-3' >
+                            <div className=' col-md-12 mb-3' >
                                 <h4>Mentor Courses List</h4>
                             </div>
                             {/* <div className='col-md-12'>
@@ -1297,16 +1131,16 @@ export default function Mentors() {
 
                             </div> */}
                             <div className='col-md-12'>
-                                <div className="table-container" >
-                                    <table className="table table-bordered pt-1" >
-                                        <thead style={{ position: 'sticky', top: -2, zIndex: 3 }}>
+                                <div className="p-0 custom-table-container" style={{paddingTop:"0px", height: '300px', overflowY: 'auto' }} >
+                                    <table className="table-bordered custom-table" >
+                                        <thead className="custom-thead " style={{ position: 'sticky', top: 0, zIndex: 3, fontSize:"1vw" }}>
                                             <tr>
-                                                <th>Course</th>
-                                                <th>Batch</th>
+                                                <th style={{ textAlign: 'left', verticalAlign: 'middle' }}>Course</th>
+                                                <th style={{ textAlign: 'left', verticalAlign: 'middle' }}>Batch</th>
 
                                             </tr>
                                         </thead>
-                                        <tbody>{console.log(courselistObj)}
+                                        <tbody className="custom-tbody" style={{fontSize:"1vw" }}>{console.log(courselistObj)}
                                             {courselistObj?.map((courselist) => {
                                                 return (
                                                     <tr>
@@ -1345,20 +1179,20 @@ export default function Mentors() {
                         Save Changes
                     </Button> */}
                     <Stack spacing={2} direction="row" >
-                        <Button variant="contained" color="success" onClick={() => {
+                        <Button variant="contained"  onClick={() => {
                             // handleMentorStatus(editdata?.id,editedStatus)
                             handleCloseinspopup()
                             // handleShowinsdetails()
                             handleInsEditDetailsShow()
-                        }}>prev</Button>
+                        }}>prev <ArrowBackIcon/></Button>
                         <Button variant="contained" color="success" onClick={() => {
                             handleInsReviewShow()
                             handleCloseinspopup()
                         }}>
-                            Next
+                            Next <ArrowForwardIcon/>
                         </Button>
-                        <Button variant="secondary" onClick={handleCloseinspopup} >
-                            Close
+                        <Button variant="contained" style={{backgroundColor:"red"}} onClick={handleCloseinspopup} >
+                            Close <CloseIcon/>
                         </Button>
                     </Stack>
                 </Modal.Footer>
@@ -1409,7 +1243,7 @@ export default function Mentors() {
                                 </div>
 
                             </div> */}
-                            <div className=' col-md-12 headLineBox mb-3' >
+                            <div className=' col-md-12 mb-3' >
                                 <h4>Mentor Review</h4>
                             </div>
                             <div className='col-md-12'>
@@ -1463,15 +1297,15 @@ export default function Mentors() {
                         <Button variant="contained" onClick={() => {
                             // handleMentorStatus(editdata?.id,editedStatus)
                             handleInsReviewClose()
-                        }}>Save</Button>
+                        }}>Save <DoneIcon/></Button>
                         <Button variant="contained" color="success" onClick={() => {
                             handleShowinspopup()
                             handleInsReviewClose()
                         }}>
-                            Prev
+                           <ArrowBackIcon/> Prev
                         </Button>
-                        <Button variant="secondary" onClick={() => { handleInsReviewClose() }} >
-                            Close
+                        <Button variant="contained" style={{backgroundColor:"red"}} onClick={() => { handleInsReviewClose() }} >
+                            Close <CloseIcon/>
                         </Button>
                     </Stack>
                 </Modal.Footer>
@@ -1488,7 +1322,7 @@ export default function Mentors() {
                     {/* <p>Modal content goes here.</p> */}
                     <div className='container-fluid'>
                         <div className='row'>
-                            <div className=' col-md-12 headLineBox mb-3' >
+                            <div className=' col-md-12  mb-3' >
                                 <h4>Add Mentor</h4>
                             </div>
                             <div className='col-md-3 p-2'>
@@ -1661,12 +1495,13 @@ export default function Mentors() {
                         <Button variant="contained" onClick={() => {
                             handleAddMentorset()
                             handleaddInsClose()
-                        }}>Save</Button>
+                        }}>Save <DoneIcon/> </Button>
                         <Button variant="contained" color="success">
-                            Next
+                            Next  <ArrowForwardIcon/>
                         </Button>
-                        <Button variant="secondary" onClick={handleaddInsClose}>
-                            Close
+                        <Button  variant="contained"
+                            style={{backgroundColor:"red"}} onClick={handleaddInsClose}>
+                            Close  <CloseIcon/>
                         </Button>
                     </Stack>
                     {/* <Button variant="primary" onClick={handleClose}>
@@ -1686,7 +1521,7 @@ export default function Mentors() {
                     {/* <p>Modal content goes here.</p> */}
                     <div className='container-fluid'>
                         <div className='row'>
-                            <div className=' col-md-12 headLineBox mb-3' >
+                            <div className=' col-md-12 mb-3' >
                                 <h4>Add Mentor Basic Details</h4>
                             </div>
                             <div className="row">
@@ -1735,8 +1570,8 @@ export default function Mentors() {
                                                 onChange={handleAddMentorBasicInfo}
 
                                             />
-                                            {errors?.dob && <div className="error">{errors.dob}</div>}
                                         </div>
+                                            {errors?.dob && <div className="error">{errors.dob}</div>}
                                     </div>
 
                                 </div>
@@ -1975,26 +1810,6 @@ export default function Mentors() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='row mt-4'>
-                                 <div className='col-md-6'>
-                                    <div>
-                                        Role
-                                    </div>
-                                    <div>
-                                        <div class="input-group ">
-                                            <select name='role'
-                                            value={addMentorBasicInfo?.role}
-                                            onChange={handleAddMentorBasicInfo}
-                                            class="form-control" id="exampleFormControlSelect1">
-                                            <option value=''>---select---</option>
-                                            <option value={'Mentor'}>Mentor</option>
-                                            <option value={'Mentor_Assistant'}>Assistant Mentor</option>
-                                            </select>
-                                        </div>
-                                        {errors?.role && <div className="error">{errors?.role}</div>}
-                                    </div>
-                                </div>
-                            </div>
 
                             {/* <div className='col-md-3 p-2'>
                                 linkdin Url
@@ -2050,32 +1865,16 @@ export default function Mentors() {
                             // handleAddMentorset()
                             handleAddMentorBasicInfoApi()
                             // handleaddInsBasicInfoClose()
-                        }}>Save</Button>
+                        }}>Save <DoneIcon/></Button>
                         <Button variant="contained" color="success" onClick={() => {
                             handleaddInsEducationInfoShow()
                             handleaddInsBasicInfoClose()
                         }}>
-                            Next
+                            Next  <ArrowForwardIcon/>
                         </Button>
-                        <Button variant="secondary" onClick={()=>{
-                            setAddMentorBasicInfo({
-                                name: '',
-                                gender: '',
-                                dob: '',
-                                email: '',
-                                phoneNo: '',
-                                AlternatePhoneNo: '',
-                                address1: '',
-                                address2: '',
-                                country: country || { id: '', name: "" },
-                                state: state || { id: '', name: "" },
-                                city: city || { id: '', name: "" },
-                                pinNo: '',
-                                IdType: '',
-                                idNo: '',
-                            });
-                            handleaddInsBasicInfoClose()}}>
-                            Close
+                        <Button variant="contained"
+                            style={{backgroundColor:"red"}} onClick={handleaddInsBasicInfoClose}>
+                            Close <CloseIcon/>
                         </Button>
                     </Stack>
                     {/* <Button variant="primary" onClick={handleClose}>
@@ -2095,7 +1894,7 @@ export default function Mentors() {
                     {/* <p>Modal content goes here.</p> */}
                     <div className='container-fluid'>
                         <div className='row'>
-                            <div className=' col-md-12 headLineBox mb-3' >
+                            <div className=' col-md-12  mb-3' >
                                 <h4>Add Mentor Education Info </h4>
                             </div>
                             <div className='col-md-3 p-2'>
@@ -2305,37 +2104,22 @@ export default function Mentors() {
                             // handleAddMentorset()
                             handleAddMentorEducationalInfoApi()
                             handleaddInsBasicInfoClose()
-                        }}>Save</Button>
+                        }}>Save <DoneIcon/> </Button>
                         <Button variant="contained" color="success" onClick={() => {
                             handleaddInsBasicInfoShow()
                             handleaddInsEducationInfoClose()
                         }}>
-                            Prev
+                            <ArrowBackIcon/> Prev
                         </Button>
                         <Button variant="contained" color="success" onClick={() => {
                             handleaddInsProffesionInfoShow()
                             handleaddInsEducationInfoClose()
                         }}>
-                            Next
+                            Next <ArrowForwardIcon/>
                         </Button>
-                        <Button variant="secondary" onClick={()=>{
-                             setAddMentorEducationInfo({
-                                email: '',
-                                gradDegree: '',
-                                gradDept: '',
-                                gradPassout: '',
-                                gradInsNm: '',
-                                gradCgpa: '',
-                                hsPassout: '',
-                                hsInsNm: '',
-                                hsCgpa: '',
-                                matricPassout: '',
-                                matricNm: '',
-                                matricCgpa: '',
-                        
-                            });
-                            handleaddInsEducationInfoClose()}}>
-                            Close
+                        <Button variant="contained"
+                            style={{backgroundColor:"red"}} onClick={handleaddInsEducationInfoClose}>
+                            Close <CloseIcon/>
                         </Button>
                     </Stack>
                     {/* <Button variant="primary" onClick={handleClose}>
@@ -2355,7 +2139,7 @@ export default function Mentors() {
                     {/* <p>Modal content goes here.</p> */}
                     <div className='container-fluid'>
                         <div className='row'>
-                            <div className=' col-md-12 headLineBox mb-3' >
+                            <div className=' col-md-12 mb-3' >
                                 <h4>Add Mentor Proffesional Info </h4>
                             </div>
                             <div className='col-md-3 p-2'>
@@ -2500,32 +2284,20 @@ export default function Mentors() {
                             // handleAddMentorset()
                             handleAddMentorProffesionalInfoApi()
                             handleaddInsBasicInfoClose()
-                        }}>Save</Button>
+                        }}>Save <DoneIcon/> </Button>
                         <Button variant="contained" color="success" onClick={() => {
                             // handleaddInsBasicInfoShow()
                             handleaddInsEducationInfoShow()
                             handleaddInsProffesionInfoClose()
                         }}>
-                            Prev
+                            <ArrowBackIcon/> Prev
                         </Button>
                         {/* <Button variant="contained" color="success">
                     Next
                     </Button> */}
-                        <Button variant="secondary" onClick={()=>{
-                            setAddMentorProffesionalInfo({
-                                email: '',
-                                totalExp: '',
-                                currentOrg: '',
-                                currentDesg: '',
-                                LinkdinUrl: linkedinProfileLink,
-                                // profilePhoto: '',
-                                // uniCirtificate: '',
-                                activeFlag: '',
-                        
-                        
-                            })
-                            handleaddInsProffesionInfoClose()}}>
-                            Close
+                        <Button variant="contained"
+                            style={{backgroundColor:"red"}} onClick={handleaddInsProffesionInfoClose}>
+                            Close  <CloseIcon/>
                         </Button>
                     </Stack>
                     {/* <Button variant="primary" onClick={handleClose}>
@@ -2545,8 +2317,8 @@ export default function Mentors() {
                     <div className='container-fluid'>
                         <div className='row'>
                             {console.log(editMentorData)}
-                            <div className=' col-md-12 headLineBox mb-3' >
-                                <h4>Add Mentor Basic Details</h4>
+                            <div className=' col-md-12  mb-3' >
+                                <h4>Edit Mentor Basic Details</h4>
                             </div>
                             <div className='col-md-3 p-2'>
                                 Name
@@ -2771,8 +2543,9 @@ export default function Mentors() {
                                     />
                                 </div>
                             </div>
-                            <div className=' col-md-12 headLineBox mb-3' >
-                                <h4>Add Mentor Education Info </h4>
+                            <div className=' col-md-12  mb-3' >
+                                <hr />
+                                <h4>Edit Mentor Education Info </h4>
                             </div>
                             <div className='col-md-3 p-2'>
                                 Graduation Degree
@@ -2926,8 +2699,9 @@ export default function Mentors() {
                                     />
                                 </div>
                             </div>
-                            <div className=' col-md-12 headLineBox mb-3' >
-                                <h4>Add Mentor Proffesional Info </h4>
+                            <div className=' col-md-12  mb-3 mt-1' >
+                            <hr />
+                                <h4>Edit Mentor Proffesional Info </h4>
                             </div>
                             <div className='col-md-3 p-2'>
                                 Total year Of Exp
@@ -3027,7 +2801,7 @@ export default function Mentors() {
                             // handleCloseinsdetails()
                             // handleUpdateMetorData()
                             handleEditMentorInfoApi()
-                        }}>Update</Button>
+                        }}>Update <span style={{marginLeft:"3px"}}> <FontAwesomeIcon icon={faPencil} /> </span>  </Button>
                         <Button variant="contained" color="success" onClick={() => {
                             handleShowinspopup()
                             handleInsEditDetailsClose()
@@ -3035,12 +2809,10 @@ export default function Mentors() {
                             handleAllCourseList()
                         }}
                         >
-                            Next
+                            Next <ArrowForwardIcon/>
                         </Button>
-                        <Button variant="secondary" onClick={()=>{
-                             
-                            handleInsEditDetailsClose()}} >
-                            Close
+                        <Button variant="contained" style={{backgroundColor:"red"}} onClick={handleInsEditDetailsClose} >
+                            Close  <CloseIcon/>
                         </Button>
                     </Stack>
                 </Modal.Footer>

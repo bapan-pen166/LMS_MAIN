@@ -12,6 +12,7 @@ import "../../assets/css/TableStyle/TableStyle.css";
 import "../../assets/css/Utility/utilityColor.css";
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+
 import {
 
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, TablePagination,
@@ -249,9 +250,6 @@ export default function Student_Assignment() {
             <div>
                 <div className="container-fluid">
                     <div className="row">
-                        {/* <div className="col-md-12 col-lg-12 col-sm-12 headLineBox">
-                            <h4>Assignments</h4>
-                        </div> */}
 
                         <div className="col-md-12">
                             <div className="custom-table-container">
@@ -438,27 +436,6 @@ export default function Student_Assignment() {
 
                                                     <TableCell className="p-2">{assignment.endDate}</TableCell>
 
-                                                    {/* <TableCell className="p-2">
-
-                                                        <Button
-
-                                                            variant="contained"
-
-                                                            onClick={() => {
-
-                                                                handleDownloadXLS(assignment.filePath);
-
-                                                                handleAssignmentDownload(assignment.id, assignment.assignmentName, assignment.endDate);
-
-                                                            }}
-
-                                                        >
-
-                                                            Download <DownloadForOfflineOutlinedIcon />
-
-                                                        </Button>
-
-                                                    </TableCell> */}
 
                                                     <TableCell className="p-2">
 

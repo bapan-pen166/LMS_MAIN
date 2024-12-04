@@ -73,12 +73,9 @@ const InstructorCard = ({ batchName,courseType,mentorName,mentorDetails,assistan
         </div>
       </div>
       <div className="d-flex " style={{justifyContent:'end'}} >
-        {/* <span className="me-2">{Array(rating).fill("⭐").join(" ")}</span> */}
-        {/* <button className="btn btn-outline-primary btn-sm ms-auto">
-          <i className="bi bi-envelope"></i>
-        </button> */}
+        
         <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Edit'>
-            <i class="fa fa-edit custom-icon" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }} onClick={() => {
+            <i class="fa fa-edit custom-icon" style={{ color: 'green', fontSize: "14pt", padding: '2px' }} onClick={() => {
                         // handleEditCourseData(courseList?.id)
                         handleEditBatchesShow()
                         setEditBatchDetails({
@@ -98,7 +95,7 @@ const InstructorCard = ({ batchName,courseType,mentorName,mentorDetails,assistan
                 </i>
         </button>
         <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Delete'>
-            <i class="fa fa-trash custom-icon" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }} 
+            <i class="fa fa-trash custom-icon" style={{ color: 'green', fontSize: "14pt", padding: '2px' }} 
             onClick={() => {
                         handleDeleteBatch(
                             id
@@ -107,7 +104,7 @@ const InstructorCard = ({ batchName,courseType,mentorName,mentorDetails,assistan
             </i>
         </button>
         <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title=' Batch Details'>
-            <i class="fa fa-reply  custom-icon" style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }} 
+            <i class="fa fa-reply  custom-icon" style={{ color: 'green', fontSize: "14pt", padding: '2px' }} 
             onClick={() => {
                 handleBatchDetailsShow()
                 handlebatchData(id)
@@ -120,27 +117,5 @@ const InstructorCard = ({ batchName,courseType,mentorName,mentorDetails,assistan
   </div>
 );
 
-// const InstructorList = () => {
-//   const instructors = [
-//     { name: "Lori Stevens", title: "Web Designer", students: "5,354", courses: "15", rating: 4 },
-//     { name: "Carolyn Ortiz", title: "Web Developer", students: "15,523", courses: "10", rating: 4 },
-//     { name: "Dennis Barrett", title: "Developer and Instructor", students: "2,546", courses: "09", rating: 3 },
-//     { name: "Billy Vasquez", title: "Full Stack Web Developer", students: "12,786", courses: "07", rating: 4 },
-//     { name: "Jacqueline Miller", title: "Engineering Architect", students: "21,245", courses: "05", rating: 4 },
-//     { name: "Amanda Reed", title: "Medical Science", students: "8,546", courses: "06", rating: 4 },
-//   ];
-
-//   return (
-//     <div className="container">
-//       <div className="row">
-//         {instructors.map((instructor, index) => (
-//           <div className="col-md-4" key={index}>
-//             <InstructorCard {...instructor} />
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
 
 export default InstructorCard;
