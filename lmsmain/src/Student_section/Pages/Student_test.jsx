@@ -145,7 +145,9 @@ const Student_test = () => {
     testDetails.testName.toLowerCase().includes(searchQuery.toLowerCase())
 
   );
+
   const sortedData = stableSort(filteredData, getComparator(order, orderBy));
+
   const getAllTestData = () => {
     axios.post(`${api}/student/getStudTests`, { email: mentorEmail })
       .then((response) => {
@@ -302,8 +304,6 @@ const Student_test = () => {
                       <TableCell
 
                         key={column.id}
-
-
 
                         className='p-1 text-white'
 

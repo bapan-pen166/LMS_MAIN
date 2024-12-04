@@ -544,7 +544,7 @@ export default function Batches() {
                                         <FontAwesomeIcon style={{ fontSize: "5vw" }} icon={faPeopleGroup} />
                                     </span>
                                     <div className="ms-4">
-                                        <h5 className="purecounter fw-bold pb-2" style={{ fontSize: "2vw" }}>Total Batches</h5>
+                                        <h5 className="purecounter fw-bold pb-2" style={{ fontSize: "1.5vw" }}>Total Batches</h5>
                                         <p className="mb-0 h6 fw-light"> {batchCountData?.totalBatchCount}</p>
                                     </div>
                                 </div>
@@ -558,7 +558,7 @@ export default function Batches() {
                                         <FontAwesomeIcon style={{ fontSize: "5vw" }} icon={faChartLine} />
                                     </span>
                                     <div className="ms-4">
-                                        <h5 className="purecounter fw-bold pb-2" style={{ fontSize: "2vw" }}>Active Batches</h5>
+                                        <h5 className="purecounter fw-bold pb-2" style={{ fontSize: "1.5vw" }}>Active Batches</h5>
                                         <p className="mb-0 h6 fw-light">{batchCountData?.totalActiveBatchCount}</p>
                                     </div>
                                 </div>
@@ -568,88 +568,6 @@ export default function Batches() {
                 </div>
 
 
-
-                {/* <div className='col-md-12 col-lg-12 col-sm-12 mb-3'>
-                    <div className='row' >
-                        <div className='col-md-4' >
-                            <div style={{ height: '150px', background: 'white' }}>
-                                <p
-                                    style={{
-                                        background: 'radial-gradient(circle at 10% 20%, rgb(0, 107, 141) 0%, rgb(0, 69, 91) 90%)',
-                                        width: "100%",
-                                        display: "flex",
-                                        justifyContent: 'left',
-                                        padding: "10px 10px",
-                                        borderRadius: '10px 10px 0 0',
-                                        fontWeight: "bold",
-                                        fontSize: '16px',
-                                        color: "white"
-                                    }}
-                                    className="roboto-medium"
-                                >
-                                    Total Batches
-                                </p>
-                                <p
-                                    style={{
-                                        fontSize: '30px',
-                                        fontWeight: 'bold',
-                                        position: "absolute",
-                                        bottom: "25%",
-                                        left: "30px",
-                                        display: "block"
-                                    }}
-                                >
-                                    <div>
-
-                                    </div>
-
-
-                                    {batchCountData?.totalBatchCount}
-                                </p>
-                            </div>
-                        </div>
-                        <div className='col-md-4' >
-                            <div style={{ height: '150px', background: 'white' }}>
-                                <p
-                                    style={{
-                                        background: 'radial-gradient(circle at 10% 20%, rgb(0, 107, 141) 0%, rgb(0, 69, 91) 90%)',
-                                        width: "100%",
-                                        display: "flex",
-                                        justifyContent: 'left',
-                                        padding: "10px 10px",
-                                        borderRadius: '10px 10px 0 0',
-                                        fontWeight: "bold",
-                                        fontSize: '16px',
-                                        color: "white"
-                                    }}
-                                    className="roboto-medium"
-                                >
-                                    Active Batches
-                                </p>
-                                <p
-                                    style={{
-                                        fontSize: '30px',
-                                        fontWeight: 'bold',
-                                        position: "absolute",
-                                        bottom: "25%",
-                                        left: "30px",
-                                        display: "block"
-                                    }}
-                                >
-                                    <div>
-
-                                    </div>
-
-
-                                    {batchCountData?.totalActiveBatchCount}
-                                </p>
-                            </div>
-                        </div>
-
-
-                    </div>
-
-                </div> */}
                 <div className="row container-fluid" style={{ marginTop: '20px' }}>
                     <div className="row">
                         <div className="col-md-6 pl-6">

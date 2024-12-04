@@ -39,11 +39,70 @@ import {
     TableRow,
     TablePagination,
     IconButton,
-    TextField
-  } from '@mui/material';
-  import EditIcon from '@mui/icons-material/Edit';
-  import DeleteIcon from '@mui/icons-material/Delete';
-  import VisibilityIcon from '@mui/icons-material/Visibility';
+    TextField,
+    TableSortLabel
+} from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { visuallyHidden } from "@mui/utils";
+import DoneIcon from '@mui/icons-material/Done';
+
+
+function descendingComparator(a, b, orderBy) {
+
+    if (b[orderBy] < a[orderBy]) {
+  
+      return -1;
+  
+    }
+  
+    if (b[orderBy] > a[orderBy]) {
+  
+      return 1;
+  
+    }
+  
+    return 0;
+  
+  }
+  
+  
+  
+  function getComparator(order, orderBy) {
+  
+    return order === "desc"
+  
+      ? (a, b) => descendingComparator(a, b, orderBy)
+  
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  
+  }
+  
+  
+  
+  function stableSort(array, comparator) {
+  
+    const stabilizedThis = array.map((el, index) => [el, index]);
+  
+    stabilizedThis.sort((a, b) => {
+  
+      const order = comparator(a[0], b[0]);
+  
+      if (order !== 0) return order;
+  
+      return a[1] - b[1];
+  
+    });
+  
+    return stabilizedThis.map((el) => el[0]);
+  
+  }
+
+
+
+
+
 
 
 export default function Courses() {
@@ -54,6 +113,9 @@ export default function Courses() {
 
 
     const [courseList, setCourseList] = useState([]);
+
+
+   
 
     const handleAllCourseList = (e) => {
         console.log('submit click');
@@ -76,6 +138,62 @@ export default function Courses() {
     const [showAddCourse, setShowAddCourse] = useState(false);
     const handleAddCourseClose = () => setShowAddCourse(false);
     const handleAddCourseShow = () => setShowAddCourse(true);
+
+    //    For  the material ui table
+    const [order, setOrder] = useState("asc");
+
+    const [orderBy, setOrderBy] = useState("testName");
+
+    const [page, setPage] = useState(0);
+
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
+
+    //  For  the material ui table
+
+    const handleRequestSort = (event, property) => {
+
+        const isAsc = orderBy === property && order === "asc";
+    
+        setOrder(isAsc ? "desc" : "asc");
+    
+        setOrderBy(property);
+    
+      };
+
+      const filteredData = courseList.filter((testDetails) =>
+
+        testDetails?.courseName?.toLowerCase().includes(searchquery.toLowerCase()) ||
+        testDetails?.code?.toLowerCase().includes(searchquery.toLowerCase())
+    
+      );
+    
+      const sortedData = stableSort(filteredData, getComparator(order, orderBy));
+
+
+    
+    
+    
+      const handleChangePage = (event, newPage) => {
+    
+        setPage(newPage);
+    
+      };
+    
+    
+    
+      const handleChangeRowsPerPage = (event) => {
+    
+        setRowsPerPage(parseInt(event.target.value, 10));
+    
+        setPage(0);
+    
+      };
+    
+
+
+
+
 
     const [addCourseDetails, setAddCourseDetails] = useState({
         courseName: '',
@@ -194,22 +312,7 @@ export default function Courses() {
             [name]: type === 'file' ? files[0] : value
         });
     };
-    // const handleCourseContentEdit = (e) => {
-    //     const data = new FormData();
-    //     data.append('courseName', editCourseDetails.courseName);
-    //     // data.append('fileType', 'Co');
-    //     data.append('file', editCourseDetails.content);
-
-    //     console.log(data);
-    //     axios.post(`${api2}/course/courseDocumentUpload`, data, {})
-    //         .then((Response) => {
-    //             console.log(Response.data);
-
-
-    //         }).catch(error => {
-    //             console.log(error);
-    //         });
-    // }
+  
     const handleCourseContentEdit = (e) => {
         const data = new FormData();
         data.append('courseName', editCourseDetails.courseName);
@@ -243,7 +346,7 @@ export default function Courses() {
         })
             .then((Response) => {
                 console.log(" data : ", Response.data);
-                // setCourseList(Response.data.result);
+               
                 handleAllCourseList()
             })
             .catch((error) => {
@@ -263,7 +366,7 @@ export default function Courses() {
         })
             .then((Response) => {
                 console.log(" data : ", Response.data);
-                // setCourseList(Response.data.result);
+               
                 handleAllCourseList()
             })
             .catch((error) => {
@@ -277,21 +380,9 @@ export default function Courses() {
     const handleViewCourseShow = () => setShowViewCourse(true)
     const [viewCourse, setViewCourse] = useState({})
     const [individualEm, setIndividualEm] = useState([])
-    // const viewDoc= (foldername)=>{
-    //     window.open(window.open(`${api2}/static/courseDetails/` + foldername ))
-    // }
+ 
     const [courseContent, setcourseContent] = useState([]);
-    // const handleAllCourseContent = (e) => {
-    //     console.log('submit click');
-    //     axios.post(`${api2}/course/getCourseContent`, {})
-    //         .then((Response) => {
-    //             console.log(" data : ",Response.data);
-    //             setcourseContent(Response.data.result);
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error:', error);
-    //         });
-    // }   
+    
 
     const viewDoc = (foldername) => {
         window.open(window.open(`${api2}/static/courseDetails/` + foldername))
@@ -777,7 +868,7 @@ export default function Courses() {
                         </div>
                         <div className="col-md-12 col-lg-12 col-sm-12">
                             <div className="p-0 custom-table-container" style={{ paddingTop: "0px", height: '400px', overflowY: 'auto' }}>
-                                <table className="table-bordered custom-table" >
+                                {/* <table className="table-bordered custom-table" >
                                     <thead className="custom-thead " style={{ position: 'sticky', top: 0, zIndex: 3, fontSize: "1vw" }}>
                                         <tr>
                                             <th style={{ textAlign: 'left', verticalAlign: 'middle' }}>Courses</th>
@@ -847,7 +938,172 @@ export default function Courses() {
 
 
                                     </tbody>
-                                </table>
+                                </table> */}
+
+                                {/* material ui table making*/}
+                                <TableContainer>
+
+                                    <Table className="table-bordered pt-1">
+
+                                        <TableHead className="bg-theme-green text-white p-0" style={{ position: "sticky", top: -2, zIndex: 3 }}>
+
+                                            <TableRow>
+
+                                                {[
+
+                                                    { id: "Courses", label: "Courses" },
+
+                                                    { id: "Code", label: "Code" },
+
+                                                    { id: "Updated On", label: "Updated On" },
+
+                                                    { id: "Status", label: "Status" },
+
+                                                    { id: "Action", label: "Action" },
+
+                                                ].map((column) => (
+
+                                                    <TableCell
+
+                                                        key={column.id}
+
+
+
+                                                        className='p-1 text-white'
+
+                                                    >
+
+                                                        <TableSortLabel
+
+                                                            // active={orderBy === column.id}
+
+                                                            direction={orderBy === column.id ? order : "asc"}
+
+                                                            onClick={(event) => handleRequestSort(event, column.id)}
+
+                                                        >
+
+                                                            {column.label}
+
+                                                            {orderBy === column.id ? (
+
+                                                                <span style={visuallyHidden}>{order === "desc" ? "sorted descending" : "sorted ascending"}</span>
+
+                                                            ) : null}
+
+                                                        </TableSortLabel>
+
+                                                    </TableCell>
+
+                                                ))}
+
+                                            </TableRow>
+
+                                        </TableHead>
+
+                                        <TableBody>
+
+                                            {sortedData
+
+                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+
+                                                .map((courseList,index) => {
+
+                                                    // const { testName, startDate, startTime, endDate, endTime, totalTime, id, test_allowed, totalMarks, marksObtained } = testDetails;
+
+                                                    // const testStatus = getTestStatus(startDate, startTime, endDate, endTime);
+
+                                                    // const testStartTime = new Date(`${startDate} ${startTime}`).toLocaleString();
+
+
+
+                                                    return (
+
+                                                        <TableRow hover key={index}>
+
+                                                            <TableCell>{courseList?.courseName}</TableCell>
+
+                                                            <TableCell>{courseList?.code}</TableCell>
+
+                                                            <TableCell>1/2/2024</TableCell>
+
+                                                            <TableCell>{
+                                                            courseList?.activeFlag ? 'Active' : 'De-Active'
+                                                        }</TableCell>
+
+                                                            <TableCell><button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Edit'><i class="fa fa-edit custom-icon" style={{ color: 'rgb(32, 109, 50)', fontSize: "14pt", padding: '2px' }} onClick={() => {
+                                                            // handleEditCourseData(courseList?.id)
+                                                            handleEditCourseShow()
+                                                            setEditCourseDetails({
+                                                                courseName: courseList?.courseName,
+                                                                code: courseList?.code,
+                                                                description: courseList?.description,
+                                                                // content: courseList?.description,
+                                                                activeFlag: courseList?.activeFlag,
+                                                                id: courseList?.id,
+
+                                                            })
+                                                        }}></i></button>
+                                                            <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Delete'><i class="fa fa-trash custom-icon" style={{ color: 'rgb(32, 109, 50)', fontSize: "14pt", padding: '2px' }} onClick={() => {
+                                                                handleDeleteCourse(
+
+                                                                    courseList?.courseName,
+                                                                    courseList?.code,
+                                                                    courseList?.description,
+                                                                    //  courseList?.description,
+                                                                    courseList?.activeFlag,
+                                                                    courseList?.id,
+
+
+                                                                )
+                                                            }}></i></button>
+                                                            <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='View'><i class="fa fa-eye custom-icon" style={{ color: 'rgb(32, 109, 50)', fontSize: "14pt", padding: '2px' }} onClick={() => {
+                                                                // handleEditCourseData(courseList?.id)
+                                                                handleViewCourseShow()
+
+                                                                setViewCourse({
+                                                                    courseName: courseList?.courseName,
+                                                                    courseCode: courseList?.code,
+                                                                    courseDesc: courseList?.description,
+                                                                    courseDocFolder: courseList?.folderName,
+                                                                    id: courseList?.id
+                                                                })
+                                                                setcourseContent(courseList?.folderName)
+                                                                handleModuleName(courseList?.courseName, courseList?.code)
+                                                            }}></i></button></TableCell> 
+
+                                                        </TableRow>
+
+                                                    );
+
+                                                })}
+
+                                        </TableBody>
+
+                                    </Table>
+
+                                </TableContainer>
+
+                                <TablePagination
+
+                                    rowsPerPageOptions={[5, 10, 25]}
+
+                                    component="div"
+
+                                    count={filteredData.length}
+
+                                    rowsPerPage={rowsPerPage}
+
+                                    page={page}
+
+                                    onPageChange={handleChangePage}
+
+                                    onRowsPerPageChange={handleChangeRowsPerPage}
+
+                                />
+
+                                {/* .......................... */}
+
                             </div>
                         </div>
                     </div>
@@ -1096,7 +1352,7 @@ export default function Courses() {
 
                     <div className='container-fluid'>
                         <div className='row'>
-                            <div className=' col-md-12 headLineBox mb-3' >
+                            <div className=' col-md-12 mb-3' >
                                 <h4>Course Details</h4>
                             </div>
                             <div className='col-md-2 p-2'>
@@ -1246,11 +1502,11 @@ export default function Courses() {
                         <Button variant="contained" onClick={() => {
                             sendEmailCourse(viewCourse?.id)
                             // handleInsReviewClose()
-                        }}>Send</Button>
+                        }}>Send <DoneIcon/> </Button> 
                         {/* <Button variant="contained" color="success">
                     Prev
                     </Button> */}
-                        <Button variant="contained"
+                        <Button variant="contained" style={{backgroundColor:"red"}}
                             onClick={() => { handleViewCourseClose() }}
                         >
                             Close <CloseIcon />
