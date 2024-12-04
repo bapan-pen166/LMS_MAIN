@@ -26,25 +26,84 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { faIdBadge,faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faIdBadge, faPencil } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DoneIcon from '@mui/icons-material/Done';
 
 
 
 import {
-
-    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, TablePagination,
-
-    TextField, IconButton,
-
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    TablePagination,
+    IconButton,
+    TextField,
+    TableSortLabel
 } from '@mui/material';
-import DownloadForOfflineOutlinedIcon from '@mui/icons-material/DownloadForOfflineOutlined';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { visuallyHidden } from "@mui/utils";
 
-import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 
-import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
-import { visuallyHidden } from '@mui/utils';
+
+
+function descendingComparator(a, b, orderBy) {
+
+    if (b[orderBy] < a[orderBy]) {
+
+        return -1;
+
+    }
+
+    if (b[orderBy] > a[orderBy]) {
+
+        return 1;
+
+    }
+
+    return 0;
+
+}
+
+
+
+function getComparator(order, orderBy) {
+
+    return order === "desc"
+
+        ? (a, b) => descendingComparator(a, b, orderBy)
+
+        : (a, b) => -descendingComparator(a, b, orderBy);
+
+}
+
+
+
+function stableSort(array, comparator) {
+
+    const stabilizedThis = array.map((el, index) => [el, index]);
+
+    stabilizedThis.sort((a, b) => {
+
+        const order = comparator(a[0], b[0]);
+
+        if (order !== 0) return order;
+
+        return a[1] - b[1];
+
+    });
+
+    return stabilizedThis.map((el) => el[0]);
+
+}
+
+
+
 
 
 
@@ -88,6 +147,18 @@ export default function Mentors() {
     const [userType, setUserType] = useState('');
     const [isLoading, setIsLoading] = useState(true);
 
+    //    For  the material ui table
+    const [order, setOrder] = useState("asc");
+
+    const [orderBy, setOrderBy] = useState("testName");
+
+    const [page, setPage] = useState(0);
+
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
+
+   
+
 
     useEffect(() => {
         // handleMentorList()
@@ -101,7 +172,7 @@ export default function Mentors() {
     const [editmentorDetails, setEditMentorDetails] = useState('');
     const handleEditMetorData = (id) => {
         console.log('submit click');
-       
+
         axios.post(`${api2}/mentor/getMentorBasicList`, { mentorID: id })
 
             .then((Response) => {
@@ -124,7 +195,7 @@ export default function Mentors() {
     };
     const handleUpdateMetorData = () => {
         console.log('submit click');
-       
+
         axios.post(`${api2}/mentor/editMentorBasicInfo`, editmentorDetails)
             .then((Response) => {
                 console.log(" data : ", Response.data);
@@ -169,7 +240,7 @@ export default function Mentors() {
 
     function handleMetorData() {
         console.log('submit click');
-       
+
         axios.post(`${api2}/mentor/getMentorBasicList`, {})
             .then((Response) => {
                 console.log(" data : ", Response.data.result);
@@ -215,9 +286,9 @@ export default function Mentors() {
     };
     const handleAddMentorset = (e) => {
         console.log('submit click');
-        
+
         axios.post(`${api2}/mentor/addMentor`, addMentor
-           
+
         )
             .then((Response) => {
                 console.log(" data : ", Response.data);
@@ -251,7 +322,7 @@ export default function Mentors() {
     const [courselistAll, setCourseListAll] = useState([]);
     const handleCourseData = (id) => {
         console.log('submit click');
-       
+
         axios.post(`${api2}/mentor/getBatchesByMentorId`, { id: id })
             .then((Response) => {
                 console.log(" data : ", Response.data);
@@ -263,7 +334,7 @@ export default function Mentors() {
     }
     const handleAllCourseList = (e) => {
         console.log('submit click');
-       
+
         axios.post(`${api2}/course/getCourseList`, {})
             .then((Response) => {
                 console.log(" data : ", Response.data);
@@ -760,6 +831,57 @@ export default function Mentors() {
     }, []);
 
 
+     //  For  the material ui table   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+     const handleRequestSort = (event, property) => {
+
+        const isAsc = orderBy === property && order === "asc";
+
+        setOrder(isAsc ? "desc" : "asc");
+
+        setOrderBy(property);
+
+    };
+
+    const filteredData = mentorDetails.filter((testDetails) =>
+
+        testDetails?.name?.toLowerCase().includes(searchquery.toLowerCase()) ||
+        testDetails?.highestQualifucation?.toLowerCase().includes(searchquery.toLowerCase()) ||
+        testDetails?.phoneNumber?.toLowerCase().includes(searchquery.toLowerCase())
+
+    );
+
+    const sortedData = stableSort(filteredData, getComparator(order, orderBy));
+
+
+
+
+
+    const handleChangePage = (event, newPage) => {
+
+        setPage(newPage);
+
+    };
+
+
+
+    const handleChangeRowsPerPage = (event) => {
+
+        setRowsPerPage(parseInt(event.target.value, 10));
+
+        setPage(0);
+
+    };
+
+
+
+
+    ////////////////////////////////////////
+
+
+
+
+
     if (isLoading) {
         return <div>loading...</div>;
     }
@@ -774,51 +896,51 @@ export default function Mentors() {
 
     return (
         <>
-            <div className='row ' style={{fontFamily: "Roboto, sans-serif"}} >
+            <div className='row ' style={{ fontFamily: "Roboto, sans-serif" }} >
                 <div className="row container-fluid" >
                     <div className="row ml-0">
                         <div className="col-md-6">
                             <div className="d-flex align-items-center">
-                               
+
 
                                 <TextField
 
-                                        label="Search"
+                                    label="Search"
 
-                                        variant="outlined"
+                                    variant="outlined"
 
-                                        value={searchquery}
+                                    value={searchquery}
 
-                                        onChange={inputChange}
+                                    onChange={inputChange}
 
-                                        style={{ marginBottom: '16px' }}
+                                    style={{ marginBottom: '16px' }}
 
-                                        InputLabelProps={{
+                                    InputLabelProps={{
 
-                                            style: { top: '-5px' }
+                                        style: { top: '-5px' }
 
-                                        }}
+                                    }}
 
-                                    />
+                                />
 
                             </div>
                         </div>
                         <div className="col-md-6 col-sm-6 col-lg-6">
                             <Stack spacing={2} direction="row" sx={{ justifyContent: 'flex-end' }}>
-                            
-                                <Button style={{backgroundColor:"rgb(32, 109, 50)"}} variant="contained" onClick={() => {
-                                    
+
+                                <Button style={{ backgroundColor: "rgb(32, 109, 50)" }} variant="contained" onClick={() => {
+
                                     handleaddInsBasicInfoShow()
                                     handleCountrylist()
-                                }}>Add Mentor <AddCircleOutlineIcon/></Button>
+                                }}>Add Mentor <AddCircleOutlineIcon /></Button>
 
                             </Stack>
                         </div>
                     </div>
                     <div className="col-md-12 col-lg-12 col-sm-12">
-                        <div className="p-0 custom-table-container" style={{paddingTop:"0px", height: '400px', overflowY: 'auto' }}>
-                            <table className="table-bordered custom-table" >
-                                <thead className="custom-thead " style={{ position: 'sticky', top: 0, zIndex: 3, fontSize:"1vw" }}>
+                        <div className="p-0 custom-table-container" style={{ paddingTop: "0px", height: '400px', overflowY: 'auto' }}>
+                            {/* <table className="table-bordered custom-table" >
+                                <thead className="custom-thead " style={{ position: 'sticky', top: 0, zIndex: 3, fontSize: "1vw" }}>
                                     <tr>
                                         <th style={{ textAlign: 'left', verticalAlign: 'middle' }}>Mentor Id</th>
                                         <th style={{ textAlign: 'left', verticalAlign: 'middle' }}>Name</th>
@@ -832,8 +954,8 @@ export default function Mentors() {
 
                                     </tr>
                                 </thead>
-                                {/* {console.log(mentorDetails)} */}
-                                <tbody className="custom-tbody" style={{fontSize:"1vw" }}>
+                                
+                                <tbody className="custom-tbody" style={{ fontSize: "1vw" }}>
                                     {mentorDetails?.map(mentorDetails => {
                                         return (
                                             <tr>
@@ -842,26 +964,26 @@ export default function Mentors() {
 
                                                 <td>{mentorDetails?.phoneNumber}</td>
                                                 <td >{mentorDetails?.NoOfStudents}</td>
-                                                <td  >{mentorDetails?.NoOfBatches}</td>
+                                                <td>{mentorDetails?.NoOfBatches}</td>
 
-                                                <td >{mentorDetails?.activeFlag ? <span style={{ backgroundColor: 'green', color: 'white', padding: '5px',borderRadius:"10px" }}>Active</span> : <span style={{ backgroundColor: 'red', color: 'white', padding: '5px' }}>De-Active</span>}
+                                                <td >{mentorDetails?.activeFlag ? <span style={{ backgroundColor: 'green', color: 'white', padding: '5px', borderRadius: "10px" }}>Active</span> : <span style={{ backgroundColor: 'red', color: 'white', padding: '5px' }}>De-Active</span>}
 
                                                 </td>
                                                 <td className='d-flex' >
-                                                    <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Edit'><i class="fa fa-edit custom-icon" style={{ color: 'rgb(32, 109, 50)',  padding: '2px' }} onClick={() => {
+                                                    <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Edit'><i class="fa fa-edit custom-icon" style={{ color: 'rgb(32, 109, 50)', padding: '2px' }} onClick={() => {
                                                         handleInsEditDetailsShow()
                                                         handleCountrylist()
-                                                        
+
                                                         handleEditMetorDetails(mentorDetails?.id)
                                                     }}></i></button>
-                                                    <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Delete'><i class="fa fa-trash custom-icon" style={{ color: 'rgb(32, 109, 50)',  padding: '2px' }} onClick={() => {
+                                                    <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Delete'><i class="fa fa-trash custom-icon" style={{ color: 'rgb(32, 109, 50)', padding: '2px' }} onClick={() => {
 
                                                         handleMentorDelete(mentorDetails?.id)
                                                     }}></i></button>
-                                                    <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='View'><i class="fa fa-eye custom-icon" style={{ color: 'rgb(32, 109, 50)',  padding: '2px' }} onClick={() => {
+                                                    <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='View'><i class="fa fa-eye custom-icon" style={{ color: 'rgb(32, 109, 50)', padding: '2px' }} onClick={() => {
 
                                                         handleShowinspopup()
-                                                       
+
                                                         handleCourseData(mentorDetails.id)
                                                         handleAllCourseList()
                                                     }}></i></button>
@@ -874,7 +996,150 @@ export default function Mentors() {
 
 
                                 </tbody>
-                            </table>
+                            </table> */}
+
+                            {/* material ui table making*/}
+                            <TableContainer>
+
+                                <Table className="table-bordered pt-1">
+
+                                    <TableHead className="bg-theme-green text-white p-0" style={{ position: "sticky", top: -2, zIndex: 3 }}>
+
+                                        <TableRow>
+
+                                            {[
+
+                                                { id: "Mentor Id", label: "Mentor Id" },
+
+                                                { id: "Name", label: "Name" },
+
+                                                { id: "Phone No", label: "Phone No" },
+
+                                                { id: "Total Students", label: "Total Students" },
+
+                                                { id: "Total Batches", label: "Total Batches" },
+
+                                                { id: "Status", label: "Status" },
+
+                                                { id: "Action", label: "Action" },
+
+                                            ].map((column) => (
+
+                                                <TableCell
+
+                                                    key={column.id}
+
+
+
+                                                    className='p-1 text-white'
+
+                                                >
+
+                                                    <TableSortLabel
+
+                                                        // active={orderBy === column.id}
+
+                                                        direction={orderBy === column.id ? order : "asc"}
+
+                                                        onClick={(event) => handleRequestSort(event, column.id)}
+
+                                                    >
+
+                                                        {column.label}
+
+                                                        {orderBy === column.id ? (
+
+                                                            <span style={visuallyHidden}>{order === "desc" ? "sorted descending" : "sorted ascending"}</span>
+
+                                                        ) : null}
+
+                                                    </TableSortLabel>
+
+                                                </TableCell>
+
+                                            ))}
+
+                                        </TableRow>
+
+                                    </TableHead>
+
+                                    <TableBody>
+
+                                        {sortedData
+
+                                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+
+                                            .map((mentorDetails, index) => {
+
+                                                // const { testName, startDate, startTime, endDate, endTime, totalTime, id, test_allowed, totalMarks, marksObtained } = testDetails;
+
+                                                // const testStatus = getTestStatus(startDate, startTime, endDate, endTime);
+
+                                                // const testStartTime = new Date(`${startDate} ${startTime}`).toLocaleString();
+
+
+
+                                                return (
+
+                                                    <TableRow hover key={index}>
+
+                                                        <TableCell>{mentorDetails?.id}</TableCell>
+
+                                                        <TableCell>{mentorDetails && mentorDetails?.name}</TableCell>
+
+                                                        <TableCell>{mentorDetails?.phoneNumber}</TableCell>
+
+                                                        <TableCell>{mentorDetails?.NoOfStudents}</TableCell>
+                                                        <TableCell>{mentorDetails?.NoOfBatches}</TableCell> 
+                                                        <TableCell>{mentorDetails?.activeFlag ? <span style={{ backgroundColor: 'green', color: 'white', padding: '5px', borderRadius: "10px" }}>Active</span> : <span style={{ backgroundColor: 'red', color: 'white', padding: '5px' }}>De-Active</span>}</TableCell>
+                                                        <TableCell>  <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Edit'><i class="fa fa-edit custom-icon" style={{ color: 'rgb(32, 109, 50)', padding: '2px' }} onClick={() => {
+                                                        handleInsEditDetailsShow()
+                                                        handleCountrylist()
+
+                                                        handleEditMetorDetails(mentorDetails?.id)
+                                                    }}></i></button>
+                                                    <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Delete'><i class="fa fa-trash custom-icon" style={{ color: 'rgb(32, 109, 50)', padding: '2px' }} onClick={() => {
+
+                                                        handleMentorDelete(mentorDetails?.id)
+                                                    }}></i></button>
+                                                    <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='View'><i class="fa fa-eye custom-icon" style={{ color: 'rgb(32, 109, 50)', padding: '2px' }} onClick={() => {
+
+                                                        handleShowinspopup()
+
+                                                        handleCourseData(mentorDetails.id)
+                                                        handleAllCourseList()
+                                                    }}></i></button></TableCell>
+
+                                                    </TableRow>
+
+                                                );
+
+                                            })}
+
+                                    </TableBody>
+
+                                </Table>
+
+                            </TableContainer>
+
+                            <TablePagination
+
+                                rowsPerPageOptions={[5, 10, 25]}
+
+                                component="div"
+
+                                count={filteredData.length}
+
+                                rowsPerPage={rowsPerPage}
+
+                                page={page}
+
+                                onPageChange={handleChangePage}
+
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+
+                            />
+
                         </div>
                     </div>
                 </div>
@@ -884,11 +1149,11 @@ export default function Mentors() {
             <Modal show={showinsdetails} onHide={handleCloseinsdetails} backdrop="static"
                 keyboard={false}
                 size='lg'>
-               
+
                 <Modal.Body>
                     <div className='container-fluid'>
                         <div className='row'>
-                          
+
                             <div className=' col-md-12  mb-3' >
                                 <h4>Edit Mentor</h4>
                             </div>
@@ -1015,7 +1280,7 @@ export default function Mentors() {
                             <div className='col-md-3 p-2'>
                                 <div class="input-group ">
                                     <input type="text" class="form-control"
-                                        
+
                                         value={linkedinProfileLink}
                                         onChange={handleLinkdin}
 
@@ -1071,11 +1336,11 @@ export default function Mentors() {
                             handleAllCourseList()
                         }}
                         >
-                            Next <ArrowForwardIcon/>
+                            Next <ArrowForwardIcon />
                         </Button>
-                        <Button  variant="contained"
-                            style={{backgroundColor:"red"}} onClick={handleCloseinsdetails} >
-                            Close <CloseIcon/>
+                        <Button variant="contained"
+                            style={{ backgroundColor: "red" }} onClick={handleCloseinsdetails} >
+                            Close <CloseIcon />
                         </Button>
                     </Stack>
                 </Modal.Footer>
@@ -1131,16 +1396,16 @@ export default function Mentors() {
 
                             </div> */}
                             <div className='col-md-12'>
-                                <div className="p-0 custom-table-container" style={{paddingTop:"0px", height: '300px', overflowY: 'auto' }} >
+                                <div className="p-0 custom-table-container" style={{ paddingTop: "0px", height: '300px', overflowY: 'auto' }} >
                                     <table className="table-bordered custom-table" >
-                                        <thead className="custom-thead " style={{ position: 'sticky', top: 0, zIndex: 3, fontSize:"1vw" }}>
+                                        <thead className="custom-thead " style={{ position: 'sticky', top: 0, zIndex: 3, fontSize: "1vw" }}>
                                             <tr>
                                                 <th style={{ textAlign: 'left', verticalAlign: 'middle' }}>Course</th>
                                                 <th style={{ textAlign: 'left', verticalAlign: 'middle' }}>Batch</th>
 
                                             </tr>
                                         </thead>
-                                        <tbody className="custom-tbody" style={{fontSize:"1vw" }}>{console.log(courselistObj)}
+                                        <tbody className="custom-tbody" style={{ fontSize: "1vw" }}>{console.log(courselistObj)}
                                             {courselistObj?.map((courselist) => {
                                                 return (
                                                     <tr>
@@ -1179,20 +1444,20 @@ export default function Mentors() {
                         Save Changes
                     </Button> */}
                     <Stack spacing={2} direction="row" >
-                        <Button variant="contained"  onClick={() => {
+                        <Button variant="contained" onClick={() => {
                             // handleMentorStatus(editdata?.id,editedStatus)
                             handleCloseinspopup()
                             // handleShowinsdetails()
                             handleInsEditDetailsShow()
-                        }}>prev <ArrowBackIcon/></Button>
+                        }}>prev <ArrowBackIcon /></Button>
                         <Button variant="contained" color="success" onClick={() => {
                             handleInsReviewShow()
                             handleCloseinspopup()
                         }}>
-                            Next <ArrowForwardIcon/>
+                            Next <ArrowForwardIcon />
                         </Button>
-                        <Button variant="contained" style={{backgroundColor:"red"}} onClick={handleCloseinspopup} >
-                            Close <CloseIcon/>
+                        <Button variant="contained" style={{ backgroundColor: "red" }} onClick={handleCloseinspopup} >
+                            Close <CloseIcon />
                         </Button>
                     </Stack>
                 </Modal.Footer>
@@ -1297,15 +1562,15 @@ export default function Mentors() {
                         <Button variant="contained" onClick={() => {
                             // handleMentorStatus(editdata?.id,editedStatus)
                             handleInsReviewClose()
-                        }}>Save <DoneIcon/></Button>
+                        }}>Save <DoneIcon /></Button>
                         <Button variant="contained" color="success" onClick={() => {
                             handleShowinspopup()
                             handleInsReviewClose()
                         }}>
-                           <ArrowBackIcon/> Prev
+                            <ArrowBackIcon /> Prev
                         </Button>
-                        <Button variant="contained" style={{backgroundColor:"red"}} onClick={() => { handleInsReviewClose() }} >
-                            Close <CloseIcon/>
+                        <Button variant="contained" style={{ backgroundColor: "red" }} onClick={() => { handleInsReviewClose() }} >
+                            Close <CloseIcon />
                         </Button>
                     </Stack>
                 </Modal.Footer>
@@ -1495,13 +1760,13 @@ export default function Mentors() {
                         <Button variant="contained" onClick={() => {
                             handleAddMentorset()
                             handleaddInsClose()
-                        }}>Save <DoneIcon/> </Button>
+                        }}>Save <DoneIcon /> </Button>
                         <Button variant="contained" color="success">
-                            Next  <ArrowForwardIcon/>
+                            Next  <ArrowForwardIcon />
                         </Button>
-                        <Button  variant="contained"
-                            style={{backgroundColor:"red"}} onClick={handleaddInsClose}>
-                            Close  <CloseIcon/>
+                        <Button variant="contained"
+                            style={{ backgroundColor: "red" }} onClick={handleaddInsClose}>
+                            Close  <CloseIcon />
                         </Button>
                     </Stack>
                     {/* <Button variant="primary" onClick={handleClose}>
@@ -1571,7 +1836,7 @@ export default function Mentors() {
 
                                             />
                                         </div>
-                                            {errors?.dob && <div className="error">{errors.dob}</div>}
+                                        {errors?.dob && <div className="error">{errors.dob}</div>}
                                     </div>
 
                                 </div>
@@ -1865,16 +2130,16 @@ export default function Mentors() {
                             // handleAddMentorset()
                             handleAddMentorBasicInfoApi()
                             // handleaddInsBasicInfoClose()
-                        }}>Save <DoneIcon/></Button>
+                        }}>Save <DoneIcon /></Button>
                         <Button variant="contained" color="success" onClick={() => {
                             handleaddInsEducationInfoShow()
                             handleaddInsBasicInfoClose()
                         }}>
-                            Next  <ArrowForwardIcon/>
+                            Next  <ArrowForwardIcon />
                         </Button>
                         <Button variant="contained"
-                            style={{backgroundColor:"red"}} onClick={handleaddInsBasicInfoClose}>
-                            Close <CloseIcon/>
+                            style={{ backgroundColor: "red" }} onClick={handleaddInsBasicInfoClose}>
+                            Close <CloseIcon />
                         </Button>
                     </Stack>
                     {/* <Button variant="primary" onClick={handleClose}>
@@ -2104,22 +2369,22 @@ export default function Mentors() {
                             // handleAddMentorset()
                             handleAddMentorEducationalInfoApi()
                             handleaddInsBasicInfoClose()
-                        }}>Save <DoneIcon/> </Button>
+                        }}>Save <DoneIcon /> </Button>
                         <Button variant="contained" color="success" onClick={() => {
                             handleaddInsBasicInfoShow()
                             handleaddInsEducationInfoClose()
                         }}>
-                            <ArrowBackIcon/> Prev
+                            <ArrowBackIcon /> Prev
                         </Button>
                         <Button variant="contained" color="success" onClick={() => {
                             handleaddInsProffesionInfoShow()
                             handleaddInsEducationInfoClose()
                         }}>
-                            Next <ArrowForwardIcon/>
+                            Next <ArrowForwardIcon />
                         </Button>
                         <Button variant="contained"
-                            style={{backgroundColor:"red"}} onClick={handleaddInsEducationInfoClose}>
-                            Close <CloseIcon/>
+                            style={{ backgroundColor: "red" }} onClick={handleaddInsEducationInfoClose}>
+                            Close <CloseIcon />
                         </Button>
                     </Stack>
                     {/* <Button variant="primary" onClick={handleClose}>
@@ -2284,20 +2549,20 @@ export default function Mentors() {
                             // handleAddMentorset()
                             handleAddMentorProffesionalInfoApi()
                             handleaddInsBasicInfoClose()
-                        }}>Save <DoneIcon/> </Button>
+                        }}>Save <DoneIcon /> </Button>
                         <Button variant="contained" color="success" onClick={() => {
                             // handleaddInsBasicInfoShow()
                             handleaddInsEducationInfoShow()
                             handleaddInsProffesionInfoClose()
                         }}>
-                            <ArrowBackIcon/> Prev
+                            <ArrowBackIcon /> Prev
                         </Button>
                         {/* <Button variant="contained" color="success">
                     Next
                     </Button> */}
                         <Button variant="contained"
-                            style={{backgroundColor:"red"}} onClick={handleaddInsProffesionInfoClose}>
-                            Close  <CloseIcon/>
+                            style={{ backgroundColor: "red" }} onClick={handleaddInsProffesionInfoClose}>
+                            Close  <CloseIcon />
                         </Button>
                     </Stack>
                     {/* <Button variant="primary" onClick={handleClose}>
@@ -2700,7 +2965,7 @@ export default function Mentors() {
                                 </div>
                             </div>
                             <div className=' col-md-12  mb-3 mt-1' >
-                            <hr />
+                                <hr />
                                 <h4>Edit Mentor Proffesional Info </h4>
                             </div>
                             <div className='col-md-3 p-2'>
@@ -2801,7 +3066,7 @@ export default function Mentors() {
                             // handleCloseinsdetails()
                             // handleUpdateMetorData()
                             handleEditMentorInfoApi()
-                        }}>Update <span style={{marginLeft:"3px"}}> <FontAwesomeIcon icon={faPencil} /> </span>  </Button>
+                        }}>Update <span style={{ marginLeft: "3px" }}> <FontAwesomeIcon icon={faPencil} /> </span>  </Button>
                         <Button variant="contained" color="success" onClick={() => {
                             handleShowinspopup()
                             handleInsEditDetailsClose()
@@ -2809,10 +3074,10 @@ export default function Mentors() {
                             handleAllCourseList()
                         }}
                         >
-                            Next <ArrowForwardIcon/>
+                            Next <ArrowForwardIcon />
                         </Button>
-                        <Button variant="contained" style={{backgroundColor:"red"}} onClick={handleInsEditDetailsClose} >
-                            Close  <CloseIcon/>
+                        <Button variant="contained" style={{ backgroundColor: "red" }} onClick={handleInsEditDetailsClose} >
+                            Close  <CloseIcon />
                         </Button>
                     </Stack>
                 </Modal.Footer>

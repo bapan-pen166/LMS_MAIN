@@ -10,7 +10,7 @@
   } */
   .custom-button:hover .custom-icon {
     color: rgb(6, 15, 99) !important;
-    font-size: 24pt;
+    /* font-size: 24pt; */
     /* background-color: rgb(163, 159, 159); */
   }
   .custom-button:hover {
