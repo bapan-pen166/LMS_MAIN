@@ -33,7 +33,7 @@ const Students_PlacedPercent_Chart = ({ avgOfPlacedStudent }) => {
         const handleResize = () => {
             const screenWidth = window.innerWidth;
             if (screenWidth > 768) {
-                setChartWidth(480); // Larger screen width
+                setChartWidth(400); // Larger screen width
             } else {
                 setChartWidth(350); // Smaller screen width
             }
@@ -62,7 +62,7 @@ const Students_PlacedPercent_Chart = ({ avgOfPlacedStudent }) => {
         chart: {
             type: 'pie',
             width: chartWidth, // Dynamic width based on screen size
-            height: 400, // Fix case: Height should be lowercase
+            height: 250, // Fix case: Height should be lowercase
             custom: {} // To hold custom data
         },
         credits: {
@@ -120,7 +120,7 @@ const Students_PlacedPercent_Chart = ({ avgOfPlacedStudent }) => {
     }, []);
 
     return (
-        <div>
+        <div className='box-shadow'>
             <HighchartsReact
                 highcharts={Highcharts}
                 options={options}

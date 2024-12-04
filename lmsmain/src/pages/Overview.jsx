@@ -298,8 +298,8 @@ function Overview() {
                             </div>
                         </div>
                     </div>
-                    <div className="row">
-                        <div className=' col-md-8 col-sm-12 mt-2'>
+                    <div className="row box-shadow mt-3 py-2">
+                        <div className=' col-md-12 col-sm-12 mt-2'>
                             <div className="box-border-light px-3">
                                 <div className="d-flex justify-content-between align-items-center m-2">
                                     <div className="flex-grow-1">

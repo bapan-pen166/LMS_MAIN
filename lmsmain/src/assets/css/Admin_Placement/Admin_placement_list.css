@@ -1,3 +1,8 @@
 .admin-placement-save-button:hover{
       
 }
+.MuiButton-sizeSmall{
+    line-height: 1.5!important;
+    min-width: 60px!important;
+    padding: 3px 5px!important;
+}

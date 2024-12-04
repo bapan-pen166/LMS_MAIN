@@ -93,6 +93,7 @@ const Placement_Ratio = ({placementRatioYear, placementRatioPercent}) => {
   const options = {
     chart: {
       type: 'area',
+      height: 250,
     },
      credits: {
         enabled: false

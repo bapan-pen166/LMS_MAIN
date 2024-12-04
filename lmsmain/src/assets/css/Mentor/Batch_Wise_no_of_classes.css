@@ -1,7 +1,14 @@
 .chart-heading-batchwise{
     text-align: center;
-    background-color: #0c5273;
+    background-color: #185055;
     color: white;
     padding: 10px;
     font-size: 17px;
+    border-radius: 0.25rem 0.25rem 0 0;
+}
+
+.btn-custom{
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
 }

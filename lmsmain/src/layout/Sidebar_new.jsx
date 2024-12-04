@@ -42,7 +42,7 @@ const Sidebar_new = () => {
                     <button type="button" className="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasSidebar" aria-label="Close"></button>
                 </div>
                 <div className="offcanvas-body p-3 p-xl-0">
-                    <div className={`bg-theme-green border rounded p-2 overflow-auto ${userType =="Admin" ? '' : 'height-55vh'}`} >
+                    <div className={`bg-theme-green border rounded p-2 ${userType =="Admin" ? '' : 'height-55vh'}`} >
                         {/* Dashboard menu */}
                         <div className="list-group list-group-dark list-group-borderless collapse-list">
                             {userType === "Admin" ? (
@@ -88,13 +88,13 @@ const Sidebar_new = () => {
 
 
                                     <div
-                                        className="list-group-item nav-link list-group-item-action p-2"
+                                        className="list-group-item nav-link list-group-item-action p-2 d-flex align-items-center"
                                         onClick={togglePlacementMenu}
                                         role="button"
                                         aria-expanded={isOpen}
                                         aria-controls="collapseauthentication"
                                     >
-                                        <FontAwesomeIcon className='mr-10 ' icon={faListCheck} />Placement <span className=''><FontAwesomeIcon className='mr-10 ' icon={faAngleDown} /></span></div>
+                                        <FontAwesomeIcon className='mr-2' icon={faListCheck} />Placement <span className='pull-right'><FontAwesomeIcon className='mr-10 ' icon={faAngleDown} /></span></div>
                                     {/* Submenu */}
                                     <div className={`collapse ${isPlacementOpen ? 'show' : ''}`} id="collapseauthentication">
                                         <ul className="nav flex-column">
@@ -114,13 +114,13 @@ const Sidebar_new = () => {
 
 
                                     <NavLink className="nav-link pl-3" to="/meeting">
-                                        <FontAwesomeIcon className='mr-10 ' icon={faCalendar} />
+                                        <FontAwesomeIcon className='mr-10' icon={faCalendar} />
                                         Calendar
                                     </NavLink>
 
                                     {/* Test Menu */}
                                     <div
-                                        className="list-group-item nav-link list-group-item-action p-2"
+                                        className="list-group-item nav-link list-group-item-action p-2 d-flex align-items-center"
                                         onClick={toggleTestMenu}
                                         role="button"
                                         aria-expanded={isTestOpen}
@@ -136,6 +136,9 @@ const Sidebar_new = () => {
                                         className={`collapse ${isTestOpen ? 'show' : ''}`}
                                         id="collapseTests"
                                     >
+                                        <FontAwesomeIcon className='mr-10' icon={faListCheck} /> Tests <span className='pull-right'><FontAwesomeIcon className='mr-10' icon={faAngleDown} /></span></div>
+                                    {/* Submenu */}
+                                    <div className={`collapse ${isTestOpen ? 'show' : ''}`} id="collapseauthentication">
                                         <ul className="nav flex-column">
                                             <li className="nav-item">
                                                 <NavLink className="nav-link pl-3" to="/mentor-test">
@@ -162,18 +165,14 @@ const Sidebar_new = () => {
 
                                     {/* Assignment Menu */}
                                     <div
-                                        className="list-group-item nav-link list-group-item-action p-2"
+                                        className="list-group-item nav-link list-group-item-action p-2 d-flex align-items-center"
                                         onClick={toggleAssignmentMenu}
                                         role="button"
                                         aria-expanded={isAssignmentOpen}
                                         aria-controls="collapseAssignments"
                                     >
-                                        <FontAwesomeIcon className="mr-10 " icon={faListCheck} />{' '}
-                                        Assignments
-                                        <span className="">
-                                            <FontAwesomeIcon className="mr-10 " icon={faAngleDown} />
-                                        </span>
-                                    </div>
+                                        <FontAwesomeIcon className='mr-10' icon={faListCheck} /> Assignments <span className='pull-right'><FontAwesomeIcon className='mr-10' icon={faAngleDown} /></span></div>
+                                   
                                     <div
                                         className={`collapse ${isAssignmentOpen ? 'show' : ''}`}
                                         id="collapseAssignments"

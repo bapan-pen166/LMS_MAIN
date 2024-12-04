@@ -1,11 +1,16 @@
 
   .MuiInputBase-root{
-    height: 40px !important;
+    height: 30px !important;
     overflow: hidden !important;
     background-color: white !important;
   }
-
-
+  .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root{
+    line-height: 1;
+    top: -8px;
+  }
+  .MuiInputLabel-formControl{
+    top: -10px!important;
+  }
   /* meeting date picker */
   /* .react-datepicker__time-container { 
     width: 350px;

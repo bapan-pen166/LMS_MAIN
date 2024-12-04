@@ -12,6 +12,8 @@ import Courses from './Courses';
 import { CiSearch } from "react-icons/ci";
 
 import '../../src/assets/css/Custom_Global_Style/Global.css';
+
+import "../assets/css/Placement/placement.css"
 import PageNotFound from '../ErrorPage/PageNotFound';
 import { CiCirclePlus } from "react-icons/ci";
 import { CiCircleInfo } from "react-icons/ci";
@@ -23,6 +25,8 @@ import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, IconButton } from '@mui/material';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 import * as Yup from 'yup';
 
 
@@ -48,7 +52,7 @@ export default function Placements() {
   // batch list and course list
   const [batchList, setBatchList] = useState();
   const [courseListALL, setCourseListALL] = useState();
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
 
 
 
@@ -68,7 +72,7 @@ export default function Placements() {
   // Payload for the company add
   const [newCompany, setNewCompany] = useState({
     companyName: "",
-    companyEmail:"",
+    companyEmail: "",
     // course: [],
     dateOfArrival: "",
     salaryRange: "",
@@ -92,34 +96,34 @@ export default function Placements() {
   const validationSchema = Yup.object({
     companyName: Yup.string().required("Company name is required"),
     dateOfArrival: Yup.date()
-          .nullable()
-          .required("Date of Arrival is required")
-          .typeError("Invalid Date") // Handles invalid date formats
-          .transform((value, originalValue) => {
-              return originalValue === '' ? null : value; // Convert empty string to null
-          }),
-    salaryRange: Yup.string().required("Salary range is required"),    
-     
+      .nullable()
+      .required("Date of Arrival is required")
+      .typeError("Invalid Date") // Handles invalid date formats
+      .transform((value, originalValue) => {
+        return originalValue === '' ? null : value; // Convert empty string to null
+      }),
+    salaryRange: Yup.string().required("Salary range is required"),
+
     placementCoOrdinator: Yup.string().required("placement Co Ordinator is required"),
     jobLocation: Yup.string().required("Job location is required"),
     employementType: Yup.string().required("Employee type is required"),
     graduationYear: Yup.string().required("Graduation year is required"),
-    relevantExperience : Yup.string().required("Relevant experience is required"),
-    companyEmail :Yup.string().email("Invalid email format")
-    .required("Email is required"),
-    totalExperience :Yup.string().required("Total experience is required"),
-    designation : Yup.string().required("Designation is required"),
-    totalRounds : Yup.string().required("Total rounds is required"),
+    relevantExperience: Yup.string().required("Relevant experience is required"),
+    companyEmail: Yup.string().email("Invalid email format")
+      .required("Email is required"),
+    totalExperience: Yup.string().required("Total experience is required"),
+    designation: Yup.string().required("Designation is required"),
+    totalRounds: Yup.string().required("Total rounds is required"),
     jobDescription: Yup.string().required("Job description is required"),
     batch: Yup.array()
-    .of(
-      Yup.object().shape({
-        batchName: Yup.string().required("Batch name is required"),
-        // Add other fields here if necessary
-      })
-    )
-    .min(1, "At least one batch is required")
-    .required("Batch is required"),
+      .of(
+        Yup.object().shape({
+          batchName: Yup.string().required("Batch name is required"),
+          // Add other fields here if necessary
+        })
+      )
+      .min(1, "At least one batch is required")
+      .required("Batch is required"),
   });
 
 
@@ -188,6 +192,26 @@ export default function Placements() {
   //     setMentorListAll( mentorlistAllObj.map(result => result.name));
   //     },[mentorlistAllObj])
 
+  // Search handler
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+    const filtered = (allPlacements || []).filter(item =>
+      item.companyName.toLowerCase().includes(e.target.value.toLowerCase()) ||
+      item.designation.toLowerCase().includes(e.target.value.toLowerCase()) ||
+      item.batch?.some(batch => batch.batchName.toLowerCase().includes(e.target.value.toLowerCase()))
+    );
+    setFilteredData(filtered);
+  };
+
+  // Pagination handlers
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   useEffect(() => {
     const newMentorList = mentorlistAllObj?.map(result => ({
@@ -221,9 +245,9 @@ export default function Placements() {
   const [showHideJobModal, setShowHideJobModal] = useState(false);
 
   const handleEditBatchesClose = () => {
-    setShowEditCompany(false) ;
+    setShowEditCompany(false);
     setEditCompany({})
-  
+
   }
 
   const handleEditCompanyShow = () => setShowEditCompany(true);
@@ -268,7 +292,7 @@ export default function Placements() {
 
           (f.designation && f.designation.toLowerCase().includes(query.toLowerCase())) ||
 
-          (f.placementCoOrdinator && f.placementCoOrdinator.toLowerCase().includes(query.toLowerCase())) || 
+          (f.placementCoOrdinator && f.placementCoOrdinator.toLowerCase().includes(query.toLowerCase())) ||
 
           (f.jobLocation && f.jobLocation.toLowerCase().includes(query.toLowerCase())) ||
 
@@ -294,12 +318,23 @@ export default function Placements() {
       })
   }
 
+  // mUI table
+  const [search, setSearch] = useState('');
+  const [filteredData, setFilteredData] = useState(allPlacements);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   useEffect(() => {
     getALLplacementDetails()
   }, [])
 
+  useEffect(() => {
+    if (allPlacements && Array.isArray(allPlacements)) {
+      setFilteredData(allPlacements);
+    } else {
+      setFilteredData([]);
+    }
+  }, [allPlacements]);
 
- 
 
   const getCourseList = () => {
     axios.post(`${api2}/course/getCourseList`, {})
@@ -329,7 +364,7 @@ export default function Placements() {
     setUserType(type);
   }, []);
 
- 
+
 
 
 
@@ -368,7 +403,7 @@ export default function Placements() {
 
   const [selectedItemsEdit, setSelectedItemsEdit] = useState([]);
   const [isAllSelectedEdit, setIsAllSelectedEdit] = useState(false);
-  const [studentListEdit,setStudentListEdit]=useState([]);
+  const [studentListEdit, setStudentListEdit] = useState([]);
 
   const handleEditPlacementDetails = (id) => {
     console.log("ID", id)
@@ -383,10 +418,10 @@ export default function Placements() {
         console.log(error);
       })
   }
-  useEffect(()=>{console.log('studentListEdit',studentListEdit)},[studentListEdit])
+  useEffect(() => { console.log('studentListEdit', studentListEdit) }, [studentListEdit])
 
-  const handleBatchStudentListEdit=(batchList)=>{
-    
+  const handleBatchStudentListEdit = (batchList) => {
+
     console.log("batchList", batchList)
     axios.post(`${api2}/student/getStudentListForPlacement`, { batchList: batchList })
       .then((Response) => {
@@ -397,14 +432,14 @@ export default function Placements() {
         console.log(error);
       })
   }
-  useEffect(()=>{console.log(studentListEdit)},[studentListEdit])
+  useEffect(() => { console.log(studentListEdit) }, [studentListEdit])
 
-useEffect(()=>{
-  if(editCompany.batch){
-    handleBatchStudentListEdit(editCompany.batch)
-  }
-  
-},[editCompany.batch])
+  useEffect(() => {
+    if (editCompany.batch) {
+      handleBatchStudentListEdit(editCompany.batch)
+    }
+
+  }, [editCompany.batch])
 
   useEffect(() => {
     setIsAllSelected(selectedItemsEdit.length === studentListEdit.length);
@@ -429,32 +464,33 @@ useEffect(()=>{
 
   // useEffect(()=>{
   //   setEditCompany({...editCompany,studentList:selectedItemsEdit})
-        
+
   //     },[selectedItemsEdit])
 
 
 
-      const handleSelectAllEdit = () => {
-        setIsAllSelectedEdit(!isAllSelectedEdit)
-       
-        // setIsAllSelected(!isAllSelected);
-      };
-      useEffect(()=>{
-        if (isAllSelectedEdit) {console.log('selectAll clicked')
-          setSelectedItemsEdit(studentListEdit);
-        } else {
-          setSelectedItemsEdit([]);
-        }
-      },[isAllSelectedEdit])
-    
-      const handleChangeEdit = (event) => {
-        setSelectedItemsEdit(event.target.value);
-      };
-      useEffect(()=>{
-        console.log('selectedItems',selectedItems)
-        setEditCompany({...editCompany,studentList:selectedItemsEdit})
-      },[selectedItemsEdit])
-  
+  const handleSelectAllEdit = () => {
+    setIsAllSelectedEdit(!isAllSelectedEdit)
+
+    // setIsAllSelected(!isAllSelected);
+  };
+  useEffect(() => {
+    if (isAllSelectedEdit) {
+      console.log('selectAll clicked')
+      setSelectedItemsEdit(studentListEdit);
+    } else {
+      setSelectedItemsEdit([]);
+    }
+  }, [isAllSelectedEdit])
+
+  const handleChangeEdit = (event) => {
+    setSelectedItemsEdit(event.target.value);
+  };
+  useEffect(() => {
+    console.log('selectedItems', selectedItems)
+    setEditCompany({ ...editCompany, studentList: selectedItemsEdit })
+  }, [selectedItemsEdit])
+
 
 
 
@@ -499,23 +535,23 @@ useEffect(()=>{
       console.error("API error:", error);
     }
   };
-  
+
   const saveCompanyDetails = async () => {
     setErrors({});
     try {
       await validationSchema.validate(newCompany, { abortEarly: false });
-  
+
       const response = await axios.post(`${api2}/student/insert_placement`, newCompany);
-  
+
       if (response?.data?.success) {
         toast.success("Company details saved successfully.", { position: "top-center" });
-  
+
         // Clear the form
         setNewCompany({});
-  
+
         // Close modal after resetting form
         handleAddBatchesClose();
-  
+
         // Fetch updated data
         getALLplacementDetails();
       } else {
@@ -552,10 +588,10 @@ useEffect(()=>{
 
   const [selectedItems, setSelectedItems] = useState([]);
   const [isAllSelected, setIsAllSelected] = useState(false);
-  const [studentList,setStudentList]=useState([]);
+  const [studentList, setStudentList] = useState([]);
 
-  const handleBatchStudentList=(batchList)=>{
-    
+  const handleBatchStudentList = (batchList) => {
+
     console.log("batchList", batchList)
     axios.post(`${api2}/student/getStudentListForPlacement`, { batchList: batchList })
       .then((Response) => {
@@ -566,14 +602,14 @@ useEffect(()=>{
         console.log(error);
       })
   }
-  useEffect(()=>{console.log(studentList)},[studentList])
+  useEffect(() => { console.log(studentList) }, [studentList])
 
-useEffect(()=>{
-  if(newCompany.batch){
-    handleBatchStudentList(newCompany.batch)
-  }
-  
-},[newCompany.batch])
+  useEffect(() => {
+    if (newCompany.batch) {
+      handleBatchStudentList(newCompany.batch)
+    }
+
+  }, [newCompany.batch])
 
   // useEffect(() => {
   //   setIsAllSelected(selectedItems.length === studentList.length);
@@ -581,72 +617,73 @@ useEffect(()=>{
 
   const handleSelectAll = () => {
     setIsAllSelected(!isAllSelected)
-   
+
     // setIsAllSelected(!isAllSelected);
   };
-  useEffect(()=>{
-    if (isAllSelected) {console.log('selectAll clicked')
+  useEffect(() => {
+    if (isAllSelected) {
+      console.log('selectAll clicked')
       setSelectedItems(studentList);
     } else {
       setSelectedItems([]);
     }
-  },[isAllSelected])
+  }, [isAllSelected])
 
   const handleChange = (event) => {
     setSelectedItems(event.target.value);
   };
-  useEffect(()=>{
-    console.log('selectedItems',selectedItems)
-    setNewCompany({...newCompany,studentList:selectedItems})
-  },[selectedItems])
+  useEffect(() => {
+    console.log('selectedItems', selectedItems)
+    setNewCompany({ ...newCompany, studentList: selectedItems })
+  }, [selectedItems])
 
-  useEffect(()=>{console.log('selectedItems',selectedItems)},[selectedItems])
- 
-  
-
-  
+  useEffect(() => { console.log('selectedItems', selectedItems) }, [selectedItems])
 
 
-// course list add 
-const options = ['Option 1', 'Option 2', 'Option 3'];
-const [courses,setCourses]=useState([]);
-const [selectedCourseOptions, setSelectedCourseOptions] = useState([]);
-const handleCourseList=()=>{
-    
- 
-  axios.post(`${api2}/student/getCourseListForPlacement`, { })
-    .then((Response) => {
-      console.log("courseList ", Response?.data?.result)
-      setCourses(Response.data.result);
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-}
 
- // calling the batchlist
 
- const getBatchList = () => {
-  axios.post(`${api2}/student/getBatchListForPlacement`,{courseList:selectedCourseOptions})
-    .then((response) => {
-      console.log("batchlist ", response?.data?.result);
-      setBatchList(response?.data?.result)
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-}
-useEffect(()=>{
-  getBatchList()
-},[selectedCourseOptions])
-useState(()=>{
-  console.log('showAddBatches',showAddBatches)
-  // if(showAddBatches)
-  //   {
-      handleCourseList()
+
+
+  // course list add 
+  const options = ['Option 1', 'Option 2', 'Option 3'];
+  const [courses, setCourses] = useState([]);
+  const [selectedCourseOptions, setSelectedCourseOptions] = useState([]);
+  const handleCourseList = () => {
+
+
+    axios.post(`${api2}/student/getCourseListForPlacement`, {})
+      .then((Response) => {
+        console.log("courseList ", Response?.data?.result)
+        setCourses(Response.data.result);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
+  // calling the batchlist
+
+  const getBatchList = () => {
+    axios.post(`${api2}/student/getBatchListForPlacement`, { courseList: selectedCourseOptions })
+      .then((response) => {
+        console.log("batchlist ", response?.data?.result);
+        setBatchList(response?.data?.result)
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+  useEffect(() => {
+    getBatchList()
+  }, [selectedCourseOptions])
+  useState(() => {
+    console.log('showAddBatches', showAddBatches)
+    // if(showAddBatches)
+    //   {
+    handleCourseList()
     // }
-  
-},[showAddBatches])
+
+  }, [showAddBatches])
 
   const handleChangeCourse = (event) => {
     const {
@@ -657,12 +694,12 @@ useState(()=>{
 
 
 
-  
 
 
 
 
-  if(isLoading){
+
+  if (isLoading) {
     return <div>loading ...</div>
   }
 
@@ -672,16 +709,16 @@ useState(()=>{
 
   return (
     <>
-      <div className='row ' style={{ marginTop: '58px' }} >
+      <div className='row '>
         <div className='row '>
           <div className='container-fluid'>
-            <div className=' col-md-12 col-lg-12 col-sm-12 headLineBox d-flex justify-content-start'>
+            <div className=' col-md-12 col-lg-12 col-sm-12 headLineBox d-flex justify-content-start rounded-top'>
               <h4>Company's List</h4>
             </div>
           </div>
         </div>
         <div className="row" style={{ marginTop: '20px' }}>
-          <div className="row">
+          <div className="row d-none">
             <div className="col-md-6">
               <div className="d-flex align-items-center">
                 <input
@@ -698,87 +735,105 @@ useState(()=>{
 
               <Stack spacing={2} direction="row" sx={{ justifyContent: 'flex-end' }}>
 
-                <Button variant="contained" onClick={() => {
-                  handleAddBatchesShow()
-                }}>Add NEW COMPANY <CiCirclePlus size={20} /></Button>
+
 
               </Stack>
             </div>
           </div>
 
           <div className="col-md-12 col-lg-12 col-sm-12">
-            <div className="table-container" style={{ height: '90vh', overflowY: 'auto' }}>
-              <table className="table table-bordered pt-1" >
-                <thead style={{ position: 'sticky', top: -2, zIndex: 3 }}>
-                  <tr>
-                    <th>Company Name</th>
-                    <th>Batch</th>
-                    <th>Designation</th>
-                    {/* <th>Industry Type</th> */}
-                    <th>Employement Type</th>
-                    <th>Graduation Year</th>
-                    <th >Date Of Arrival</th>
-                    <th>Relevant Experience</th>
-                    <th>Salary Range(LPA)</th>
-                    <th>Location</th>
-                    {/* <th>Status</th> */}
-                    <th>Placement Co-ordinator</th>
-                    <th >Action</th>
-                  </tr>
-                </thead>
+            <div className="row">
+              <div className="col-lg-6">
+                <TextField
+                  label="Search"
+                  variant="outlined"
+                  value={search}
+                  onChange={handleSearchChange}
+                  style={{ marginBottom: '20px', width: '200px' }}
+                />
+              </div>
+              <div className="col-lg-6 text-right">
+                <Button variant="contained" onClick={() => {
+                  handleAddBatchesShow()
+                }}>Add NEW COMPANY <CiCirclePlus size={20} /></Button>
+              </div>
+            </div>
+            <div>
 
-                <tbody style={{ zIndex: 1 }}>
-                  {allPlacements && allPlacements?.map(allPlacementsDetails => {
-                    return (
-                      <>{console.log(allPlacementsDetails)}
-                        <tr>
-                          <td>{allPlacementsDetails?.companyName}</td>
-                          <td>{allPlacementsDetails?.batch?.map((batchNM) => batchNM?.batchName).join(', ')}</td>
-                          {/* <td>{allPlacementsDetails?.course?.map((courseNM) => courseNM?.courseName).join(', ')}</td> */}
-                          <td>{allPlacementsDetails?.designation}</td>
-                          <td>{allPlacementsDetails?.employementType}</td>
-                          <td>{allPlacementsDetails?.graduationYear}</td>
-                          <td>{allPlacementsDetails?.dateOfArrival}</td>
-                          <td>{allPlacementsDetails?.relevantExperience}</td>
-                          <td>
-                            {allPlacementsDetails?.salaryRange
-                              .split('-')
-                              .map((salary) =>
-                                new Intl.NumberFormat('en-IN').format(salary)
-                              )
-                              .join('-')}
-                          </td>
-                          <td>{allPlacementsDetails?.jobLocation}</td>
-                          {/* <td>{allPlacementsDetails?.status}</td> */}
-                          <td>{allPlacementsDetails?.placementCoOrdinator}</td>
-                          <td>
-                            {/* <button style={{ background: 'transparent', border: 'none' }} className="custom-button" onClick={() => { handleJobDes() }}><CiCircleInfo style={{ color: 'rgb(212, 139, 2)', fontSize: "18pt", padding: '2px' }} /></button> */}
-                            <button style={{ background: 'transparent', border: 'none' }} className="custom-button"><i class="fa fa-edit custom-icon" title='Edit' style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }} onClick={() => {
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell className='text-center' sx={{ border: '1px solid #ddd' }}>Sr No</TableCell>
+                      <TableCell className='text-center' sx={{ border: '1px solid #ddd' }}>Company Name</TableCell>
+                      <TableCell className='text-center' sx={{ border: '1px solid #ddd' }}>Batch</TableCell>
+                      <TableCell className='text-center' sx={{ border: '1px solid #ddd' }}>Designation</TableCell>
+                      <TableCell className='text-center' sx={{ border: '1px solid #ddd' }}>Employment Type</TableCell>
+                      <TableCell className='text-center' sx={{ border: '1px solid #ddd' }}>Graduation Year</TableCell>
+                      <TableCell className='text-center' sx={{ border: '1px solid #ddd' }}>Date Of Arrival</TableCell>
+                      <TableCell className='text-center' sx={{ border: '1px solid #ddd' }}>Relevant Experience</TableCell>
+                      <TableCell className='text-center' sx={{ border: '1px solid #ddd' }}>Salary Range (LPA)</TableCell>
+                      <TableCell className='text-center' sx={{ border: '1px solid #ddd' }}>Location</TableCell>
+                      <TableCell className='text-center' sx={{ border: '1px solid #ddd' }}>Placement Co-ordinator</TableCell>
+                      <TableCell className='text-center' sx={{ border: '1px solid #ddd' }}>Action</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {filteredData
+                      .sort((a, b) => b.id - a.id)  // Sorting in descending order based on the `id` (or replace with any property to sort by)
+                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                      .map((allPlacementsDetails, index) => {
+                        return (
+                          <TableRow key={allPlacementsDetails.id}>
+                            <TableCell sx={{ border: '1px solid #ddd' }}>
+                              {page * rowsPerPage + index + 1}  {/* Display Sr No */}
+                            </TableCell>
+                            <TableCell sx={{ border: '1px solid #ddd' }}>{allPlacementsDetails?.companyName}</TableCell>
+                            <TableCell sx={{ border: '1px solid #ddd' }}>
+                              {allPlacementsDetails?.batch?.map((batchNM) => batchNM?.batchName).join(', ')}
+                            </TableCell>
+                            <TableCell sx={{ border: '1px solid #ddd' }}>{allPlacementsDetails?.designation}</TableCell>
+                            <TableCell sx={{ border: '1px solid #ddd' }}>{allPlacementsDetails?.employementType}</TableCell>
+                            <TableCell sx={{ border: '1px solid #ddd' }}>{allPlacementsDetails?.graduationYear}</TableCell>
+                            <TableCell sx={{ border: '1px solid #ddd' }}>{allPlacementsDetails?.dateOfArrival}</TableCell>
+                            <TableCell sx={{ border: '1px solid #ddd' }}>{allPlacementsDetails?.relevantExperience}</TableCell>
+                            <TableCell sx={{ border: '1px solid #ddd' }}>
+                              {allPlacementsDetails?.salaryRange
+                                .split('-')
+                                .map((salary) => new Intl.NumberFormat('en-IN').format(salary))
+                                .join('-')}
+                            </TableCell>
+                            <TableCell sx={{ border: '1px solid #ddd' }}>{allPlacementsDetails?.jobLocation}</TableCell>
+                            <TableCell sx={{ border: '1px solid #ddd' }}>{allPlacementsDetails?.placementCoOrdinator}</TableCell>
+                            <TableCell className='font-16' sx={{ border: '1px solid #ddd', fontSize:'16px' }}>
+                              <IconButton className='font-16' onClick={() => {
 
-                              handleEditCompanyShow()
-                              handleEditPlacementDetails(allPlacementsDetails?.id)
-                              // setEditBatchDetails({
-                              //   batchName: BatchDetails?.batchName,
-                              //   courseName: BatchDetails?.courseType,
-                              //   mentorName: BatchDetails?.mentorName,
-                              //   id: BatchDetails?.id,
+                                handleEditCompanyShow()
+                                handleEditPlacementDetails(allPlacementsDetails?.id)
+                              }}>
+                                <FaEdit style={{ color: 'rgb(212, 139, 2)' }} />
+                              </IconButton>
+                              <IconButton className='font-16' onClick={() => handleDeleteCompany(allPlacementsDetails?.id)}>
+                                <FaTrash style={{ color: 'rgb(212, 139, 2)' }} />
+                              </IconButton>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
 
-                              // })
-                              // setMentorList(BatchDetails?.mentorName)
-                            }}></i></button>
-                            <button style={{ background: 'transparent', border: 'none' }} className="custom-button"><i class="fa fa-trash custom-icon" title='Delete' style={{ color: 'rgb(212, 139, 2)', fontSize: "14pt", padding: '2px' }} onClick={() => {
-                              handleDeleteCompany(
-                                allPlacementsDetails?.id
-                              )
-                            }}></i></button>
-                          </td>
-                        </tr>
-                      </>
-                    )
-                  })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
 
-                </tbody>
-              </table>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={filteredData.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
             </div>
           </div>
         </div>
@@ -1094,22 +1149,22 @@ useState(()=>{
               <div className='col-md-6'>
                 <div>Courses</div>
                 <div>
-                    <FormControl sx={{ m: 1, width: 300 }}>
-                        {/* <InputLabel>Select Options</InputLabel> */}
-                        <Select
-                          multiple
-                          value={selectedCourseOptions}
-                          onChange={handleChangeCourse}
-                          renderValue={(selected) => selected.join(', ')}
-                        >
-                          {courses?.map((option) => (
-                            <MenuItem key={option} value={option}>
-                              <Checkbox checked={selectedCourseOptions.indexOf(option) > -1} />
-                              <ListItemText primary={option} />
-                            </MenuItem>
-                          ))}
-                        </Select>
-                    </FormControl>
+                  <FormControl sx={{ m: 1, width: 300 }}>
+                    {/* <InputLabel>Select Options</InputLabel> */}
+                    <Select
+                      multiple
+                      value={selectedCourseOptions}
+                      onChange={handleChangeCourse}
+                      renderValue={(selected) => selected.join(', ')}
+                    >
+                      {courses?.map((option) => (
+                        <MenuItem key={option} value={option}>
+                          <Checkbox checked={selectedCourseOptions.indexOf(option) > -1} />
+                          <ListItemText primary={option} />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </div>
               </div>
               <div className='col-md-6'>
@@ -1122,7 +1177,7 @@ useState(()=>{
                       id="batch-multiple-checkbox"
                       multiple
                       name="batch"
-                      value={newCompany?.batch?.map(item => JSON.stringify(item)) || []} 
+                      value={newCompany?.batch?.map(item => JSON.stringify(item)) || []}
                       onChange={handleADDnewCompany}
                       input={<OutlinedInput label="Batch" />}
                       renderValue={(selected) => selected?.map(item => JSON.parse(item).batchName).join(', ')}
@@ -1140,44 +1195,44 @@ useState(()=>{
                 {errors?.batch && <div className="error">{errors.batch}</div>}
               </div>
               <div className='col-md-6'>
-                  <div>Students</div>
-              <div>
-                    
+                <div>Students</div>
+                <div>
 
-<FormControl sx={{ m: 1, width: 300 }}>
-      <Select
-        labelId="select-with-checkbox-label"
-        multiple
-        value={selectedItems}
-        onChange={handleChange}
-        renderValue={(selected) => {
-          return selected?.map(user => user?.fullName).join(', ');
-        }}
-        MenuProps={{
-          PaperProps: {
-            style: {
-              margin: 1,
-              width: 300,
-            },
-          },
-        }}
-      >
-        {/* "Select All" MenuItem */}
-        <MenuItem onClick={handleSelectAll}>
-          <Checkbox checked={isAllSelected} />
-          <ListItemText primary="Select All" />
-        </MenuItem>
 
-        {/* Individual users */}
-        {studentList?.map(user => (
-          <MenuItem key={user.id} value={user}>
-            <Checkbox checked={selectedItems?.some(val => val?.id === user.id)} />
-            <ListItemText primary={user.fullName} />
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-                    {/* <FormControl fullWidth>
+                  <FormControl sx={{ m: 1, width: 300 }}>
+                    <Select
+                      labelId="select-with-checkbox-label"
+                      multiple
+                      value={selectedItems}
+                      onChange={handleChange}
+                      renderValue={(selected) => {
+                        return selected?.map(user => user?.fullName).join(', ');
+                      }}
+                      MenuProps={{
+                        PaperProps: {
+                          style: {
+                            margin: 1,
+                            width: 300,
+                          },
+                        },
+                      }}
+                    >
+                      {/* "Select All" MenuItem */}
+                      <MenuItem onClick={handleSelectAll}>
+                        <Checkbox checked={isAllSelected} />
+                        <ListItemText primary="Select All" />
+                      </MenuItem>
+
+                      {/* Individual users */}
+                      {studentList?.map(user => (
+                        <MenuItem key={user.id} value={user}>
+                          <Checkbox checked={selectedItems?.some(val => val?.id === user.id)} />
+                          <ListItemText primary={user.fullName} />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  {/* <FormControl fullWidth>
       <InputLabel id="select-with-checkbox-label">Select Users</InputLabel>
       <Select
         labelId="select-with-checkbox-label"
@@ -1209,7 +1264,7 @@ useState(()=>{
         ))}
       </Select>
     </FormControl> */}
-                  </div>        
+                </div>
               </div>
             </div>
 
@@ -1223,7 +1278,8 @@ useState(()=>{
             <Button style={{ backgroundColor: "red" }} variant="contained"
               onClick={() => {
                 // setNewCompany({})
-                handleAddBatchesClose() }}
+                handleAddBatchesClose()
+              }}
             >
               Close
             </Button>
@@ -1545,43 +1601,43 @@ useState(()=>{
 
               </div>
               <div className='col-md-6'>
-                  <div>Students</div>
-                  <div>
-                         <FormControl sx={{ m: 1, width: 300 }}>
-                            <Select
-                              labelId="select-with-checkbox-label"
-                              multiple
-                              value={selectedItemsEdit}
-                              onChange={handleChangeEdit}
-                              renderValue={(selected) => {
-                                return selected.map(user => user?.fullName).join(', ');
-                              }}
-                              MenuProps={{
-                                PaperProps: {
-                                  style: {
-                                    margin: 1,
-                                    width: 300,
-                                  },
-                                },
-                              }}
-                            >
-                              {/* "Select All" MenuItem */}
-                              <MenuItem onClick={handleSelectAllEdit}>
-                                <Checkbox checked={isAllSelectedEdit} />
-                                <ListItemText primary="Select All" />
-                              </MenuItem>
+                <div>Students</div>
+                <div>
+                  <FormControl sx={{ m: 1, width: 300 }}>
+                    <Select
+                      labelId="select-with-checkbox-label"
+                      multiple
+                      value={selectedItemsEdit}
+                      onChange={handleChangeEdit}
+                      renderValue={(selected) => {
+                        return selected.map(user => user?.fullName).join(', ');
+                      }}
+                      MenuProps={{
+                        PaperProps: {
+                          style: {
+                            margin: 1,
+                            width: 300,
+                          },
+                        },
+                      }}
+                    >
+                      {/* "Select All" MenuItem */}
+                      <MenuItem onClick={handleSelectAllEdit}>
+                        <Checkbox checked={isAllSelectedEdit} />
+                        <ListItemText primary="Select All" />
+                      </MenuItem>
 
-                              {/* Individual users */}
-                              {studentListEdit.map(user => (
-                                <MenuItem key={user.id} value={user}>
-                                  <Checkbox checked={selectedItemsEdit?.some(val => val?.id === user.id)} />
-                                  <ListItemText primary={user.fullName} />
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          </FormControl>
-                    </div>
+                      {/* Individual users */}
+                      {studentListEdit.map(user => (
+                        <MenuItem key={user.id} value={user}>
+                          <Checkbox checked={selectedItemsEdit?.some(val => val?.id === user.id)} />
+                          <ListItemText primary={user.fullName} />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </div>
+              </div>
             </div>
           </div>
         </Modal.Body>

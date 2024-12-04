@@ -8,10 +8,15 @@ import PageNotFound from '../ErrorPage/PageNotFound';
 import axios from 'axios';
 import { api } from '../ApiUrl/ApiUrl';
 import student_img from "../assets/img/Admin_student_dashboard/students.jpg"
+import student_dropouts from "../assets/img/Admin_student_dashboard/student-dropouts.png"
+import graduated_students from "../assets/img/Admin_student_dashboard/graduated.png"
+import batch_icon from "../assets/img/Admin_student_dashboard/courses.png"
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import dayjs from 'dayjs';
+import { faIdBadge, faBookOpen, faUserGraduate, faPeopleGroup, faSearch, faUserCheck, faCalendar } from '@fortawesome/free-solid-svg-icons';
 
 
 const Mentor_Students_Dashboard = () => {
@@ -328,130 +333,98 @@ const Mentor_Students_Dashboard = () => {
     const attendancePercentage = 66;
 
     return (
-        <div style={{ marginTop: "58px" }} className='row g-3'>
             <div className="row">
-                <div className="container-fluid" style={{ backgroundColor: "#f2edf3" }}>
+                <div class="pb-2 border-bottom rounded-lg d-flex justify-content-between align-items-center"><h5 class="card-header-title ml-3">Student count details</h5></div>
+                <div className="container-fluid">
                     {/* <div className=' col-md-12 col-lg-12  headLineBox d-flex justify-content-start' >
                         <h4>Students Dashboard</h4>
                     </div> */}
 
-                    <div className="row mt-3">
-                        <div className="col-md-12">
-                            <h1 className='chart-heading-batchwise' >Student count details</h1>
-                            {/* <div className='table-bordered ' style={{ display: "flex", gap: "10px", alignItems: "center", height: "280px" }}> */}
-                        </div>
-                    </div>
                     <div className="row mt-1" >
-                        <div className='col-md-4 col-lg-4' style={{ height: "290px", overflow: "hidden" }}>
-                            {/* <h1 className='chart-heading-batchwise' >Overall Students</h1> */}
-                            <div className='table-bordered ' style={{ display: "flex", gap: "10px", alignItems: "center", height: "280px", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)" }}>
-
-                                <div className="img">
-                                    <img src={student_logo} alt="" style={{ width: "140px", padding: "5px" }} />
+                    
+                        <div className="col-md-4 col-lg-4 col-sm-12">
+                            <div className="card mb-1">
+                                <div className="d-flex justify-content-between align-items-center p-3 box-border-light hover-effect bg-opacity-15 rounded-3 " >
+                                <span style={{color:"#185055"}}>
+                                    <FontAwesomeIcon style={{ fontSize: "5vw" }} icon={faPeopleGroup} />
+                                </span>
+                                <div className="ms-4">
+                                    <h5 className="purecounter fw-bold pb-2" style={{ fontSize: "2vw" }}>{overallStudent}</h5>
+                                    <p className="mb-0 h6 fw-light">Total Count</p>
                                 </div>
-                                <div style={{ width: "1px", height: "260px", backgroundColor: "black" }}></div>
-                                <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                                    <h3>Total Count</h3>
-                                    <hr />
-                                    <p>{overallStudent}</p>
-
                                 </div>
-
                             </div>
-
                         </div>
-                        <div className='col-md-4 col-lg-4' style={{ height: "340px", overflow: "hidden", }}>
-                            {/* <h1 className='chart-heading-batchwise' >Dropped out students</h1> */}
-                            <div className='table-bordered ' style={{ display: "flex", gap: "10px", alignItems: "center", height: "280px", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)" }}>
-
-                                <div className="img">
-                                    <img src={student_logo} alt="" style={{ width: "140px", padding: "5px" }} />
+                        <div className="col-md-4 col-lg-4 col-sm-12">
+                            <div className="card mb-1">
+                                <div className="d-flex justify-content-between align-items-center p-3 box-border-light hover-effect bg-opacity-15 rounded-3 " >
+                                <span className="">
+                                    <img src={student_dropouts} alt="" style={{width: '90px'}}/>
+                                </span>
+                                <div className="ms-4">
+                                    <h5 className="purecounter fw-bold pb-2" style={{ fontSize: "2vw" }}>{dropoutstd}</h5>
+                                    <p className="mb-0 h6 fw-light">Dropped out</p>
                                 </div>
-                                <div style={{ width: "1px", height: "260px", backgroundColor: "black" }}></div>
-                                <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                                    <h3>Dropped out</h3>
-                                    <hr />
-                                    {/* <p>{overallStudent}</p> */}
-                                    <p>{dropoutstd}</p>
-
                                 </div>
-
                             </div>
-
                         </div>
-                        <div className='col-md-4 col-lg-4' style={{ height: "340px", overflow: "hidden", }}>
-                            {/* <h1 className='chart-heading-batchwise' >Graduated Students</h1> */}
-                            <div className='table-bordered ' style={{ display: "flex", gap: "10px", alignItems: "center", height: "280px", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)" }}>
-
-                                <div className="img">
-                                    <img src={student_logo} alt="" style={{ width: "140px", padding: "5px" }} />
+                        <div className="col-md-4 col-lg-4 col-sm-12">
+                            <div className="card mb-1">
+                                <div className="d-flex justify-content-between align-items-center p-3 box-border-light hover-effect bg-opacity-15 rounded-3 " >
+                                <span className="">
+                                    <img src={graduated_students} alt="" style={{width: '70px'}}/>
+                                </span>
+                                <div className="ms-4">
+                                    <h5 className="purecounter fw-bold pb-2" style={{ fontSize: "2vw" }}>{graduateStudentCount}</h5>
+                                    <p className="mb-0 h6 fw-light">Graduated</p>
                                 </div>
-                                <div style={{ width: "1px", height: "260px", backgroundColor: "black" }}></div>
-                                <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                                    <h3>Graduated</h3>
-                                    <hr />
-                                    <p>{graduateStudentCount}</p>
-
                                 </div>
-
                             </div>
-
                         </div>
-
                     </div>
                     <div className="row mb-2" >
-                        <div className='col-md-4 col-lg-4' style={{ height: "340px", overflow: "hidden", }}>
-                            {/* <h1 className='chart-heading-batchwise' >Ongoing students</h1> */}
-                            <div className='table-bordered ' style={{ display: "flex", gap: "10px", alignItems: "center", height: "280px", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)" }}>
 
-                                <div className="img">
-                                    <img src={student_logo} alt="" style={{ width: "140px", padding: "5px" }} />
+                        <div className="col-md-4 col-lg-4 col-sm-12">
+                            <div className="card mb-1">
+                                <div className="d-flex justify-content-between align-items-center p-3 box-border-light hover-effect bg-opacity-15 rounded-3 " >
+                                <span className="">
+                                    <FontAwesomeIcon style={{ fontSize: "5vw" }} icon={faBookOpen} />
+                                </span>
+                                <div className="ms-4">
+                                    <h5 className="purecounter fw-bold pb-2" style={{ fontSize: "2vw" }}>{ongoingStudentCount}</h5>
+                                    <p className="mb-0 h6 fw-light">Ongoing</p>
                                 </div>
-                                <div style={{ width: "1px", height: "260px", backgroundColor: "black" }}></div>
-                                <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                                    <h3>Ongoing</h3>
-                                    <hr />
-                                    <p>{ongoingStudentCount}</p>
                                 </div>
                             </div>
                         </div>
-                        <div className='col-md-4 col-lg-4' style={{ height: "340px", overflow: "hidden", }}>
-                            {/* <h1 className='chart-heading-batchwise' > Batch change students</h1> */}
-                            <div className='table-bordered ' style={{ display: "flex", gap: "10px", alignItems: "center", height: "280px", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)" }}>
 
-                                <div className="img">
-                                    <img src={student_logo} alt="" style={{ width: "140px", padding: "5px" }} />
+                        <div className="col-md-4 col-lg-4 col-sm-12">
+                            <div className="card mb-1">
+                                <div className="d-flex justify-content-between align-items-center p-3 box-border-light hover-effect bg-opacity-15 rounded-3 " >
+                                <span className="">
+                                    <FontAwesomeIcon style={{ fontSize: "5vw" }} icon={faPeopleGroup} />
+                                </span>
+                                <div className="ms-4">
+                                    <h5 className="purecounter fw-bold pb-2" style={{ fontSize: "2vw" }}>{batchchangeStudCount}</h5>
+                                    <p className="mb-0 h6 fw-light">Batch change students</p>
                                 </div>
-                                <div style={{ width: "1px", height: "260px", backgroundColor: "black" }}></div>
-                                <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                                    <h3>Batch change students</h3>
-                                    <hr />
-                                    <p>{batchchangeStudCount}</p>
-
                                 </div>
-
                             </div>
-
-                        </div>
-                        <div className='col-md-4 col-lg-4' style={{ height: "340px", overflow: "hidden", }}>
-                            {/* <h1 className='chart-heading-batchwise' >batch yet to be started</h1> */}
-                            <div className='table-bordered ' style={{ display: "flex", gap: "10px", alignItems: "center", height: "280px", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)" }}>
-
-                                <div className="img">
-                                    <img src={student_logo} alt="" style={{ width: "140px", padding: "5px" }} />
-                                </div>
-                                <div style={{ width: "1px", height: "260px", backgroundColor: "black" }}></div>
-                                <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                                    <h3>Batch yet to be started</h3>
-                                    <hr />
-                                    <p>{yetToBeStarted}</p>
-
-                                </div>
-
-                            </div>
-
                         </div>
 
+                        <div className="col-md-4 col-lg-4 col-sm-12">
+                            <div className="card mb-1">
+                                <div className="d-flex justify-content-between align-items-center p-3 box-border-light hover-effect bg-opacity-15 rounded-3 " >
+                                <span className="">
+                                    <img src={batch_icon} alt="" style={{width:'70px'}}/>
+                                </span>
+                                <div className="ms-4">
+                                    <h5 className="purecounter fw-bold pb-2" style={{ fontSize: "2vw" }}>{yetToBeStarted}</h5>
+                                    <p className="mb-0 h6 fw-light">Batch yet to be started</p>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     {/* 
                     <div className="row">
@@ -505,59 +478,74 @@ const Mentor_Students_Dashboard = () => {
                         </div>
                     </div> */}
 
-                    <div className="row">
-                        <div className='col-md-6 col-lg-6 col-sm-6' style={{ marginBottom: "100px" }}>
-                            <h1 className='chart-heading-batchwise' >Course wise Students </h1>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <div style={{ display: 'flex', marginTop: "6px", justifyContent: "space-between" }}>
-                                    <DatePicker
-                                        label="Start Date"
-                                        value={startDate}
-                                        onChange={(newValue) => setStartDate(newValue)}
-                                    />
-                                    <div>
-                                        <DatePicker
-                                            label="End Date"
-                                            value={endDate}
-                                            onChange={(newValue) => setEndDate(newValue)}
-                                        />
-                                        {/* <Button variant="contained" style={{fontSize:"8px"}} onClick={()=>setForThebuttonClick(true)}>Throught the year</Button> */}
-                                        <Button variant="contained" style={{ fontSize: "8px", width: "80px", height: "40px" }} onClick={() => setCourseWiseSearch(true)}>Search</Button>
+                    <div className="row mt-5">
+                        <div className='col-md-6 col-lg-6 col-sm-6 px-2' style={{ marginBottom: "100px" }}>
+                            <div className="card box-shadow">
+                                <div class="py-2 border-bottom rounded-lg d-flex justify-content-between align-items-center"><h5 class="card-header-title ml-3">Course wise Students </h5></div>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+
+                                    <div className="row mt-2">
+                                        <div className="col-lg-5">
+                                            <DatePicker
+                                                label="Start Date"
+                                                value={startDate}
+                                                onChange={(newValue) => setStartDate(newValue)}
+                                            />
+                                        </div>
+                                        <div className="col-lg-5">
+                                            <DatePicker
+                                                label="End Date"
+                                                value={endDate}
+                                                onChange={(newValue) => setEndDate(newValue)}
+                                            />
+                                        </div>
+                                        <div className="col-lg-2 px-0 d-flex justify-content-center align-items-center">
+                                            <button className='btn btn-custom px-1 py-1 font-11'  onClick={() => setCourseWiseSearch(true)}>
+                                                <FontAwesomeIcon icon={faSearch} className='mr-1 p-0' />
+                                            Search
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </LocalizationProvider>
-                            <Column_Chart_course_wise_students setCourseWiseSearch={setCourseWiseSearch} startDate={formatDate(startDate)} endDate={formatDate(endDate)} courseWiseSearch={courseWiseSearch} />
-
-
+                                </LocalizationProvider>
+                                <Column_Chart_course_wise_students setCourseWiseSearch={setCourseWiseSearch} startDate={formatDate(startDate)} endDate={formatDate(endDate)} courseWiseSearch={courseWiseSearch} />
+                            </div>
                         </div>
-                        <div className='col-md-6 col-lg-6 col-sm-6'>
-                            <h1 className='chart-heading-batchwise' >Batchwise Students</h1>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <div style={{ display: 'flex', marginTop: "6px", justifyContent: "space-between" }}>
-                                    <DatePicker
-                                        label="Start Date"
-                                        value={startDateBatchwise}
-                                        onChange={(newValue) => setStartDateBatchwise(newValue)}
-                                    />
-                                    <div>
-                                        <DatePicker
-                                            label="End Date"
-                                            value={endDateBatchwise}
-                                            onChange={(newValue) => setEndDateBatchwise(newValue)}
-                                        />
-                                        {/* <Button variant="contained" style={{fontSize:"8px"}} onClick={()=>setForThebuttonClickBatchwise(true)}>Throught the year</Button> */}
-                                        <Button variant="contained" style={{ fontSize: "8px", width: "80px", height: "40px" }} onClick={() => setBatchWiseSearch(true)}>Search</Button>
+                        <div className='col-md-6 col-lg-6 col-sm-6  px-2'>
+                                <div className="card box-shadow">
+                                    <div class="py-2 border-bottom rounded-lg d-flex justify-content-between align-items-center"><h5 class="card-header-title ml-3">Batch wise Students </h5></div>
+                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
 
+                                    <div className="row mt-2 px-3">
+                                        <div className="col-lg-5">
+                                            <DatePicker
+                                                label="Start Date"
+                                                value={startDateBatchwise}
+                                                onChange={(newValue) => setStartDateBatchwise(newValue)}
+                                            />
+                                        </div>
+                                        <div className="col-lg-5">
+                                            <DatePicker
+                                                label="End Date"
+                                                value={endDateBatchwise}
+                                                onChange={(newValue) => setEndDateBatchwise(newValue)}
+                                            />
+                                        </div>
+                                        <div className="col-lg-2 px-0 d-flex justify-content-center align-items-center">
+                                        <button className='btn btn-custom px-1 py-1 font-11'  onClick={() => setBatchWiseSearch(true)}>
+                                                <FontAwesomeIcon icon={faSearch} className='mr-1 p-0' />
+                                            Search
+                                            </button>
+                                        </div>
                                     </div>
+                                    </LocalizationProvider>
                                 </div>
-                            </LocalizationProvider>
                             <Column_Chart_batch_wise_students setBatchWiseSearch={setBatchWiseSearch} batchWiseSearch={batchWiseSearch} startDateBatchwise={formatDate(startDateBatchwise)} endDateBatchwise={endDateBatchwise} />
                         </div>
                     </div>
 
 
                     <div className="row">
-                        <div className='col-md-6 col-lg-6 col-sm-6' style={{ paddingRight: '0px', paddingLeft: '5px' }}>
+                        <div className='col-md-12 col-lg-12 col-sm-12' style={{ paddingRight: '0px', paddingLeft: '5px' }}>
                             <div style={{ height: "350px", overflow: "scroll" }}>
                                 <div className='chart-heading-batchwise' style={{ display: "flex", justifyContent: "space-between", fontSize: "15px" }}>Top 5 students
                                     <select name="" id="" onChange={handleTopFive} style={{ color: "black" }}>
@@ -616,7 +604,7 @@ const Mentor_Students_Dashboard = () => {
 
                         </div>
 
-                        <div className='col-md-6 col-lg-6' style={{ paddingRight: '0px', paddingLeft: '5px' }}>
+                        <div className='col-md-12 col-lg-12' style={{ paddingRight: '0px', paddingLeft: '5px' }}>
                             <div style={{ height: "350px", overflow: "scroll" }}>
                                 <div className='chart-heading-batchwise' style={{ display: "flex", justifyContent: "space-between", fontSize: "15px" }}>Bottom 5 students
                                     <select name="" id="" onChange={handleBottomFive} style={{ color: "black" }}>
@@ -669,7 +657,6 @@ const Mentor_Students_Dashboard = () => {
                     </div>
                 </div>
             </div>
-        </div>
     )
 }
 

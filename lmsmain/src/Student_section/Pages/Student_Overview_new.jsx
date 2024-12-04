@@ -450,7 +450,7 @@ const Student_Overview_new = () => {
                                             </div>
                                         </div>
                                         <div className="text-end">
-                                            <h5 className="fw-600 mb-0 badge badge-pill badge-primary mt-4">{overallPerformn ? overallPerformn : ""}</h5>
+                                            <h5 className="fw-600 mb-0 badge badge-pill badge-primary mt-4">{overallPerformn ? overallPerformn : ""}%</h5>
                                         </div>
                                     </div>
                                     <div className="d-flex align-items-center mb-30 justify-content-between">

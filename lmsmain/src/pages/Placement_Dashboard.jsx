@@ -183,78 +183,77 @@ export default function Placement_Dashboard(){
   }
     return(
         <>
-        <div style={{ marginTop: "58px" }} className='row g-3'>
+        <div className='row g-3'>
             <div className="row">
                 <div className="container-fluid">
-                    <div className=' col-md-12 col-lg-12  headLineBox d-flex justify-content-start' >
+                    <div className=' col-md-12 col-lg-12  rounded bg-theme text-white d-flex justify-content-start' >
                         <h4>Placement Dashboard</h4>
                     </div>
                     <div className="row mt-2 mb-2" >
-                        <div className='col-md-12 p-2 d-flex justify-content-around'>
                             {/* <div style={{minHeight:'150px', minWidth:'150px',background:'#bbf7d0',borderRadius:'20px',textAlign:'center'}}>
                                 <div style={{paddingTop:'10px'}}>
                                 <span style={{fontSize:'13px',fontWeight:'bold'}}>Average Students Placed</span>
                                 <p style={{fontSize:'40px',fontWeight:'bold'}}>247</p>
                                 </div>
                             </div> */}
-                            <div style={{
-                                minHeight: '150px',
-                                maxWidth: '200px', 
-                                background: '#89CFF0',
-                                borderRadius: '20px',
-                                textAlign: 'center',
-                                wordBreak: 'break-word', 
-                            }}>
-                                <div style={{ paddingTop: '10px' }}>
-                                    <span style={{ fontSize: '16px', fontWeight: 'bold',fontFamily: 'Georgia, serif',padding:'10px'}}>Average Students Placed</span>
-                                    <p style={{ fontSize: '40px', fontWeight: 'bold' }}>{placementDetails?.averagePlaced}</p>
+                            <div className="col-lg-3 col-md-3 col-sm-6" >
+                                <div style={{ 
+                                    paddingTop: '10px',
+                                    background: '#89CFF0',
+                                    borderRadius: '10px',
+                                    textAlign: 'center',
+                                    wordBreak: 'break-word',
+                                 }} >
+                                    <span style={{ fontSize: '16px', fontWeight: 'bold',padding:'10px'}}>Average Students Placed</span>
+                                    <p className="mb-3" style={{ fontSize: '40px', fontWeight: 'bold' }}>{placementDetails?.averagePlaced}</p>
                                 </div>
                             </div>
-                            <div style={{
-                                minHeight: '150px',
-                                maxWidth: '200px', 
-                                background: '#A1CAF1',
-                                borderRadius: '20px',
-                                textAlign: 'center',
-                                wordBreak: 'break-word', 
-                            }}>
-                                <div style={{ paddingTop: '10px' }}>
-                                    <span style={{ fontSize: '16px', fontWeight: 'bold',fontFamily: 'Georgia, serif'}}>Total Placement Current Year</span>
-                                    <p style={{ fontSize: '40px', fontWeight: 'bold' }}>{placementDetails?.totalNoOfPlacement}</p>
+                            <div className="col-lg-3 col-md-3 col-sm-6">
+                                <div style={{ 
+                                    paddingTop: '10px',
+                                    background: '#A1CAF1',
+                                    borderRadius: '10px',
+                                    textAlign: 'center',
+                                    wordBreak: 'break-word', 
+                                 }}>
+                                    <span style={{ fontSize: '16px', fontWeight: 'bold'}}>Total Placement Current Year</span>
+                                    <p className="mb-3" style={{ fontSize: '40px', fontWeight: 'bold' }}>{placementDetails?.totalNoOfPlacement}</p>
                                 </div>
                             </div>
-                            <div style={{
-                                minHeight: '150px',
-                                maxWidth: '200px', 
-                                background: '#95C1E6',
-                                borderRadius: '20px',
-                                textAlign: 'center',
-                                wordBreak: 'break-word', 
-                            }}>
-                                <div style={{ paddingTop: '10px' }}>
-                                    <span style={{ fontSize: '16px', fontWeight: 'bold',fontFamily: 'Georgia, serif'}}>Company Reached for Placement till date</span>
-                                    <p style={{ fontSize: '40px', fontWeight: 'bold' }}>{placementDetails?.companyCountTillDate}</p>
+                            <div className="col-lg-3 col-md-3 col-sm-6">
+                                <div style={{ 
+                                    paddingTop: '10px',
+                                    background: '#95C1E6',
+                                    borderRadius: '10px',
+                                    textAlign: 'center',
+                                    wordBreak: 'break-word', 
+                                 }}>
+                                    <span style={{ fontSize: '16px', fontWeight: 'bold'}}>Company Reached for Placement till date</span>
+                                    <p className="mb-3" style={{ fontSize: '40px', fontWeight: 'bold' }}>{placementDetails?.companyCountTillDate}</p>
                                 </div>
                             </div>
+
+                    
                             {/* <div style={{minHeight:'150px', minWidth:'150px',background:'#fef9c3',borderRadius:'20px',textAlign:'center'}}>
                                 <div style={{paddingTop:'10px'}}>
                                 <span style={{fontSize:'13px',fontWeight:'bold'}}>Company Reached for Placement till date</span>
                                 <p style={{fontSize:'40px',fontWeight:'bold'}}>13</p>
                                 </div>
                             </div> */}
-                            <div style={{
-                                minHeight: '150px',
-                                maxWidth: '200px', 
-                                background: '#99BADD',
-                                borderRadius: '20px',
-                                textAlign: 'center',
-                                wordBreak: 'break-word', 
-                            }}>
-                                <div style={{ paddingTop: '10px' }}>
-                                    <span style={{ fontSize: '16px', fontWeight: 'bold',fontFamily: 'Georgia, serif'}}>Total Company Reached Current Year</span>
-                                    <p style={{ fontSize: '40px', fontWeight: 'bold' }}>{placementDetails?.companyListCurrentYear}</p>
+                            <div className="col-lg-3 col-md-3 col-sm-6">
+                                <div style={{ 
+                                    paddingTop: '10px',
+                                    background: '#99BADD',
+                                    borderRadius: '10px',
+                                    textAlign: 'center',
+                                    wordBreak: 'break-word', 
+                                 }}>
+                                    <span style={{ fontSize: '16px', fontWeight: 'bold'}}>Total Company Reached Current Year</span>
+                                    <p className="mb-3" style={{ fontSize: '40px', fontWeight: 'bold' }}>{placementDetails?.companyListCurrentYear}</p>
                                 </div>
                             </div>
+
+                        </div>
                             {/* <div style={{minHeight:'150px', minWidth:'150px',background:'#fee2e2',borderRadius:'20px',textAlign:'center'}}>
                                 <div style={{paddingTop:'10px'}}>
                                 <span style={{fontSize:'13px',fontWeight:'bold'}}>Total Company Reached Current Year</span>
@@ -267,10 +266,10 @@ export default function Placement_Dashboard(){
                                 <p style={{fontSize:'40px',fontWeight:'bold'}}>{testScore}%</p>
                                 </div>
                             </div> */}
-                        </div>
-                        <div className="col-md-4 pt-5 col-sm-2">
-                             <div  className="headLineBox">
-                                <h4>Student's Placed</h4>
+                    <div className="row mt-2 mb-2" >
+                        <div className="col-md-6 pt-5 col-sm-2">
+                             <div  className="headLineBox rounded-top py-1">
+                                <h5>Student's Placed</h5>
                             </div>
                             <div  >
                                 <Students_PlacedPercent_Chart  avgOfPlacedStudent={placementDetails?.avgOfPlacedStudent}/>
@@ -278,58 +277,60 @@ export default function Placement_Dashboard(){
                            
                             
                         </div>
-                        <div className="col-md-4 pt-5 col-sm-4">
-                            <div  className="headLineBox">
-                                <h4>Placement Ratio by Year</h4>
+                        <div className="col-md-6 pt-5 col-sm-4">
+                            <div  className="headLineBox rounded-top py-1">
+                                <h5>Placement Ratio by Year</h5>
                             </div>
-                            <div  >
+                            <div className="box-shadow">
                             <Placement_Ratio placementRatioYear={placementDetails?.placementRatioYear} placementRatioPercent={placementDetails?.placementRatioPercent} />
                             </div>
                            
                             
                         </div>
-                        
-                        <div className="col-md-4 pt-5 col-sm-4">
-                            <div  className="headLineBox">
-                                <h4>Student's count by Grade and Placement</h4>
+                    </div>
+                    <div className="row mt-2 mb-2" > 
+                        <div className="col-md-6 pt-5 col-sm-4">
+                            <div  className="headLineBox rounded-top py-1">
+                                <h5>Student's count by Grade and Placement</h5>
                             </div>
-                            <div  >
+                            <div className="box-shadow" >
                             <PlacementAndGrade studentsCountByGradeAndPlacement={placementDetails?.studentsCountByGradeAndPlacement}/>
                             </div>
                            
                             
                         </div>
                         <div className="col-md-6 pt-5 ">
-                            <div  className="headLineBox">
-                                <h4>Student's count By Year and Placement</h4>
+                            <div  className="headLineBox rounded-top py-1">
+                                <h5>Student's count By Year and Placement</h5>
                             </div>
-                            <div  >
+                            <div className="box-shadow" >
                             <PlacementCountPreYear yearList={placementDetails?.yearList} placed={placementDetails?.placed} notPlaced={placementDetails?.notPlaced}/>
                             </div>
                            
                             
                         </div>
+                    </div>
+                    <div className="row mt-2 mb-2" >
                         <div className="col-md-6 pt-5 ">
-                            <div  className="headLineBox">
-                                <h4>Student's count and Placement Ratio by Course</h4>
+                            <div  className="headLineBox rounded-top py-1">
+                                <h5>Student's count and Placement Ratio by Course</h5>
                             </div>
-                            <div  >
+                            <div  className="box-shadow" >
                             <CourseVsPlacementRatio courseList={placementDetails?.courseList} TotalStudentCountINCourse={placementDetails?.TotalStudentCountINCourse} AvgStudentPlacedInCourse={placementDetails?.AvgStudentPlacedInCourse}/>
                             </div>
                            
                             
                         </div>
                         <div className="col-md-6 pt-5 ">
-                            <div  className="headLineBox">
-                                <h4>Placement Count by Company Name</h4>
+                            <div  className="headLineBox rounded-top py-1">
+                                <h5>Placement Count by Company Name</h5>
                             </div>
-                            <div className="pt-5" >
+                            <div className="pt-5 box-shadow" >
                             <PlacementsCountVsCompany companyData={placementDetails?.companyData}/>
                             </div>
                            
                             
                         </div>
-                    
                     </div>
                     
                 </div>
