@@ -201,7 +201,7 @@ export default function Placement_Dashboard(){
                             <div className="col-lg-3 col-md-3 col-sm-6">
                                 <div className="mb-1">
                                     <div className="d-flex justify-content-between align-items-center p-3 hover-effect bg-opacity-15 rounded-3 bg-green-light" style={{borderRadius: '10px',}}>
-                                        <div className="icon-lg rounded-circle bg-green text-white" style={{padding:"10px"}}>
+                                        <div className="icon-lg icon-rounded-circle bg-green text-white" style={{padding:"10px"}}>
                                             <FontAwesomeIcon icon={faLineChart} />
                                         </div>
                                         <div className="ms-4">
@@ -214,7 +214,7 @@ export default function Placement_Dashboard(){
 
                             <div className="col-lg-3 col-md-3 col-sm-6">
                                 <div className="d-flex  justify-content-between align-items-center p-3 hover-effect bg-opacity-15 rounded-3 bg-primary-blue-light" style={{borderRadius: '10px',}}>
-                                    <div className="icon-lg rounded-circle bg-blue text-white" style={{padding:"10px"}}>
+                                    <div className="icon-lg icon-rounded-circle bg-blue text-white" style={{padding:"10px"}}>
                                             <FontAwesomeIcon icon={faCheckSquare} />
                                     </div>
                                     <div className="ms-4">
@@ -225,7 +225,7 @@ export default function Placement_Dashboard(){
                             </div>
                             <div className="col-lg-3 col-md-3 col-sm-6">
                                 <div className="d-flex  justify-content-between align-items-center p-3 hover-effect bg-opacity-15 rounded-3 bg-purple-light" style={{borderRadius: '10px',}}>
-                                    <div className="icon-lg rounded-circle bg-purple-dark text-white" style={{padding:"10px"}}>
+                                    <div className="icon-lg icon-rounded-circle bg-purple-dark text-white" style={{padding:"10px"}}>
                                             <FontAwesomeIcon icon={faBuilding} />
                                     </div>
                                     <div className="ms-4">
@@ -244,7 +244,7 @@ export default function Placement_Dashboard(){
                             </div> */}
                             <div className="col-lg-3 col-md-3 col-sm-6">
                                 <div className="d-flex  justify-content-between align-items-center p-3 hover-effect bg-opacity-15 rounded-3 bg-warning-light" style={{borderRadius: '10px',}}>
-                                    <div className="icon-lg rounded-circle bg-warning-dark text-white" style={{padding:"10px"}}>
+                                    <div className="icon-lg icon-rounded-circle bg-warning-dark text-white" style={{padding:"10px"}}>
                                             <FontAwesomeIcon icon={faBuilding} />
                                     </div>
                                     <div className="ms-4">
