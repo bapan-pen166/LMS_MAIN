@@ -4,7 +4,9 @@ import CourseStudentCount from "../components/Placement/CourseStudentCount";
 import PlacementAndGrade from "../components/Placement/PlacementAndGrade";
 import CourseVsPlacementRatio from "../components/Placement/CourseVsPlacementRatio";
 import PlacementsCountVsCompany from "../components/Placement/PlacementsCountVsCompany";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PlacementCountPreYear from "../components/Placement/PlacementCountPreYear";
+import { faLineChart, faCheckSquare, faBuilding } from '@fortawesome/free-solid-svg-icons';
 import { useState,useEffect } from "react";
 import PageNotFound from "../ErrorPage/PageNotFound";
 import { api2 } from "../ApiUrl/ApiUrl";
@@ -196,40 +198,40 @@ export default function Placement_Dashboard(){
                                 <p style={{fontSize:'40px',fontWeight:'bold'}}>247</p>
                                 </div>
                             </div> */}
-                            <div className="col-lg-3 col-md-3 col-sm-6" >
-                                <div style={{ 
-                                    paddingTop: '10px',
-                                    background: '#89CFF0',
-                                    borderRadius: '10px',
-                                    textAlign: 'center',
-                                    wordBreak: 'break-word',
-                                 }} >
-                                    <span style={{ fontSize: '16px', fontWeight: 'bold',padding:'10px'}}>Average Students Placed</span>
-                                    <p className="mb-3" style={{ fontSize: '40px', fontWeight: 'bold' }}>{placementDetails?.averagePlaced}</p>
+                            <div className="col-lg-3 col-md-3 col-sm-6">
+                                <div className="mb-1">
+                                    <div className="d-flex justify-content-between align-items-center p-3 hover-effect bg-opacity-15 rounded-3 bg-green-light" style={{borderRadius: '10px',}}>
+                                        <div className="icon-lg rounded-circle bg-green text-white" style={{padding:"10px"}}>
+                                            <FontAwesomeIcon icon={faLineChart} />
+                                        </div>
+                                        <div className="ms-4">
+                                            <h5 className="purecounter fw-bold pb-2 text-center" style={{ fontSize: "3vw" }}>{placementDetails?.averagePlaced}</h5>
+                                            <p className="mb-0 mt-2 fw-light font-12 text-center">Average <br></br>Students Placed</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="col-lg-3 col-md-3 col-sm-6">
+                                <div className="d-flex  justify-content-between align-items-center p-3 hover-effect bg-opacity-15 rounded-3 bg-primary-blue-light" style={{borderRadius: '10px',}}>
+                                    <div className="icon-lg rounded-circle bg-blue text-white" style={{padding:"10px"}}>
+                                            <FontAwesomeIcon icon={faCheckSquare} />
+                                    </div>
+                                    <div className="ms-4">
+                                            <h5 className="purecounter fw-bold pb-2 text-center" style={{ fontSize: "3vw" }}>{placementDetails?.totalNoOfPlacement}</h5>
+                                            <p className="mb-0 mt-2 fw-light font-12 text-center">Total Placement <br></br>Current Year</p>
+                                    </div>
                                 </div>
                             </div>
                             <div className="col-lg-3 col-md-3 col-sm-6">
-                                <div style={{ 
-                                    paddingTop: '10px',
-                                    background: '#A1CAF1',
-                                    borderRadius: '10px',
-                                    textAlign: 'center',
-                                    wordBreak: 'break-word', 
-                                 }}>
-                                    <span style={{ fontSize: '16px', fontWeight: 'bold'}}>Total Placement Current Year</span>
-                                    <p className="mb-3" style={{ fontSize: '40px', fontWeight: 'bold' }}>{placementDetails?.totalNoOfPlacement}</p>
-                                </div>
-                            </div>
-                            <div className="col-lg-3 col-md-3 col-sm-6">
-                                <div style={{ 
-                                    paddingTop: '10px',
-                                    background: '#95C1E6',
-                                    borderRadius: '10px',
-                                    textAlign: 'center',
-                                    wordBreak: 'break-word', 
-                                 }}>
-                                    <span style={{ fontSize: '16px', fontWeight: 'bold'}}>Company Reached for Placement till date</span>
-                                    <p className="mb-3" style={{ fontSize: '40px', fontWeight: 'bold' }}>{placementDetails?.companyCountTillDate}</p>
+                                <div className="d-flex  justify-content-between align-items-center p-3 hover-effect bg-opacity-15 rounded-3 bg-purple-light" style={{borderRadius: '10px',}}>
+                                    <div className="icon-lg rounded-circle bg-purple-dark text-white" style={{padding:"10px"}}>
+                                            <FontAwesomeIcon icon={faBuilding} />
+                                    </div>
+                                    <div className="ms-4">
+                                            <h5 className="purecounter fw-bold pb-2 text-center" style={{ fontSize: "3vw" }}>{placementDetails?.companyCountTillDate}</h5>
+                                            <p className="mb-0 mt-2 fw-light font-12 text-center">Company Reached <br></br> for Placement till date</p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -241,15 +243,14 @@ export default function Placement_Dashboard(){
                                 </div>
                             </div> */}
                             <div className="col-lg-3 col-md-3 col-sm-6">
-                                <div style={{ 
-                                    paddingTop: '10px',
-                                    background: '#99BADD',
-                                    borderRadius: '10px',
-                                    textAlign: 'center',
-                                    wordBreak: 'break-word', 
-                                 }}>
-                                    <span style={{ fontSize: '16px', fontWeight: 'bold'}}>Total Company Reached Current Year</span>
-                                    <p className="mb-3" style={{ fontSize: '40px', fontWeight: 'bold' }}>{placementDetails?.companyListCurrentYear}</p>
+                                <div className="d-flex  justify-content-between align-items-center p-3 hover-effect bg-opacity-15 rounded-3 bg-warning-light" style={{borderRadius: '10px',}}>
+                                    <div className="icon-lg rounded-circle bg-warning-dark text-white" style={{padding:"10px"}}>
+                                            <FontAwesomeIcon icon={faBuilding} />
+                                    </div>
+                                    <div className="ms-4">
+                                            <h5 className="purecounter fw-bold pb-2 text-center" style={{ fontSize: "3vw" }}>{placementDetails?.companyListCurrentYear}</h5>
+                                            <p className="mb-0 mt-2 fw-light font-12 text-right">Total Company Reached Current Year</p>
+                                    </div>
                                 </div>
                             </div>
 

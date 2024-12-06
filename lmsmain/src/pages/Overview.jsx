@@ -247,15 +247,7 @@ function Overview() {
                                     </div>
                                 </div>
                                 <div className="px-2">
-                                    <table className="table scroll-y" >
-                                        <thead>
-                                            <tr>
-                                                <th>Mentor Name</th>
-                                                <th>Average Feedback</th>
-                                                <th>Positive Feedback</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
+
                                     {topInstuctors?.map((topInstuctors) => {
                                         return (
                                             <div className="row px-3 mb-3 ml-1 px-2 py-3 box-border-light hover-effect">
@@ -284,11 +276,13 @@ function Overview() {
                                                     <h5 className="fw-600 mb-0 badge badge-pill badge-primary">
                                                         {topInstuctors?.averageFeedbackRating}
                                                     </h5>
+                                                    <p class="text-gray mt-1 mb-0 font-10">Average Feedback</p>
                                                 </div>
                                                 <div className='col-lg-2 align-items-center'>
                                                     <h5 className="fw-600 mb-0 badge badge-pill badge-primary">
                                                         {topInstuctors?.positiveFeedbackCount}
                                                     </h5>
+                                                    <p class="text-gray mt-1 mb-0 font-10">Positive Feedback</p>
                                                 </div>
 
                                             </div>

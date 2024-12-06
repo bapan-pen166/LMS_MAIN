@@ -1091,6 +1091,7 @@ function Student_List() {
                                                             className="form-control"
                                                             id="exampleSelect"
                                                             onChange={(e) => setBatchname(JSON.parse(e.target.value))}
+                                                            style={{ width: '120px' }}
                                                         >
                                                             <option value="">--select--</option>
                                                             {batchList.map((batch) => (
@@ -1103,7 +1104,7 @@ function Student_List() {
                                                 </TableCell>
                                                 <TableCell>{val.contactNo}</TableCell>
                                                 <TableCell>{val.emailID}</TableCell>
-                                                <TableCell>{val.updatedAt}</TableCell>
+                                                <TableCell><p style={{ width: '215px' }}>{val.updatedAt}</p></TableCell>
                                                 <TableCell>
                                                     {(() => {
                                                         if (val.status === 0) {
