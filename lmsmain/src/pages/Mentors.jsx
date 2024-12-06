@@ -912,6 +912,7 @@ export default function Mentors() {
                                     value={searchquery}
 
                                     onChange={inputChange}
+                                    // fullWidth 
 
                                     style={{ marginBottom: '16px' }}
 
@@ -2584,6 +2585,7 @@ export default function Mentors() {
                             {console.log(editMentorData)}
                             <div className=' col-md-12  mb-3' >
                                 <h4>Edit Mentor Basic Details</h4>
+                                <hr />
                             </div>
                             <div className='col-md-3 p-2'>
                                 Name
@@ -2811,6 +2813,7 @@ export default function Mentors() {
                             <div className=' col-md-12  mb-3' >
                                 <hr />
                                 <h4>Edit Mentor Education Info </h4>
+                                <hr />
                             </div>
                             <div className='col-md-3 p-2'>
                                 Graduation Degree
@@ -2967,6 +2970,7 @@ export default function Mentors() {
                             <div className=' col-md-12  mb-3 mt-1' >
                                 <hr />
                                 <h4>Edit Mentor Proffesional Info </h4>
+                                <hr />
                             </div>
                             <div className='col-md-3 p-2'>
                                 Total year Of Exp

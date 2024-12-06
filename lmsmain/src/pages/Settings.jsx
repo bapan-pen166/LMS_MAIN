@@ -11,205 +11,213 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../../src/assets/css/Custom_Global_Style/Global.css';
 import * as Yup from 'yup';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    TablePagination,
+    TableSortLabel,
+    TextField,
+} from '@mui/material';
+
+import { visuallyHidden } from '@mui/utils';
 
 export default function Settings() {
+// Add instructor 
+const [showaddUser, setShowaddUser] = useState(false);
+const handleaddUserClose = () => setShowaddUser(false);
+const handleaddUserShow = () => setShowaddUser(true);
 
-    // Add instructor 
-    const [showaddUser, setShowaddUser] = useState(false);
-    const handleaddUserClose = () => setShowaddUser(false);
-    const handleaddUserShow = () => setShowaddUser(true);
+// For the search 
+const [searchres, setSearchres] = useState([]);
+const [searchquery, setSearchquery] = useState('');
 
+const [order, setOrder] = useState('asc');
+const [orderBy, setOrderBy] = useState('name');  // Correct field for sorting
+const [page, setPage] = useState(0);
+const [rowsPerPage, setRowsPerPage] = useState(5);
 
-    // For the search 
-    const [searchres, setSearchres] = useState([]);
-    const [searchquery, setSearchquery] = useState('');
+const [user, setUser] = useState({
+    name: "",
+    email: "",
+    phoneNumber: "",
+    role: "",
+    activeFlag: ""
+});
 
-
-    const [user, setUser] = useState({
-        name: "",
-        email: "",
-        phoneNumber: "",
-        role: "",
-        activeFlag: ""
-    })
-
-
-    const handleAddUser = (e) => {
-        const { name, value, type, files } = e.target;
-        console.log(e.target.files)
-
-        setUser({
-            ...user,
-            [name]: value
-        });
-
-    };
-
-    // For the validations  ==>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    const [errors, setErrors] = useState({});
-
-    const validationSchema = Yup.object({
-        name: Yup.string().required("Name is required"),
-        email: Yup.string().email("Invalid email address").required("Email is required"),
-        phoneNumber: Yup.string().required("Phone number is required"),
-        role: Yup.string().required("Role is required"),
-        activeFlag: Yup.string().required("Status is required")
+const handleAddUser = (e) => {
+    const { name, value } = e.target;
+    setUser({
+        ...user,
+        [name]: value
     });
+};
 
+// For the validations
+const [errors, setErrors] = useState({});
 
+const validationSchema = Yup.object({
+    name: Yup.string().required("Name is required"),
+    email: Yup.string().email("Invalid email address").required("Email is required"),
+    phoneNumber: Yup.string().required("Phone number is required"),
+    role: Yup.string().required("Role is required"),
+    activeFlag: Yup.string().required("Status is required")
+});
 
+const handleAddUserset = async (e) => {
+    try {
+        // Validate form values
+        await validationSchema.validate(user, { abortEarly: false });
+        setErrors({}); // Clear errors if validation passes
 
-
-
-
-
-    const handleAddUserset = async (e) => {
-        // e.preventDefault();
-
-        try {
-            // Validate form values
-            await validationSchema.validate(user, { abortEarly: false });
-            setErrors({}); // Clear errors if validation passes
-
-            // Make the API call
-            axios
-                .post(`${api2}/user/addAllUser`, user)
-                .then((response) => {
-                    console.log("Response data:", response.data);
-                    if (response.data.status === 0) {
-                        toast.error("Email ID already exists!", {
-                            position: "top-center",
-                        });
-                    } else {
-                        toast.success("Insert Successfully!", {
-                            position: "top-center",
-                        });
-                        setUser({
-                            name: "",
-                            email: "",
-                            phoneNumber: "",
-                            role: "",
-                            activeFlag: "",
-                        });
-                        handleaddUserClose()
-                        handleAllUserList();
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
-        } catch (validationError) {
-            // Handle validation errors
-            const newErrors = {};
-            validationError.inner.forEach((err) => {
-                newErrors[err.path] = err.message;
-            });
-            setErrors(newErrors);
-        }
-    };
-
-    // User list view 
-    const [editIndex, setEditIndex] = useState(null);
-    const [userList, setUserList] = useState([
-        //   { name: "Chitradip Dey", email: "chitradip.dey@pentationanalytics.com", role: "Admin", status: "Active" },
-        //   { name: "Vaibhavi Patel", email: "vaibhavi@pentationanalytics.com", role: "User", status: "Active" },
-        //   { name: "Rishu Yadav", email: "rishu@pentationanalytics.com", role: "Student", status: "Active" }
-    ]);
-
-    const handleEditClick = (index) => {
-        setEditIndex(index);
-    };
-
-    const handleSaveClick = () => {
-        setEditIndex(null);
-    };
-
-    const handleStatusChange = (e, index) => {
-        const newStatus = [...userList];
-        console.log(newStatus);
-        newStatus[index].activeFlag = e.target.value;
-        setUserList(userList);
-    };
-    const handleAllUserList = (e) => {
-        console.log('submit click');
-        axios.post(`${api2}/user/getAllUserDetails`, {})
-            .then((Response) => {
-                console.log(" data : ", Response.data.result);
-                setUserList(Response.data.data);
-
+        // Make the API call
+        axios
+            .post(`${api2}/user/addAllUser`, user)
+            .then((response) => {
+                if (response.data.status === 0) {
+                    toast.error("Email ID already exists!", {
+                        position: "top-center",
+                    });
+                } else {
+                    toast.success("Insert Successfully!", {
+                        position: "top-center",
+                    });
+                    setUser({
+                        name: "",
+                        email: "",
+                        phoneNumber: "",
+                        role: "",
+                        activeFlag: "",
+                    });
+                    handleaddUserClose();
+                    handleAllUserList();
+                }
             })
             .catch((error) => {
-                console.error('Error:', error);
+                console.error("Error:", error);
             });
+    } catch (validationError) {
+        // Handle validation errors
+        const newErrors = {};
+        validationError.inner.forEach((err) => {
+            newErrors[err.path] = err.message;
+        });
+        setErrors(newErrors);
     }
-    useEffect(() => {
-        handleAllUserList()
-    }, [])
-    useEffect(() => {
-        console.log('userlist')
-    }, [userList])
+};
 
-    // user delete status 
-    const handleUserDelete = (id) => {
-        console.log('submit click');
-        axios.post(`${api2}/user/deleteUser`, { id: id })
-            .then((Response) => {
-                console.log(" data : ", Response.data);
+// User list view 
+const [editIndex, setEditIndex] = useState(null);
+const [userList, setUserList] = useState([]);
 
-                handleAllUserList()
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    }
+const handleEditClick = (index) => {
+    setEditIndex(index);
+};
 
-    // user edit status 
-    const handleUserEdit = (id, flag) => {
-        console.log('submit click');
-        axios.post(`${api2}/user/editUser`, { id: id, activeFlag: flag })
-            .then((Response) => {
-                console.log(" data : ", Response.data);
-                setEditIndex(null);
-                handleAllUserList()
+const handleSaveClick = () => {
+    setEditIndex(null);
+};
 
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    }
+const handleStatusChange = (e, index) => {
+    const newStatus = [...userList];
+    newStatus[index].activeFlag = e.target.value;
+    setUserList(newStatus);
+};
+
+const handleAllUserList = () => {
+    axios.post(`${api2}/user/getAllUserDetails`, {})
+        .then((Response) => {
+            setUserList(Response.data.data); 
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+};
+
+useEffect(() => {
+    handleAllUserList();
+}, []);
+
+// user delete status 
+const handleUserDelete = (id) => {
+    axios.post(`${api2}/user/deleteUser`, { id: id })
+        .then((Response) => {
+            handleAllUserList();
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+};
+
+// user edit status 
+const handleUserEdit = (id, flag) => {
+    axios.post(`${api2}/user/editUser`, { id: id, activeFlag: flag })
+        .then((Response) => {
+            setEditIndex(null);
+            handleAllUserList();
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+};
+
+const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+};
+
+const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+};
+
+const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+};
+
+// const sortedData = [...userList].sort((a, b) => {
+//     if (orderBy === 'startDate' || orderBy === 'endDate') {
+//         return order === 'asc'
+//             ? new Date(a[orderBy]) - new Date(b[orderBy])
+//             : new Date(b[orderBy]) - new Date(a[orderBy]);
+//     }
+//     return order === 'asc'
+//         ? a[orderBy]?.localeCompare(b[orderBy])
+//         : b[orderBy]?.localeCompare(a[orderBy]);
+// });
+
+const paginatedData = userList.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+);
 
     return (
         <>
-            <div className='row ' style={{ marginTop: '58px' }} >
-                <div className='row '>
-                    <div className='container-fluid'>
-                        <div className=' col-md-12 col-lg-12 col-sm-12 headLineBox d-flex justify-content-start'  >
-                            <h4>Settings</h4>
-                        </div>
-                    </div>
-                </div>
-                <div className="row" style={{ marginTop: '20px' }}>
+            <div className='row '  >
+               
+                <div className="row" >
                     <div className="col-md-12 col-lg-12 col-sm-12  d-flex justify-content-center flex-wrap ml-2">
                         <div className='offset-md-7 col-md-3 col-ms-3 col-lg-3 d-flex align-items-center justify-content-end flex-grow-1 '>
-                            {/* <input type="text" className="form-control pl-2 pr-5" placeholder='Search here'
-                            //  value={searchquery} onChange={inputChange} 
-                             /> */}
-                            {/* <div className=''>
-                                <CiSearch className="search-btn" />
-                            </div> */}
+
                         </div>
                         <div className=" col-md-2 col-sm-2 col-lg-2">
                             {/* <button className="btn btn-">New Instructor</button> */}
                             <Stack spacing={2} direction="row" sx={{ justifyContent: 'flex-end' }}>
 
-                                <Button variant="contained" onClick={() => { handleaddUserShow() }}>Add User</Button>
+                                <Button style={{ backgroundColor: "green" }} variant="contained" onClick={() => { handleaddUserShow() }}>Add User <AddCircleOutlineIcon /></Button>
 
                             </Stack>
                         </div>
                     </div>
                     <div className="col-md-12 col-lg-12 col-sm-12">
                         <div className="table-container" style={{ height: '90vh', overflowY: 'auto' }}>
-                            <table className="table table-bordered ">
+                            {/* <table className="table table-bordered ">
                                 <thead style={{ position: 'sticky', top: -2, zIndex: 3 }}>
                                     <tr>
                                         <th style={{ textAlign: 'center', verticalAlign: 'middle' }}>Name</th>
@@ -252,7 +260,90 @@ export default function Settings() {
                                         </tr>
                                     ))}
                                 </tbody>
-                            </table>
+                            </table> */}
+
+                            {/* material ui */}
+                            <TableContainer>
+                                <Table className="table-bordered pt-1">
+                                    <TableHead className="bg-theme-green text-white p-0" style={{ position: "sticky", top: -2, zIndex: 3 }}>
+                                        <TableRow>
+                                            {[
+                                                { id: 'Name', label: 'Name' },
+                                                { id: 'Email Address', label: 'Email Address' },
+                                                { id: 'Role', label: 'Role' },
+                                                { id: 'Status', label: 'Status' },
+                                                { id: 'Action', label: 'Action' },
+                                            ].map((column) => (
+                                                <TableCell key={column.id} sortDirection={orderBy === column.id ? order : false}>
+                                                    <TableSortLabel
+                                                        className='text-white'
+                                                        active={orderBy === column.id}
+                                                        direction={orderBy === column.id ? order : 'asc'}
+                                                        onClick={(event) => handleRequestSort(event, column.id)}
+                                                    >
+                                                        {column.label}
+                                                        {orderBy === column.id ? (
+                                                            <span style={visuallyHidden}>
+                                                                {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                                            </span>
+                                                        ) : null}
+                                                    </TableSortLabel>
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {paginatedData.map((user, index) => (
+                                            <TableRow key={index}>
+                                                <TableCell>{user.name}</TableCell>
+                                                <TableCell>{user.email}</TableCell>
+                                                <TableCell>{user.userType}</TableCell>
+
+                                                <TableCell>
+                                                    {editIndex === index ? (
+                                                        <select name='activeFlag' className="form-control" id="exampleSelect" onChange={(e) => handleStatusChange(e, index)} >
+                                                            <option value="">select</option>
+                                                            <option value="1">Active</option>
+                                                            <option value="0">De-active</option>
+                                                        </select>
+                                                    ) : (
+                                                        user.activeFlag == '1' ? 'Active' : 'De-Active'
+                                                    )}
+
+
+                                                </TableCell>
+
+                                                <TableCell>
+                                                    <button
+                                                        style={{ background: 'transparent', border: 'none' }}
+                                                        className="custom-button" title={editIndex === index ? 'Save' : 'Edit'}
+                                                        onClick={() => (editIndex === index ? handleUserEdit(user.id, user.activeFlag) : handleEditClick(index))}
+                                                    >
+                                                        <i
+                                                            className={`fa ${editIndex === index ? 'fa-save' : 'fa-edit'} custom-icon`}
+                                                            style={{ color: 'green', fontSize: "14pt", padding: '2px' }}
+                                                        ></i>
+                                                    </button>
+                                                    <button style={{ background: 'transparent', border: 'none' }} className="custom-button" title='Delete'><i class="fa fa-trash custom-icon" style={{ color: 'green', fontSize: "14pt", padding: '2px' }} onClick={() => { handleUserDelete(user?.id) }}></i></button>
+
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 25]}
+                                component="div"
+                                count={userList.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
+
+
+
                         </div>
                     </div>
                 </div>
@@ -270,7 +361,7 @@ export default function Settings() {
 
                     <div className='container-fluid'>
                         <div className='row'>
-                            <div className=' col-md-12 headLineBox mb-3' >
+                            <div className=' col-md-12 mb-3' >
                                 <h4>Add User</h4>
                             </div>
                             {/* <div className='col-md-12'> */}
@@ -367,18 +458,19 @@ export default function Settings() {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="contained" onClick={
+                    <Button style={{ backgroundColor: "green" }} variant="contained" onClick={
                         () => {
                             // handleaddUserClose()
                             handleAddUserset()
                         }}>
-                        Add User
+                        Add User <AddCircleOutlineIcon />
                     </Button>
                     <Stack spacing={2} direction="row" >
 
-                        <Button variant="secondary" onClick={()=>{
+                        <Button variant="secondary" onClick={() => {
                             setUser('')
-                            handleaddUserClose()}} >
+                            handleaddUserClose()
+                        }} >
                             Close
                         </Button>
                     </Stack>

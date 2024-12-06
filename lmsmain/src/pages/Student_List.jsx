@@ -4,8 +4,9 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Button from '@mui/material/Button';
 
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Country_list from '../components/Student_list/Country_list';
 import State_list from '../components/Student_list/State_list';
@@ -25,6 +26,9 @@ import MenuItem from '@mui/material/MenuItem';
 import PageNotFound from '../ErrorPage/PageNotFound';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, TablePagination, TextField } from '@mui/material';
 import * as Yup from 'yup';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import DoneIcon from '@mui/icons-material/Done';
+import CloseIcon from '@mui/icons-material/Close';
 
 
 const ITEM_HEIGHT = 48;
@@ -853,7 +857,7 @@ function Student_List() {
         }
 
         setSearchquery(e.target.value);
-        const filterData = searchres.filter((f) => {
+        const filterData = searchres?.filter((f) => {
             return (
                 (f.Name && f.Name.toLowerCase().includes(searchquery.toLowerCase())) ||
                 (f.emailID && f.emailID.toLowerCase().includes(searchquery.toLowerCase())) ||
@@ -970,10 +974,13 @@ function Student_List() {
     };
 
     // Ensure studentList is always an array before calling .filter
-    const filteredStudents = (studentList || []).filter((student) =>
+    const filteredStudents = Array.isArray(studentList)
+    ? studentList.filter((student) =>
         (student.Name && student.Name.toLowerCase().includes(search.toLowerCase())) ||
         (student.emailID && student.emailID.toLowerCase().includes(search.toLowerCase()))
-    );
+      )
+    : [];
+
 
 
     const sortedStudents = stableSort(filteredStudents, getComparator(order, orderBy));
@@ -986,22 +993,32 @@ function Student_List() {
             {/* content body  */}
             <div className='row rounded-top card box-shadow' >
                 <div className='row '>
-                    {/* <div className='container-fluid'>
-
-                      
-                        <div className=' col-md-12 col-lg-12 col-sm-12 headLineBox d-flex justify-content-start'  >
-                            <h4>Student List</h4>
-                        </div>
-
-                    </div> */}
+                    
                 </div>
                 <div className="container-fluid mt-4 m-r-2" >
-                    <div className="row ml-2">
+                    <div className="row">
                         <div className="col-lg-3 d-flex align-items-center">
-                            <input type="text" className="form-control pl-2 pr-5" placeholder='Search here' value={searchquery} onChange={inputChange} />
-                            <div className=''>
-                                <CiSearch className="search-btn" />
-                            </div>
+                            
+                            <TextField
+
+                                label="Search"
+                                fullWidth 
+                                variant="outlined"
+
+                                value={searchquery}
+
+                                onChange={inputChange}
+
+                                style={{ marginBottom: '16px' }}
+
+                                InputLabelProps={{
+
+                                    style: { top: '-4px' }
+
+                                }}
+
+                            />
+
                         </div>
                         <div className="col-lg-3">
                             <select style={{ borderRadius: "10px", backgroundColor: "white" }} className="form-select  mb-3 mt-1 w-100" aria-label="Default select example" onChange={handleBatchChange}>
@@ -1046,20 +1063,13 @@ function Student_List() {
                         : ""}
                     <div className='row pl-3'>
                         <div className='col-md-12 col-lg-12 scroll' style={{ paddingRight: '0px', paddingLeft: '0px' }}>
-                            {/* <TextField
-                                label="Search"
-                                variant="outlined"
-                                fullWidth
-                                margin="normal"
-                                value={search}
-                                onChange={handleSearchChange}
-                            /> */}
+                            
                             <TableContainer>
-                                <Table>
-                                    <TableHead>
+                                <Table >
+                                    <TableHead className="bg-theme-green text-white p-0" style={{ position: "sticky", top: -2, zIndex: 3 }}>
                                         <TableRow>
-                                            <TableCell>Index</TableCell>
-                                            <TableCell
+                                            <TableCell className='p-1 text-white'>Index</TableCell>
+                                            <TableCell className='p-1 text-white'
                                                 sortDirection={orderBy === 'Name' ? order : false}
                                                 onClick={() => handleRequestSort('Name')}
                                             >
@@ -1067,14 +1077,14 @@ function Student_List() {
                                                     Name
                                                 </TableSortLabel>
                                             </TableCell>
-                                            <TableCell>Course</TableCell>
-                                            <TableCell>Batch</TableCell>
-                                            <TableCell>Mobile No.</TableCell>
-                                            <TableCell>Email</TableCell>
-                                            <TableCell>Updated on</TableCell>
-                                            <TableCell>Status</TableCell>
-                                            <TableCell>Registration Link</TableCell>
-                                            <TableCell>Action</TableCell>
+                                            <TableCell className='p-1 text-white'>Course</TableCell>
+                                            <TableCell className='p-1 text-white'>Batch</TableCell>
+                                            <TableCell className='p-1 text-white'>Mobile No.</TableCell>
+                                            <TableCell className='p-1 text-white'>Email</TableCell>
+                                            <TableCell className='p-1 text-white'>Updated on</TableCell>
+                                            <TableCell className='p-1 text-white'>Status</TableCell>
+                                            <TableCell className='p-1 text-white'>Registration Link</TableCell>
+                                            <TableCell className='p-1 text-white'>Action</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
@@ -1122,11 +1132,12 @@ function Student_List() {
                                                         style={{ background: 'transparent', border: 'none' }}
                                                         className="custom-button"
                                                         onClick={() => handleStudentEmail(val.emailID)}
+                                                        title='Send registration link'
                                                     >
                                                         <i
                                                             className="fa fa-reply custom-icon"
                                                             style={{
-                                                                color: 'rgb(212, 139, 2)',
+                                                                color: 'green',
                                                                 fontSize: '14pt',
                                                                 padding: '2px',
                                                             }}
@@ -1140,27 +1151,31 @@ function Student_List() {
                                                         onClick={() => {
                                                             handleBasicInfo(val.emailID);
                                                             handleShow();
+                                                        
                                                         }}
+                                                        title='Edit'
                                                     >
                                                         <i
                                                             className="fa fa-edit custom-icon"
                                                             style={{
-                                                                color: 'rgb(212, 139, 2)',
+                                                                color: 'green',
                                                                 fontSize: '14pt',
                                                                 padding: '2px',
                                                             }}
                                                         ></i>
+                                                    
                                                     </button>
                                                     <button
                                                         disabled={val.batch}
                                                         onClick={() => updateBatch(val.emailID)}
                                                         style={{ background: 'transparent', border: 'none' }}
                                                         className="custom-button"
+                                                        title='Save'
                                                     >
                                                         <i
                                                             className="fa fa-save custom-icon"
                                                             style={{
-                                                                color: 'rgb(212, 139, 2)',
+                                                                color: 'green',
                                                                 fontSize: '14pt',
                                                                 padding: '2px',
                                                             }}
@@ -1197,18 +1212,16 @@ function Student_List() {
                 keyboard={false}
                 size="lg"
             >
-                {/* <Modal.Header closeButton> */}
-                {/* <Modal.Title>Modal title</Modal.Title> */}
-                {/* </Modal.Header> */}
+                
                 <Modal.Body closeButton>
-                    {/* I will not close if you click outside me. Do not even try to press
-          escape key. */}
+                   
                     <div className='row '>
                         <div className='row '>
                             <div className='container-fluid'>
 
-                                <div className=' col-md-12 col-lg-12 headLineBox' >
+                                <div className=' col-md-12 col-lg-12' >
                                     <h4>Basic Information</h4>
+                                    <hr />
                                 </div>
 
                             </div>
@@ -1316,9 +1329,7 @@ function Student_List() {
 
                             <div className='row '>
 
-                                {/* <div className="col-md-12 heading">
-                        2. Address
-                        </div> */}
+                                
                                 {/* <div className="col-md-12"> */}
                                 <div className="col-md-3 subheading p-2">
                                     Address 1 <i class="fa fa-star"></i>
@@ -1362,27 +1373,7 @@ function Student_List() {
                                       readOnly
                                       /> */}
                                         <Country_list country={country} setCountry={setCountry} countrylist={countrylist} info={info} selectedCountrys={selectedCountrys} setSelectedCountrys={setSelectedCountrys} />
-                                        {/* <select className="form-control "
-                                    
-                                    // value={country}
-                                      onChange={(e)=>{setCountry(JSON.parse(e.target.value))}} 
-                                      id="exampleSelect">
-                                    <option selected>--Select--</option>
-                                        {console.log(countrylist)}
-                                        {
-                                            countrylist?.map((val)=>{
-                                                return(
-                                                    <>
-                                                    
-                                                    <option value={ JSON.stringify([{id:val.id,name:val.name}]) } >{val.name}</option>
-                                                    
-                                                    </>
-                                                )
-                                            })
-                                        }
-                                        
-                                        
-                                    </select> */}
+                                       
                                     </div>
                                     {errors?.country && <div className="error">{errors.country}</div>}
                                 </div>
@@ -1400,23 +1391,7 @@ function Student_List() {
                                     <div class="custom-file">
 
                                         {<State_list statelist={statelist} selectedStates={selectedStates} setSelectedStates={setSelectedStates} />}
-                                        {/* <select className="form-control " 
-                                   
-                                    // value={state}
-                                     onChange={(e)=>{setState(JSON.parse(e.target.value) )}}
-                                      id="exampleSelect">
-                                        <option selected>--Select--</option>
-                                        {statelist?.map((val)=>{
-                                            return(
-                                                <>
-                                              
-                                                <option value={ JSON.stringify([{id:val.id,name:val.name}]) } >{val.name}</option>
-                                                
-                                                </>
-                                            )
-                                        })}
-                                        
-                                    </select> */}
+                                      
                                     </div>
                                     {errors?.state && <div className="error">{errors.state}</div>}
                                 </div>
@@ -1432,23 +1407,7 @@ function Student_List() {
                                       readOnly
                                       /> */}
                                         <City_list citylist={citylist} selectedCitys={selectedCitys} setSelectedCitys={setSelectedCitys} />
-                                        {/* <select className="form-control " 
-                                    
-                                        // value={city}
-                                   
-                                     id="exampleSelect" onChange={(e)=>{setCity(JSON.parse(e.target.value))}} >
-                                        <option selected>--Select--</option>
-                                        {citylist?.map((val)=>{
-                                            return(
-                                                <>
-                                                
-                                                 <option value={ JSON.stringify([{id:val.id,name:val.name}]) } >{val.name}</option>
-                                               
-                                                </>
-                                            )
-                                        })}
-                                    
-                                    </select> */}
+                                       
                                     </div>
                                     {errors?.city && <div className="error">{errors.city}</div>}
                                 </div>
@@ -1747,24 +1706,25 @@ function Student_List() {
 
 
                     </div>
-
+                
 
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
+                    <Button variant="contained"
+                            style={{ backgroundColor: "red" }} onClick={handleClose}>
+                        Close <CloseIcon />
                     </Button>
                     {/* <Button variant="primary">Understood</Button> */}
-                    <button className="btn btn-warning "
+                    <Button  variant="contained"
                         onClick={() => { handleBasicInfoSave(info?.email) }}
-                    >Save</button>
-                    <button className="btn btn-success " onClick={
+                    >Save <DoneIcon />  </Button>
+                    <Button variant="contained" style={{backgroundColor:"green"}} onClick={
                         () => {
                             handleClose();
                             handleShowEducation();
                             handleEducationlist(info?.email);
                         }
-                    }>Next</button>
+                    }>Next <ArrowForwardIcon /> </Button>
                 </Modal.Footer>
             </Modal>
 
@@ -1791,8 +1751,9 @@ function Student_List() {
                         <div className='row '>
                             <div className='container-fluid'>
 
-                                <div className=' col-md-12 headLineBox' >
+                                <div className=' col-md-12 ' >
                                     <h4>Educational Information</h4>
+                                    <hr />
                                 </div>
 
                             </div>
@@ -2176,200 +2137,27 @@ function Student_List() {
                             )}
                         </div>
 
-
-                        {/* <div className='row '>
-
-                            <div className="col-md-3 subheading p-2" >
-                                Highest Qualification <i class="fa fa-star"></i>
-                            </div>
-                            <div className="col-md-3 p-2" style={{ height: '55px' }}>
-                                <div className="form-group  ">
-
-                                    <select className="form-control"
-                                        value={education?.highestQualification}
-                                        id="exampleSelect"
-                                        onChange={(e) => {
-                                            sethighestQualification(e.target.value)
-                                        }}
-                                    >
-                                        <option value='Post Graduation'>Post Graduation</option>
-                                        <option value='Graduation'>Graduation</option>
-                                    </select>
-                            
-                                </div>
-                            </div>
-                            <div className='col-md-6'>
-
-                            </div>
-
-
-                            <div className="col-md-3 subheading p-2">
-                                Grad Passout Year <i class="fa fa-star"></i>
-                            </div>
-                            <div className="col-md-3 p-2">
-                                <div class="input-group ">
-                                    <input type="number" class="form-control"
-                                        value={gyear}
-                                        id="basic-url" aria-describedby="basic-addon3"
-
-                                        onChange={(e) => {
-                                            setGyear(e.target.value)
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                            <div className="col-md-3 subheading p-2">
-                                Grad Institution <i class="fa fa-star"></i>
-                            </div>
-                            <div className="col-md-3 p-2">
-                                <div class="input-group ">
-                                    <input type="text" class="form-control"
-                                       
-                                        value={gcollege}
-                                        id="basic-url" aria-describedby="basic-addon3"
-                                        onChange={(e) => {
-                                            setGcollege(e.target.value)
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                         
-                            <div className="col-md-3 subheading ">
-                                Grad CGPA <i class="fa fa-star"></i>
-                            </div>
-                            <div className="col-md-3 p-2">
-                                <div class="input-group ">
-                                    <input type="number"
-                                       
-                                        value={gcgpa}
-                                        class="form-control" id="basic-url" aria-describedby="basic-addon3"
-                                        onChange={(e) => {
-                                            setGcgpa(e.target.value)
-                                        }}
-                                    />
-                                </div>
-                            </div>
-
-                        </div> */}
-
-                        {/* <div className='row '>
-                            <div className="col-md-3 subheading p-2">
-                                12th Passout Year <i class="fa fa-star"></i>
-                            </div>
-                            <div className="col-md-3 p-2">
-                                <div class="input-group ">
-                                    <input type="number"
-                                       
-                                        value={c12year}
-                                        class="form-control" id="basic-url" aria-describedby="basic-addon3"
-                                        onChange={(e) => {
-                                            setc12year(e.target.value)
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                            <div className="col-md-3 subheading p-2">
-                                12th Institution <i class="fa fa-star"></i>
-                            </div>
-                            <div className="col-md-3 p-2">
-                                <div class="input-group ">
-                                    <input type="text"
-                                        
-                                        value={c12College}
-                                        class="form-control" id="basic-url" aria-describedby="basic-addon3"
-                                        onChange={(e) => {
-                                            set12College(e.target.value)
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                            
-                            <div className="col-md-3 subheading p-2">
-                                12th CGPA <i class="fa fa-star"></i>
-                            </div>
-                            <div className="col-md-3 p-2">
-                                <div class="input-group ">
-                                    <input type="number"
-                                        
-                                        value={c12cgpa}
-                                        class="form-control" id="basic-url" aria-describedby="basic-addon3"
-                                        onChange={(e) => {
-                                            set12Cgpa(e.target.value)
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                  
-                        </div> */}
-                        {/* <div className='row '>
-                            <div className="col-md-3 subheading p-2">
-                                10th Passout Year <i class="fa fa-star"></i>
-                            </div>
-                            <div className="col-md-3 p-2">
-                                <div class="input-group ">
-                                    <input type="number"
-                                      
-                                        value={c10year}
-                                        class="form-control" id="basic-url" aria-describedby="basic-addon3"
-                                        onChange={(e) => {
-                                            setc10year(e.target.value)
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                            <div className="col-md-3 subheading p-2">
-                                10th Institution <i class="fa fa-star"></i>
-                            </div>
-                            <div className="col-md-3 p-2">
-                                <div class="input-group ">
-                                    <input type="text"
-                                        
-                                        value={c10College}
-                                        class="form-control" id="basic-url" aria-describedby="basic-addon3"
-                                        onChange={(e) => {
-                                            set10College(e.target.value)
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                            <div className="col-md-3 subheading p-2">
-                                10th CGPA <i class="fa fa-star"></i>
-                            </div>
-                            <div className="col-md-3 p-2">
-                                <div class="input-group ">
-                                    <input type="number"
-                                        value={c10cgpa}
-                                        class="form-control" id="basic-url" aria-describedby="basic-addon3"
-                                        onChange={(e) => {
-                                            set10Cgpa(e.target.value)
-                                        }}
-                                    />
-                                </div>
-                            </div>
-
-
-
-                        </div> */}
-
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseEducation}>
-                        Close
+                    <Button variant="contained"
+                            style={{ backgroundColor: "red" }} onClick={handleCloseEducation}>
+                        Close <CloseIcon />
                     </Button>
-                    <button className="btn btn-warning pe-2"
+                    <Button     variant="contained"
+                   
                         onClick={
                             () => { handleEducationSave(formData?.email) }}
-                    >Save</button>
-                    <button className="btn btn-success ps-2" onClick={
+                    >Save  <DoneIcon /></Button>
+                    <Button variant="contained" style={{backgroundColor:"green"}} onClick={
                         () => {
                             handleCloseEducation()
                             handleShowProfession()
                             handleProfessionlist(formData?.email)
                             handleBatchlist()
                         }
-                    } >Next</button>
-                    {/* <Button variant="primary">Understood</Button> */}
+                    } >Next <ArrowForwardIcon /> </Button>
+
                 </Modal.Footer>
             </Modal>
 
@@ -2382,9 +2170,7 @@ function Student_List() {
                 keyboard={false}
                 size='lg'
             >
-                {/* <Modal.Header closeButton>
-          <Modal.Title>Modal title</Modal.Title>
-        </Modal.Header> */}
+
                 <Modal.Body closeButton>
                     {/* I will not close if you click outside me. Do not even try to press
           escape key. */}
@@ -2392,8 +2178,9 @@ function Student_List() {
                         <div className='row '>
                             <div className='container-fluid'>
 
-                                <div className=' col-md-12 headLineBox' >
+                                <div className=' col-md-12' >
                                     <h4>Professional Information</h4>
+                                    <hr />
                                 </div>
 
                             </div>
@@ -2402,10 +2189,6 @@ function Student_List() {
 
                             <div className='row '>
 
-                                {/* <div className="col-md-12 heading">
-                                1. Graduation Details
-                                </div> */}
-                                {/* <div className="col-md-12"> */}
                                 <div className="col-md-3 subheading p-2">
                                     Working Status <i class="fa fa-star"></i>
                                 </div>
@@ -2516,19 +2299,6 @@ function Student_List() {
                                         <button className='btn btn-light' onClick={ViewDoc}>View</button>
                                     </div>
                                 </div>
-                                {/* <div className="col-md-3 subheading p-2">
-                                    Upload Resume
-                                    </div> */}
-                                {/* <div className="col-md-3 p-2">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" 
-                                        // onChange={(e)=>{setResume(e.target.files[0])}}
-                                        />
-                                        <label class="custom-file-label" for="inputGroupFile01"> file</label>
-                                    </div>
-                                    </div> */}
-                                {/* </div> */}
-
 
                             </div>
                             <div className='row'>
@@ -2593,7 +2363,7 @@ function Student_List() {
                                         <option value="1">Dropped</option>
                                         <option value="0">N/A</option>
                                     </select>
-                                    <Button style={{ marginTop: "2px" }} onClick={() => { saveDropoutStatusChange(profEmail) }} variant="secondary">SAVE</Button>
+                                    <Button style={{ marginTop: "2px" }} onClick={() => { saveDropoutStatusChange(profEmail) }} variant="contained" >SAVE <DoneIcon /> </Button>
                                 </div>
                             </div>
 
@@ -2609,18 +2379,18 @@ function Student_List() {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseProfession}>
-                        Close
+                    <Button variant="contained" style={{backgroundColor:"red"}} onClick={handleCloseProfession}>
+                        Close <CloseIcon />
                     </Button>
                     {/* <Button variant="primary">Understood</Button> */}
-                    <button className="btn btn-warning pe-2" style={{ marginRight: '10px' }}
+                    <Button variant='contained' style={{ marginRight: '10px' }}
                         onClick={
                             () => { handleProfessionSave(profEmail) }}
 
-                    >Save</button>
+                    >Save <DoneIcon /> </Button>
 
-                    <button className='btn btn-warning' onClick={() => { handleapprove(profEmail) }}>Approve</button>
-                    <button className='btn btn-danger' onClick={() => {
+                    <Button variant="contained" color="success" style={{backgroundColor:""}} onClick={() => { handleapprove(profEmail) }}>Approve</Button>
+                    <Button variant='contained' style={{backgroundColor:"#DC143C"}} onClick={() => {
                         setRejectFlag(false);
                         if (rejectflag) {
                             handlereject(profEmail)
@@ -2632,7 +2402,7 @@ function Student_List() {
                         }
 
                         // handlereject(profEmail)
-                    }} >Hold On</button>
+                    }} >Hold On</Button>
                 </Modal.Footer>
             </Modal>
             <Rejection_dialog showreject={showreject} handlerejectClose={handlerejectClose} handlerejectShow handlereject={handlereject} profEmail={profEmail} setRejectFlag={setRejectFlag} />

@@ -65,11 +65,11 @@ const Admin_Change_password = () => {
     
 
     return (
-        <div style={{ marginTop: '58px' }}>
+        <div >
             <div className="container-fluid">
-                <div className='col-md-12 col-lg-12 headLineBox d-flex justify-content-start'>
+                {/* <div className='col-md-12 col-lg-12  d-flex justify-content-start'>
                     <h4>Change Password</h4>
-                </div>
+                </div> */}
                 <div className='mt-4' style={{ margin: "auto", width: "80%" }}>
                     <Formik
                         initialValues={{

@@ -581,6 +581,7 @@ export default function Batches() {
                                     value={searchquery}
 
                                     onChange={inputChange}
+                                    fullWidth 
 
                                     style={{ marginBottom: '16px' }}
 

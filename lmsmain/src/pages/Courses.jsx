@@ -837,7 +837,7 @@ export default function Courses() {
                                         label="Search"
 
                                         variant="outlined"
-
+                                        // fullWidth 
                                         value={searchquery}
 
                                         onChange={inputChange}
@@ -975,7 +975,7 @@ export default function Courses() {
 
                                                         <TableSortLabel
 
-                                                            // active={orderBy === column.id}
+                                                            active={orderBy === column.id}
 
                                                             direction={orderBy === column.id ? order : "asc"}
 

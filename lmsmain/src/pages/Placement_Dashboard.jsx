@@ -186,9 +186,7 @@ export default function Placement_Dashboard(){
         <div className='row g-3'>
             <div className="row">
                 <div className="container-fluid">
-                    <div className=' col-md-12 col-lg-12  rounded bg-theme text-white d-flex justify-content-start' >
-                        <h4>Placement Dashboard</h4>
-                    </div>
+                  
                     <div className="row mt-2 mb-2" >
                             {/* <div style={{minHeight:'150px', minWidth:'150px',background:'#bbf7d0',borderRadius:'20px',textAlign:'center'}}>
                                 <div style={{paddingTop:'10px'}}>
