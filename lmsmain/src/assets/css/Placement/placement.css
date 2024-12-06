@@ -9,3 +9,41 @@
 .font-16{
     font-size: 16px;
 }
+.bg-green-light{
+    background-color: rgb(24 80 85 / 25%);
+}
+.font-14{
+    font-size: 14px;
+}
+.font-12{
+    font-size: 12px;
+}
+.bg-primary-blue-light{
+    background-color: rgba(161, 202, 241, 0.3);
+}
+.icon-rounded-circle{
+    width: 3.5rem;
+    height: 3.5rem;
+    line-height: 1.5rem;
+    text-align: center;
+    font-size: 2.2rem;
+    border-radius: 50%;
+}
+.bg-green{
+    background: #185055;
+}
+.bg-blue{
+    background-color: rgb(6, 106, 201);
+}
+.bg-purple-dark{
+    background-color: rgb(111, 66, 193);
+}
+.bg-warning-dark{
+    background-color: rgb(247, 195, 46);
+}
+.bg-purple-light{
+    background-color: rgba(111, 66, 193, 0.18);
+}
+.bg-warning-light{
+    background-color: rgba(247, 195, 46, 0.18);
+}
