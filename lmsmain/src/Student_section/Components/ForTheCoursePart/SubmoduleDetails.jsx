@@ -10,109 +10,113 @@ import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
 import { fullScreenPlugin } from '@react-pdf-viewer/full-screen';
 import "../../../assets/css/Student_coursePart/submodule.css";
 import CloseIcon from '@mui/icons-material/Close';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import './pdfWorker';
 
 export const SubmoduleDetails = (subModule) => {
-    const [openPdf, setOpenPdf] = useState(false);
-    const [openVideo, setOpenVideo] = useState(false);
-    const [isFullScreen, setIsFullScreen] = useState(false);
+  const [openPdf, setOpenPdf] = useState(false);
+  const [openVideo, setOpenVideo] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
-    // Initialize the full-screen plugin
-    const fullScreenPluginInstance = fullScreenPlugin({
-        onEnterFullScreen: () => {
-            setIsFullScreen(true);
-            requestAnimationFrame(() => {
-                window.dispatchEvent(new Event('resize'));
-            });
-        },
-        onExitFullScreen: () => {
-            setIsFullScreen(false);
-            requestAnimationFrame(() => {
-                window.dispatchEvent(new Event('resize'));
-            });
-        },
-    });
+  // Initialize the full-screen plugin
+  const fullScreenPluginInstance = fullScreenPlugin({
+    onEnterFullScreen: () => {
+      setIsFullScreen(true);
+      requestAnimationFrame(() => {
+        window.dispatchEvent(new Event('resize'));
+      });
+    },
+    onExitFullScreen: () => {
+      setIsFullScreen(false);
+      requestAnimationFrame(() => {
+        window.dispatchEvent(new Event('resize'));
+      });
+    },
+  });
 
-    const defaultLayoutPluginInstance = defaultLayoutPlugin({
-        renderToolbar: (Toolbar) => (
-            <Toolbar>
-                {({ CurrentPageInput, GoToNextPage, GoToPreviousPage, ZoomIn, ZoomOut, EnterFullScreen }) => (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <GoToPreviousPage />
-                        <CurrentPageInput />
-                        <GoToNextPage />
-                        <ZoomOut />
-                        <ZoomIn />
-                        <EnterFullScreen />
-                    </div>
-                )}
-            </Toolbar>
-        ),
-    });
+  const defaultLayoutPluginInstance = defaultLayoutPlugin({
+    renderToolbar: (Toolbar) => (
+      <Toolbar>
+        {({ CurrentPageInput, GoToNextPage, GoToPreviousPage, ZoomIn, ZoomOut, EnterFullScreen }) => (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <GoToPreviousPage />
+            <CurrentPageInput />
+            <GoToNextPage />
+            <ZoomOut />
+            <ZoomIn />
+            <EnterFullScreen />
+          </div>
+        )}
+      </Toolbar>
+    ),
+  });
 
-    useEffect(() => {
-        if (isFullScreen) {
-            setTimeout(() => {
-                window.dispatchEvent(new Event('resize'));
-            }, 300);
-        }
-    }, [isFullScreen]);
+  useEffect(() => {
+    if (isFullScreen) {
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+      }, 300);
+    }
+  }, [isFullScreen]);
 
-    const pdfUrl = `${api}/static/subModuleContents/${subModule?.subModule?.contentDocPath}`;
-    const videoUrl = `${subModule?.subModule?.recordedMeeting}`;
+  const pdfUrl = `${api}/static/subModuleContents/${subModule?.subModule?.contentDocPath}`;
+  const videoUrl = `${subModule?.subModule?.recordedMeeting}`;
 
 
-    const handlePdfOpen = () => setOpenPdf(true);
-    const handleClosePdf = () => setOpenPdf(false);
+  const handlePdfOpen = () => setOpenPdf(true);
+  const handleClosePdf = () => setOpenPdf(false);
 
-    const handleVideoOpen = () => setOpenVideo(true);
-    const handleCloseVideo = () => setOpenVideo(false);
+  const handleVideoOpen = () => setOpenVideo(true);
+  const handleCloseVideo = () => setOpenVideo(false);
 
-    return (
-        <div>
-            {!openPdf && !openVideo ? (
-            //    {
-                subModule?.subModule?.recordedMeeting != null ? (
-                  <>
-                    {/* PDF Card */}
-                    <div
-                      style={{
-                        width: "90%",
-                        border: "1px solid #D3D3D3",
-                        height: "100px",
-                        borderRadius: "10px",
-                        marginBottom: "20px",
-                        justifyContent: "space-between",
-                      }}
-                      className="card-main d-flex"
-                      onClick={handlePdfOpen}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          gap: "10px",
-                          alignItems: "center",
-                          paddingLeft: "10px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <PictureAsPdfIcon style={{ color: "red" }} />
-                        <p>{subModule?.subModule?.subModuleNm}</p>
-                      </div>
-                      <div
-                        style={{
-                          cursor: "pointer",
-                          display: "flex",
-                          gap: "10px",
-                          alignItems: "center",
-                        }}
-                      >
-                        <DoubleArrowIcon />
-                      </div>
-                    </div>
-              
-                    {/* Video Card */}
-                    <div
+  return (
+    <div>
+      {!openPdf && !openVideo ? (
+        //    {
+        subModule?.subModule?.recordedMeeting != null ? (
+          <>
+            {/* PDF Card */}
+            {/* <div
+              style={{
+                width: "90%",
+                border: "1px solid #D3D3D3",
+                height: "100px",
+                borderRadius: "10px",
+                marginBottom: "20px",
+                justifyContent: "space-between",
+              }}
+              className="card-main d-flex"
+              onClick={handlePdfOpen}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                  alignItems: "center",
+                  paddingLeft: "10px",
+                  cursor: "pointer",
+                }}
+              >
+                <PictureAsPdfIcon style={{ color: "red" }} />
+                <p>{subModule?.subModule?.subModuleNm}</p>
+              </div>
+              <div
+                style={{
+                  cursor: "pointer",
+                  display: "flex",
+                  gap: "10px",
+                  alignItems: "center",
+                }}
+              >
+                <DoubleArrowIcon />
+              </div>
+            </div> */}
+
+
+
+
+            {/* Video Card */}
+            {/* <div
                       style={{
                         width: "90%",
                         border: "1px solid #D3D3D3",
@@ -146,63 +150,123 @@ export const SubmoduleDetails = (subModule) => {
                       >
                         <DoubleArrowIcon />
                       </div>
-                    </div>
-                  </>
-                ) : (
-                  <div style={{fontWeight:"bold",fontSize:"20px",display:"flex",justifyContent:"center",alignItems:"center",marginTop:"10%"}}>This class has not been started</div>
-                )
-            //   }
-              
-            ) : openPdf ? (
-                // PDF Viewer
-                // <div style={{ height: '88vh' }}>
-                //     <Worker>
-                //         <Viewer
-                //             fileUrl={pdfUrl}
-                //             plugins={[fullScreenPluginInstance, defaultLayoutPluginInstance]}
-                //             style={{
-                //                 height: isFullScreen ? '100vh' : '50vh',
-                //                 width: '100%',
-                //             }}
-                //         />
-                //     </Worker>
-                //     <button style={{ margin: '10px', border: "1px solid #D3D3D3", padding: "6px", position: "absolute", top: "70px", zIndex: "4", right: "12px" }} className='bb' onClick={handleClosePdf}>
-                //         <CloseIcon style={{ color: "red" }} />
-                //         Close PDF
-                //     </button>
-                // </div>
-                <div style={{ height: '80vh', position: 'relative' }}>
-                    <Worker>
-                        <Viewer
-                            fileUrl={pdfUrl}
-                            plugins={[fullScreenPluginInstance, defaultLayoutPluginInstance]}
-                            style={{
-                                height: isFullScreen ? '100vh' : '50vh',
-                                width: '100%',
-                            }}
-                        />
-                    </Worker>
-                    <button
-                        style={{
-                            margin: '0px',
-                            border: '1px solid #D3D3D3',
-                            padding: '6px',
-                            position: 'absolute',
-                            top: '2px',
-                            right: '1px',
-                            zIndex: '4',
-                        }}
-                        onClick={handleClosePdf}
-                    >
-                        <CloseIcon style={{ color: 'red' }} />
-                        Close PDF
-                    </button>
+                    </div> */}
+            <div className="d-flex">
+              <div className="col-lg-6" >
+                <div className="d-flex box-shadow align-items-center mb-30 rounded justify-content-between hover-effect p-2 flex-wrap">
+                  {/* <div className="  d-table"> */}
+                  <span className="text-white mb-0" style={{
+                    width: "3vw",
+                    height: "3vw",
+                    backgroundColor: "#4BAAC8",
+                    color: "#ffffff",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderRadius: "50%",
+                    fontWeight: "bold",
+                    fontSize: "2vw",
+                    margin: 0,
+                  }}>
+                    {/* <FontAwesomeIcon style={{ color: "green" }} icon={faUserCheck} /> */}
+                    {(subModule?.subModule?.subModuleNm).charAt(0).toUpperCase()}
+                  </span>
+                  {/* </div> */}
+                  <div>
+                    <p className="text-dark hover-primary mb-2 d-block fs-16">
+                      {subModule?.subModule?.subModuleNm}
+                    </p>
+                  </div>
+                  <div >
+                    <h5 className="fw-600 mb-0 badge badge-pill badge-primary">
+                      <button type="button" className='btn text-white p-0 font-12' onClick={handlePdfOpen}>View </button>
+                    </h5>
+                  </div>
                 </div>
+              </div>
+              <div className="col-lg-6">
+                <div className="card shadow p-2 mb-4 z-index-9">
+                  <div className="overflow-hidden rounded-3">
+                    <img src="https://eduport.webestica.com/assets/images/courses/4by3/01.jpg" className="card-img" alt="course image" />
+                    <div className="bg-overlay bg-dark opacity-6"></div>
+                    <div className="card-img-overlay d-flex align-items-start flex-column p-3">
+                      <div style={{ position: "relative", left: "40%", top: "25%" }}>
+                        <span className="p-3 btn-lg text-danger round-play-btn btn-white-shadow mb-0" data-glightbox="" data-gallery="course-video" onClick={handleVideoOpen}>
+                          <PlayArrowIcon style={{ color: 'red' }} />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
 
-            ) : (
-                // Video Viewer
-                <div style={{ height: '88vh' }}>
-                    {/* <iframe
+                  <div className="card-body px-3">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div>
+
+                        <h6 className="mb-0 mt-2">{subModule?.subModule?.subModuleNm}</h6>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div style={{ fontWeight: "bold", fontSize: "20px", display: "flex", justifyContent: "center", alignItems: "center", marginTop: "10%" }}>This class has not been started</div>
+        )
+        //   }
+
+      ) : openPdf ? (
+        // PDF Viewer
+        // <div style={{ height: '88vh' }}>
+        //     <Worker>
+        //         <Viewer
+        //             fileUrl={pdfUrl}
+        //             plugins={[fullScreenPluginInstance, defaultLayoutPluginInstance]}
+        //             style={{
+        //                 height: isFullScreen ? '100vh' : '50vh',
+        //                 width: '100%',
+        //             }}
+        //         />
+        //     </Worker>
+        //     <button style={{ margin: '10px', border: "1px solid #D3D3D3", padding: "6px", position: "absolute", top: "70px", zIndex: "4", right: "12px" }} className='bb' onClick={handleClosePdf}>
+        //         <CloseIcon style={{ color: "red" }} />
+        //         Close PDF
+        //     </button>
+        // </div>
+        <div style={{ height: '80vh', position: 'relative' }}>
+          <Worker>
+            <Viewer
+              fileUrl={pdfUrl}
+              plugins={[fullScreenPluginInstance, defaultLayoutPluginInstance]}
+              style={{
+                height: isFullScreen ? '100vh' : '50vh',
+                width: '100%',
+              }}
+            />
+          </Worker>
+          <button
+            style={{
+              margin: '0px',
+              border: '1px solid #D3D3D3',
+              padding: '6px',
+              position: 'absolute',
+              top: '2px',
+              right: '1px',
+              zIndex: '4',
+            }}
+            onClick={handleClosePdf}
+          >
+            <CloseIcon style={{ color: 'red' }} />
+            Close PDF
+          </button>
+
+        </div>
+
+      ) : (
+        // Video Viewer
+        <div style={{ height: '88vh' }}>
+          {/* <iframe
                     
                         src={videoUrl}
                         title="YouTube video player"
@@ -212,25 +276,25 @@ export const SubmoduleDetails = (subModule) => {
 
                         style={{ height: "100%",width:"100%" }}
                     ></iframe> */}
-                    {/* {console.log(subModule?.subModule?.recordedMeeting)} */}
-                    <video
-                        src="https://videos.pexels.com/video-files/5532765/5532765-uhd_1440_2732_25fps.mp4"
-                        controls
-                        autoPlay
-                        playsInline
-                        style={{ height: "100%", width: "100%" }}
-                        allowFullScreen
-                        referrerPolicy="strict-origin-when-cross-origin"
-                        controlsList="nodownload"
-                    />
+          {/* {console.log(subModule?.subModule?.recordedMeeting)} */}
+          <video
+            src="https://videos.pexels.com/video-files/5532765/5532765-uhd_1440_2732_25fps.mp4"
+            controls
+            autoPlay
+            playsInline
+            style={{ height: "100%", width: "100%" }}
+            allowFullScreen
+            referrerPolicy="strict-origin-when-cross-origin"
+            controlsList="nodownload"
+          />
 
 
-                    <button style={{ margin: '10px', border: "1px solid #D3D3D3", padding: "6px", position: "absolute", top: "70px", zIndex: "4", right: "12px" }} className='bb' onClick={handleCloseVideo}>
-                        <CloseIcon style={{ color: "red" }} />
-                        Close Video
-                    </button>
-                </div>
-            )}
+          <button style={{ margin: '10px', border: "1px solid #D3D3D3", padding: "6px", position: "absolute", top: "70px", zIndex: "4", right: "12px" }} className='bb' onClick={handleCloseVideo}>
+            <CloseIcon style={{ color: "red" }} />
+            Close Video
+          </button>
         </div>
-    );
+      )}
+    </div>
+  );
 };

@@ -217,7 +217,7 @@ function Login_new() {
 
     return (
         <>
-            <section className="section">
+            <section className="section d-flex justify-content-center align-items-center vh-100">
                 {!forgetPage && 
                     <div className="container">
                         {/* <div className="row justify-content-center">

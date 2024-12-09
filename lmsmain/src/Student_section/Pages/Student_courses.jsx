@@ -426,7 +426,7 @@ const getAdminSyllabusData = () => {
       </div>
 
       {/* Main Content Section */}
-      <div style={{ flex: 1, padding: '20px', marginTop: '58px' }}>
+      <div style={{ flex: 1, padding: '20px', marginTop: '10px' }}>
         {renderContent()}
       </div>
     </div>

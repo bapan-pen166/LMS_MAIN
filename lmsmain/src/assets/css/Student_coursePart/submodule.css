@@ -1,3 +1,51 @@
 .bb:hover,.card-main:hover{
     box-shadow: 0 4px 8px 0 rgba(70, 101, 148, 0.301), 0 6px 6px 0 rgba(89, 148, 158, 0.19);
 }
+.bg-overlay {
+    display: block;
+    position: absolute;
+    width: 97%;
+    height: 73%;
+    top: 5px;
+    left: 5px;
+    z-index: 1;
+}
+.opacity-6 {
+    opacity: 0.6;
+}
+.bg-dark {
+    --bs-bg-opacity: 1;
+    background-color: rgba(36, 41, 45, 1) !important;
+}
+.card .card-img-overlay {
+    z-index: 2;
+}
+.round-play-btn{
+    height: 55px;
+    width: 55px;
+    line-height: 35px;
+}
+.btn-white-shadow {
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    color: #fff;
+    -webkit-box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.4);
+    background-color: #fff;
+}
+.btn-round {
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+    border-radius: 50%;
+    padding: 0;
+    text-align: center;
+}
+.card-img-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: 0.5rem;
+}
